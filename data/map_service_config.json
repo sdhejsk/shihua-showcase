@@ -1,0 +1,293 @@
+{
+  "serviceMode": "mapgis-igs",
+  "enabled": true,
+  "serviceName": "MapGIS IGServer",
+  "workspace": "shihua",
+  "wms": {
+    "url": "http://localhost:8080/geoserver/shihua/wms",
+    "basinsLayer": "shihua:main_basins",
+    "wellsLayer": "shihua:wells"
+  },
+  "wfs": {
+    "url": "http://localhost:8080/geoserver/shihua/ows",
+    "basinsTypeName": "shihua:main_basins",
+    "wellsTypeName": "shihua:wells",
+    "outputFormat": "application/json",
+    "srsName": "EPSG:4326"
+  },
+  "igs": {
+    "baseUrl": "/igs/rest/services",
+    "outSrs": "EPSG:4326",
+    "pageSize": 1000,
+    "maxPages": 80,
+    "idBatchSize": 1000,
+    "idBatchConcurrency": 4,
+    "pageConcurrency": 4,
+    "wells": {
+      "serviceName": "wells",
+      "layerId": "0",
+      "outFields": [
+        "objectid",
+        "well_name",
+        "country",
+        "basin_name",
+        "operator",
+        "class",
+        "tch_stat",
+        "content",
+        "spud_dt_yr",
+        "ons_off",
+        "terrain",
+        "block_name",
+        "field_name",
+        "pol_prov",
+        "wat_dpth_m",
+        "elev_m",
+        "td_m",
+        "tvd_meter",
+        "wel_id",
+        "lat_dec",
+        "long_dec"
+      ],
+      "sources": [
+        {
+          "label": "原始井位",
+          "serviceName": "wells",
+          "layerId": "0",
+          "outFields": [
+            "objectid",
+            "well_name",
+            "country",
+            "basin_name",
+            "operator",
+            "class",
+            "tch_stat",
+            "content",
+            "spud_dt_yr",
+            "ons_off",
+            "terrain",
+            "block_name",
+            "field_name",
+            "pol_prov",
+            "wat_dpth_m",
+            "elev_m",
+            "td_m",
+            "tvd_meter",
+            "wel_id",
+            "lat_dec",
+            "long_dec"
+          ]
+        },
+        {
+          "label": "非洲井位",
+          "serviceName": "africa_wells",
+          "layerId": "0",
+          "outFields": [
+            "WELL_NAME",
+            "COUNTRY",
+            "BASIN_NAME",
+            "OPERATOR",
+            "CLASS",
+            "TCH_STAT",
+            "CONTENT",
+            "SPUD_DT_YR",
+            "ONS_OFF",
+            "TERRAIN",
+            "BLOCK_NAME",
+            "FIELD_NAME",
+            "POL_PROV",
+            "WAT_DPTH_M",
+            "ELEV_M",
+            "TD_M",
+            "TVD_METER",
+            "WEL_ID",
+            "LAT_DEC",
+            "LONG_DEC"
+          ]
+        }
+      ]
+    },
+    "basins": {
+      "serviceName": "main_basins",
+      "layerId": "0",
+      "outFields": [
+        "objectid",
+        "basin_name",
+        "countries",
+        "prt_bsn_nm",
+        "king_class",
+        "bs_skm",
+        "bs_dp_wat"
+      ],
+      "sources": [
+        {
+          "label": "原始盆地",
+          "serviceName": "main_basins",
+          "layerId": "0",
+          "outFields": [
+            "objectid",
+            "basin_name",
+            "countries",
+            "prt_bsn_nm",
+            "king_class",
+            "bs_skm",
+            "bs_dp_wat"
+          ]
+        },
+        {
+          "label": "非洲盆地",
+          "serviceName": "africa_basins",
+          "layerId": "0",
+          "outFields": [
+            "BASIN_NAME",
+            "COUNTRIES",
+            "PRT_BSN_NM",
+            "KING_CLASS",
+            "BS_SKM",
+            "BS_DP_WAT"
+          ]
+        }
+      ]
+    },
+    "contractBlocks": {
+      "serviceName": "contract_blocks",
+      "layerId": "0",
+      "outFields": [
+        "objectid",
+        "block_name",
+        "contract",
+        "country",
+        "bas_names",
+        "operator",
+        "con_status",
+        "blk_status",
+        "blk_sqkm",
+        "ons_off",
+        "terrains",
+        "province",
+        "min_wd_mt",
+        "med_wd_mt",
+        "max_wd_mt",
+        "app_date",
+        "exp_date",
+        "group",
+        "grp_name"
+      ],
+      "sources": [
+        {
+          "label": "原始合同区块",
+          "serviceName": "contract_blocks",
+          "layerId": "0",
+          "outFields": [
+            "objectid",
+            "block_name",
+            "contract",
+            "country",
+            "bas_names",
+            "operator",
+            "con_status",
+            "blk_status",
+            "blk_sqkm",
+            "ons_off",
+            "terrains",
+            "province",
+            "min_wd_mt",
+            "med_wd_mt",
+            "max_wd_mt",
+            "app_date",
+            "exp_date",
+            "group",
+            "grp_name"
+          ]
+        },
+        {
+          "label": "非洲合同区块",
+          "serviceName": "africa_contract_blocks",
+          "layerId": "0",
+          "outFields": [
+            "BLOCK_NAME",
+            "CONTRACT",
+            "COUNTRY",
+            "BAS_NAMES",
+            "OPERATOR",
+            "CON_STATUS",
+            "BLK_STATUS",
+            "BLK_SQKM",
+            "ONS_OFF",
+            "TERRAINS",
+            "PROVINCE",
+            "MIN_WD_MT",
+            "MED_WD_MT",
+            "MAX_WD_MT",
+            "APP_DATE",
+            "EXP_DATE",
+            "GROUP",
+            "GRP_NAME"
+          ]
+        }
+      ]
+    },
+    "fields": {
+      "serviceName": "fields",
+      "layerId": "0",
+      "outFields": [
+        "objectid",
+        "field_name",
+        "countries",
+        "basin_name",
+        "opr_curr",
+        "prod_stat",
+        "hc_type",
+        "field_type",
+        "wd_max_m",
+        "fie_id",
+        "lat_dec",
+        "long_dec"
+      ],
+      "sources": [
+        {
+          "label": "原始油气田",
+          "serviceName": "fields",
+          "layerId": "0",
+          "outFields": [
+            "objectid",
+            "field_name",
+            "countries",
+            "basin_name",
+            "opr_curr",
+            "prod_stat",
+            "hc_type",
+            "field_type",
+            "wd_max_m",
+            "fie_id",
+            "lat_dec",
+            "long_dec"
+          ]
+        },
+        {
+          "label": "非洲油气田",
+          "serviceName": "africa_fields",
+          "layerId": "0",
+          "outFields": [
+            "FIELD_NAME",
+            "COUNTRIES",
+            "BASIN_NAME",
+            "OPR_CURR",
+            "PROD_STAT",
+            "HC_TYPE",
+            "FIELD_TYPE",
+            "WD_MAX_M",
+            "FIE_ID",
+            "LAT_DEC",
+            "LONG_DEC"
+          ]
+        }
+      ]
+    }
+  },
+  "notes": [
+    "当前使用 MapGIS IGServer 模式，并同时读取原始数据服务和非洲区域服务。",
+    "空间总览按 sources 数组分页读取多个 FeatureServer/query 接口，再合并到同一业务图层展示。",
+    "如果某个服务达到 maxPages 仍有下一页，加载诊断会提示需要继续做后台缓存或条件查询优化。"
+  ]
+}

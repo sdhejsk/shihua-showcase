@@ -1,0 +1,670 @@
+{
+  "profiles": {
+    "Adelaide Fold Belt": {
+      "country_names": "Australia",
+      "parent_basin_name": "",
+      "alternate_basin_names": "",
+      "basin_sqkm": 133128.5,
+      "basin_onshore_sqkm": 123153.2,
+      "basin_offshore_sqkm": 9975.3,
+      "basin_shelf_sqkm": 9975.3,
+      "basin_deep_water_sqkm": "",
+      "bally_snelson_class": "Foldbelt continental",
+      "kingston_class": "Foldbelt",
+      "klemme_class": "Closed (downwarp)",
+      "basin_young_age": "Cambrian",
+      "basin_old_age": "Paleoproterozoic",
+      "plate_location_type": null,
+      "plate_location_name": null
+    },
+    "Allanooka High (Perth Basin)": {
+      "country_names": "Australia",
+      "parent_basin_name": "Perth Basin",
+      "alternate_basin_names": "Allanooka Terrace (Perth Basin)",
+      "basin_sqkm": 289.3,
+      "basin_onshore_sqkm": 289.3,
+      "basin_offshore_sqkm": "",
+      "basin_shelf_sqkm": "",
+      "basin_deep_water_sqkm": "",
+      "bally_snelson_class": "",
+      "kingston_class": "",
+      "klemme_class": "",
+      "basin_young_age": "Jurassic",
+      "basin_old_age": "Permian",
+      "plate_location_type": null,
+      "plate_location_name": null
+    },
+    "Amadeus Basin": {
+      "country_names": "Australia",
+      "parent_basin_name": "",
+      "alternate_basin_names": "",
+      "basin_sqkm": 155342.6,
+      "basin_onshore_sqkm": 155342.6,
+      "basin_offshore_sqkm": "",
+      "basin_shelf_sqkm": "",
+      "basin_deep_water_sqkm": "",
+      "bally_snelson_class": "Foldbelt continental",
+      "kingston_class": "Interior sag",
+      "klemme_class": "Intracont composite",
+      "basin_young_age": "Lower Carboniferous",
+      "basin_old_age": "Neoproterozoic",
+      "plate_location_type": null,
+      "plate_location_name": null
+    },
+    "Arrowie Basin": {
+      "country_names": "Australia",
+      "parent_basin_name": "",
+      "alternate_basin_names": "",
+      "basin_sqkm": 15896.1,
+      "basin_onshore_sqkm": 15896.1,
+      "basin_offshore_sqkm": "",
+      "basin_shelf_sqkm": "",
+      "basin_deep_water_sqkm": "",
+      "bally_snelson_class": "Cratonic",
+      "kingston_class": "Interior sag",
+      "klemme_class": "Intracont interior",
+      "basin_young_age": "Upper Cambrian",
+      "basin_old_age": "Neoproterozoic",
+      "plate_location_type": null,
+      "plate_location_name": null
+    },
+    "Bass Basin": {
+      "country_names": "Australia",
+      "parent_basin_name": "",
+      "alternate_basin_names": "",
+      "basin_sqkm": 39870.4,
+      "basin_onshore_sqkm": 24.1,
+      "basin_offshore_sqkm": 39846.3,
+      "basin_shelf_sqkm": 39846.3,
+      "basin_deep_water_sqkm": "",
+      "bally_snelson_class": "Passive/rift",
+      "kingston_class": "Marginal sag",
+      "klemme_class": "Rift",
+      "basin_young_age": "Holocene",
+      "basin_old_age": "Berriasian",
+      "plate_location_type": null,
+      "plate_location_name": null
+    },
+    "Arafura-Money Shoal Basin": {
+      "country_names": "Australia~Indonesia",
+      "parent_basin_name": "",
+      "alternate_basin_names": "",
+      "basin_sqkm": 375754.5,
+      "basin_onshore_sqkm": 37005.3,
+      "basin_offshore_sqkm": 338749.2,
+      "basin_shelf_sqkm": 302188.3,
+      "basin_deep_water_sqkm": 36560.9,
+      "bally_snelson_class": "Foredeep/platform",
+      "kingston_class": "Marginal sag",
+      "klemme_class": "Closed (downwarp)",
+      "basin_young_age": "Upper Permian",
+      "basin_old_age": "Cambrian",
+      "plate_location_type": null,
+      "plate_location_name": null
+    }
+  },
+  "tables": {
+    "Amadeus Basin": {
+      "images_count": 31,
+      "petroleum_systems": [
+        {
+          "pet_system_name": "Gillen - Heavitree/Basement",
+          "play_names": "Heavitree Structural~Basement Structural",
+          "source_rock_unit": "Gillen Formation"
+        },
+        {
+          "pet_system_name": "Horn Valley - Pacoota/Stairway",
+          "play_names": "Larapinta Structural~Larapinta Stratigraphic-Structural",
+          "source_rock_unit": "Horn Valley Siltstone"
+        },
+        {
+          "pet_system_name": "Loves Creek/Johnnys Creek - Cryogenian",
+          "play_names": "Cryogenian Structural",
+          "source_rock_unit": "Loves Creek Formation"
+        },
+        {
+          "pet_system_name": "Middle Cambrian - Middle-Upper Cambrian",
+          "play_names": "Middle-Upper Cambrian Structural~Pertaoorrta Structural-Unconformity",
+          "source_rock_unit": "Chandler Formation"
+        },
+        {
+          "pet_system_name": "Pertatataka - Arumbera",
+          "play_names": "Arumbera Structural~Pioneer Structural~Julie Structural~Pioneer Structural-Unconformity~Pertaoorrta Structural-Unconformity~Arumbera Unconformity",
+          "source_rock_unit": "Pertatataka Formation"
+        }
+      ],
+      "plays": [],
+      "genetic_units": [
+        {
+          "genetic_unit_name": "Basement",
+          "young_age": "Stenian",
+          "old_age": "Statherian",
+          "rank_ind": 0
+        },
+        {
+          "genetic_unit_name": "Syn-rift Unit",
+          "young_age": "Stenian",
+          "old_age": "Stenian",
+          "rank_ind": 1
+        },
+        {
+          "genetic_unit_name": "Syn-rift Unit",
+          "young_age": "Stenian",
+          "old_age": "Stenian",
+          "rank_ind": 1
+        },
+        {
+          "genetic_unit_name": "Syn-rift Unit",
+          "young_age": "Stenian",
+          "old_age": "Stenian",
+          "rank_ind": 1
+        },
+        {
+          "genetic_unit_name": "Sag Unit 1",
+          "young_age": "Cryogenian",
+          "old_age": "Tonian",
+          "rank_ind": 2
+        },
+        {
+          "genetic_unit_name": "Extensional Unit 1",
+          "young_age": "Ediacaran",
+          "old_age": "Cryogenian",
+          "rank_ind": 3
+        },
+        {
+          "genetic_unit_name": "Extensional Unit 2",
+          "young_age": "Ordian",
+          "old_age": "Ediacaran",
+          "rank_ind": 4
+        },
+        {
+          "genetic_unit_name": "Sag Unit 2",
+          "young_age": "Eastonian",
+          "old_age": "Ordian",
+          "rank_ind": 5
+        }
+      ],
+      "lithostrat_summary": [
+        {
+          "lithostrat_unit": "Amulda Member",
+          "lithology_name": "sandy siltstone",
+          "hc_significance": "",
+          "deposit_environment": "Terrestrial"
+        },
+        {
+          "lithostrat_unit": "Amulda Member",
+          "lithology_name": "sandstone",
+          "hc_significance": "",
+          "deposit_environment": "Terrestrial"
+        },
+        {
+          "lithostrat_unit": "Aralka Formation",
+          "lithology_name": "shale",
+          "hc_significance": "Proven HC source",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Aralka Formation",
+          "lithology_name": "sandstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Aralka Formation",
+          "lithology_name": "conglomerate",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Aralka Formation",
+          "lithology_name": "limestone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Aralka Formation",
+          "lithology_name": "calcarenite",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Aralka Formation",
+          "lithology_name": "dolomite",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        }
+      ],
+      "reserves_production": [
+        {
+          "number_of_fields": 9,
+          "oil_recoverable_pp_mmbbl": 21.6,
+          "gas_recoverable_pp_mmscf": 964100,
+          "total_recoverable_pp_mmboe": 182.91,
+          "cumul_tot_prod_mmboe": 108.726251
+        }
+      ]
+    },
+    "Bass Basin": {
+      "images_count": 12,
+      "petroleum_systems": [
+        {
+          "pet_system_name": "Middle/Upper Eastern View - Eastern View",
+          "play_names": "Lower Eastern View Structural~Middle/Upper Eastern View Structural",
+          "source_rock_unit": "Eastern View Group"
+        },
+        {
+          "pet_system_name": "Otway - Eastern View",
+          "play_names": "Lower Eastern View Structural",
+          "source_rock_unit": "Otway Group"
+        }
+      ],
+      "plays": [],
+      "genetic_units": [
+        {
+          "genetic_unit_name": "Pre-rift Basement and Basin Initiation Unit",
+          "young_age": "Lower Jurassic",
+          "old_age": "Neoproterozoic",
+          "rank_ind": 0
+        },
+        {
+          "genetic_unit_name": "Pre-rift Basement and Basin Initiation Unit",
+          "young_age": "Lower Jurassic",
+          "old_age": "Neoproterozoic",
+          "rank_ind": 0
+        },
+        {
+          "genetic_unit_name": "Pre-rift Basement and Basin Initiation Unit",
+          "young_age": "Lower Jurassic",
+          "old_age": "Neoproterozoic",
+          "rank_ind": 0
+        },
+        {
+          "genetic_unit_name": "Syn-rift Unit 1",
+          "young_age": "Upper Albian",
+          "old_age": "Aptian",
+          "rank_ind": 1
+        },
+        {
+          "genetic_unit_name": "Syn-rift Unit 2",
+          "young_age": "Lower Campanian",
+          "old_age": "Lower Turonian",
+          "rank_ind": 2
+        },
+        {
+          "genetic_unit_name": "Syn-rift Unit 2",
+          "young_age": "Lower Campanian",
+          "old_age": "Lower Turonian",
+          "rank_ind": 2
+        },
+        {
+          "genetic_unit_name": "Syn-rift Unit 3",
+          "young_age": "Middle Ypresian",
+          "old_age": "Middle Campanian",
+          "rank_ind": 3
+        },
+        {
+          "genetic_unit_name": "Syn-rift Unit 3",
+          "young_age": "Middle Ypresian",
+          "old_age": "Middle Campanian",
+          "rank_ind": 3
+        }
+      ],
+      "lithostrat_summary": [
+        {
+          "lithostrat_unit": "Addiscot Formation",
+          "lithology_name": "siltstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Addiscot Formation",
+          "lithology_name": "marl",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Addiscot Formation",
+          "lithology_name": "sandstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Addiscot Formation",
+          "lithology_name": "mudstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Angahook Formation",
+          "lithology_name": "siltstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Angahook Formation",
+          "lithology_name": "calcarenite",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Angahook Formation",
+          "lithology_name": "sandstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Angahook Formation",
+          "lithology_name": "calcareous shale",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        }
+      ],
+      "reserves_production": [
+        {
+          "number_of_fields": 6,
+          "oil_recoverable_pp_mmbbl": 1.4,
+          "gas_recoverable_pp_mmscf": 546500,
+          "total_recoverable_pp_mmboe": 116.88,
+          "cumul_tot_prod_mmboe": 36.827157
+        }
+      ]
+    },
+    "Arafura-Money Shoal Basin": {
+      "images_count": 12,
+      "petroleum_systems": [
+        {
+          "pet_system_name": "Arafura/Kulshill - Troughton/Flamingo/Bathurst Isl",
+          "play_names": "Paleozoic Structural~Paleozoic Unconformity~Mesozoic Stratigraphic-Structural~Mesozoic Structural",
+          "source_rock_unit": "Arafura Group"
+        },
+        {
+          "pet_system_name": "Troughton - Troughton/Flamingo/Bathurst Island",
+          "play_names": "Mesozoic Stratigraphic-Structural~Mesozoic Structural~Mesozoic Stratigraphic",
+          "source_rock_unit": "Troughton Group"
+        },
+        {
+          "pet_system_name": "Wessel/Goulburn - Wessel/Goulburn",
+          "play_names": "Paleozoic Structural~Paleozoic Unconformity~Mesozoic Stratigraphic-Structural~Mesozoic Structural~Mesozoic Stratigraphic",
+          "source_rock_unit": "Wessel Group"
+        }
+      ],
+      "plays": [],
+      "genetic_units": [
+        {
+          "genetic_unit_name": "Basement",
+          "young_age": "Middle Proterozoic",
+          "old_age": "Lower Proterozoic",
+          "rank_ind": 0
+        },
+        {
+          "genetic_unit_name": "Basement",
+          "young_age": "Middle Proterozoic",
+          "old_age": "Lower Proterozoic",
+          "rank_ind": 0
+        },
+        {
+          "genetic_unit_name": "Extensional and Thermal Sag Unit",
+          "young_age": "Neoproterozoic",
+          "old_age": "Neoproterozoic",
+          "rank_ind": 1
+        },
+        {
+          "genetic_unit_name": "Sag Unit 1",
+          "young_age": "Lochkovian",
+          "old_age": "Middle Cambrian",
+          "rank_ind": 2
+        },
+        {
+          "genetic_unit_name": "Sag Unit 2",
+          "young_age": "Famennian",
+          "old_age": "Frasnian",
+          "rank_ind": 3
+        },
+        {
+          "genetic_unit_name": "Extensional and Contractional Unit",
+          "young_age": "Lower Permian",
+          "old_age": "Upper Carboniferous",
+          "rank_ind": 4
+        },
+        {
+          "genetic_unit_name": "Sag Unit 3",
+          "young_age": "Maastrichtian",
+          "old_age": "Hettangian",
+          "rank_ind": 5
+        },
+        {
+          "genetic_unit_name": "Flexure Unit",
+          "young_age": "Pleistocene",
+          "old_age": "Serravallian",
+          "rank_ind": 6
+        }
+      ],
+      "lithostrat_summary": [
+        {
+          "lithostrat_unit": "Arafura Group",
+          "lithology_name": "sandstone",
+          "hc_significance": "Proven HC reservoir",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Arafura Group",
+          "lithology_name": "limestone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Arafura Group",
+          "lithology_name": "siltstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Arafura Group",
+          "lithology_name": "shale",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Basement",
+          "lithology_name": "metamorphic",
+          "hc_significance": "",
+          "deposit_environment": ""
+        },
+        {
+          "lithostrat_unit": "Basement",
+          "lithology_name": "clastic rock",
+          "hc_significance": "",
+          "deposit_environment": ""
+        },
+        {
+          "lithostrat_unit": "Bathurst Island Group",
+          "lithology_name": "sandstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Bathurst Island Group",
+          "lithology_name": "mudstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        }
+      ],
+      "reserves_production": []
+    },
+    "Arrowie Basin": {
+      "images_count": 0,
+      "petroleum_systems": [
+        {
+          "pet_system_name": "Tindelpina/Oraparinna - Hawker/Wilpena",
+          "play_names": "Hawker Group Stratigraphic-Structural~Wilpena Group Structural",
+          "source_rock_unit": "Tindelpina Shale"
+        }
+      ],
+      "plays": [],
+      "genetic_units": [],
+      "lithostrat_summary": [
+        {
+          "lithostrat_unit": "Algebuckina Sandstone Equivalent",
+          "lithology_name": "siltstone",
+          "hc_significance": "",
+          "deposit_environment": "Terrestrial"
+        },
+        {
+          "lithostrat_unit": "Algebuckina Sandstone Equivalent",
+          "lithology_name": "quartzose sandstone",
+          "hc_significance": "",
+          "deposit_environment": "Terrestrial"
+        },
+        {
+          "lithostrat_unit": "Algebuckina Sandstone Equivalent",
+          "lithology_name": "shale",
+          "hc_significance": "",
+          "deposit_environment": "Terrestrial"
+        },
+        {
+          "lithostrat_unit": "Aroona Creek Limestone",
+          "lithology_name": "limestone",
+          "hc_significance": "",
+          "deposit_environment": ""
+        },
+        {
+          "lithostrat_unit": "Balcoracana Formation",
+          "lithology_name": "carbonate rock",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Balcoracana Formation",
+          "lithology_name": "siltstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Balcoracana Formation",
+          "lithology_name": "shale",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Benagerie Volcanics Suite",
+          "lithology_name": "volcaniclastics",
+          "hc_significance": "",
+          "deposit_environment": ""
+        }
+      ],
+      "reserves_production": []
+    },
+    "Perth Basin": {
+      "images_count": 0,
+      "petroleum_systems": [],
+      "plays": [
+        {
+          "play_name": "Cattamarra Stratigraphic-Structural",
+          "field_names": "Gingin 2,Mount Horner,Red Gully North 1",
+          "oil_equiv_reserves_mmboe": 0.08
+        },
+        {
+          "play_name": "Cattamarra Structural",
+          "field_names": "Gingin West,Mount Horner,Red Gully,Walyering,Walyering East 1,Yardanogo North 1",
+          "oil_equiv_reserves_mmboe": 1.79
+        },
+        {
+          "play_name": "Irwin River Structural",
+          "field_names": "Cliff Head,Dongara,Hovea,Mount Horner,Xanadu 1",
+          "oil_equiv_reserves_mmboe": 0.02
+        },
+        {
+          "play_name": "Cattamarra Stratigraphic-Structural",
+          "field_names": "Gingin 2,Mount Horner,Red Gully North 1",
+          "oil_equiv_reserves_mmboe": 0.08
+        },
+        {
+          "play_name": "Cattamarra Structural",
+          "field_names": "Gingin West,Mount Horner,Red Gully,Walyering,Walyering East 1,Yardanogo North 1",
+          "oil_equiv_reserves_mmboe": 1.79
+        },
+        {
+          "play_name": "Dongara Structural",
+          "field_names": "Apium,Beharra Springs North,Centella 1,Dunnart 2,Dunsborough 1,Eremia,Erregulla North Deep 1,Frankland 1,Hovea, Jingemia,Mondarra,Mondarra 2,Mount Horner,Perseverance 1,Senecio 1,Snottygobble 1,Tarantula,Xyris,Yardarino",
+          "oil_equiv_reserves_mmboe": 0.08
+        }
+      ],
+      "genetic_units": [],
+      "lithostrat_summary": [],
+      "reserves_production": []
+    },
+    "Adelaide Fold Belt": {
+      "images_count": 0,
+      "petroleum_systems": [],
+      "plays": [],
+      "genetic_units": [],
+      "lithostrat_summary": [
+        {
+          "lithostrat_unit": "Angepena Formation",
+          "lithology_name": "shale",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Angepena Formation",
+          "lithology_name": "siltstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Angepena Formation",
+          "lithology_name": "limestone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Belair Subgroup",
+          "lithology_name": "slate",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Belair Subgroup",
+          "lithology_name": "quartzite",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Belair Subgroup",
+          "lithology_name": "siltstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Belair Subgroup",
+          "lithology_name": "dolomite",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        },
+        {
+          "lithostrat_unit": "Belair Subgroup",
+          "lithology_name": "sandstone",
+          "hc_significance": "",
+          "deposit_environment": "Marine"
+        }
+      ],
+      "reserves_production": []
+    },
+    "Allanooka High (Perth Basin)": {
+      "images_count": 0,
+      "petroleum_systems": [],
+      "plays": [],
+      "genetic_units": [],
+      "lithostrat_summary": [],
+      "reserves_production": [
+        {
+          "number_of_fields": 1,
+          "oil_recoverable_pp_mmbbl": 2,
+          "gas_recoverable_pp_mmscf": 230.58,
+          "total_recoverable_pp_mmboe": 2.04,
+          "cumul_tot_prod_mmboe": 1.875784
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "stories": [
+    {
+      "id": "africa-2025",
+      "name": "非洲区域综合样例",
+      "region": "Africa",
+      "status": "空间服务已发布",
+      "summary": "以非洲区域为样例，把盆地、合同区块、油气田、钻井和 Basin Monitor PDF 资料串成同一个区域数据链。",
+      "sourceRoot": "S:\\C2\\石化数据\\给杨老师",
+      "counts": {
+        "basins": 190,
+        "contractBlocks": 2468,
+        "fields": 4567,
+        "wells": 61927,
+        "basinMonitorFolders": 95,
+        "basinMonitorPdfs": 3205
+      },
+      "datasets": [
+        {
+          "name": "非洲盆地",
+          "objectType": "盆地",
+          "format": "Shapefile",
+          "path": "全球盆地-2025\\Africa Basins-2025\\African Basins-2025.shp",
+          "geometry": "Polygon",
+          "keyFields": ["BASIN_NAME", "COUNTRIES", "KING_CLASS", "BS_SKM", "BS_DP_WAT"],
+          "suggestedService": "africa_basins"
+        },
+        {
+          "name": "非洲合同区块",
+          "objectType": "区块",
+          "format": "Shapefile",
+          "path": "全球合同区块-2025\\04-非洲合同区块-2478个\\Africa Contract Blocks.shp",
+          "geometry": "Polygon",
+          "keyFields": ["BLOCK_NAME", "CONTRACT", "COUNTRY", "BAS_NAMES", "OPERATOR", "BLK_SQKM", "CON_STATUS"],
+          "suggestedService": "africa_contract_blocks"
+        },
+        {
+          "name": "非洲油气田",
+          "objectType": "油气田",
+          "format": "Shapefile Zip + CSV",
+          "path": "全球油气田-2025\\非洲油气田-4567个.zip / 非洲油气田-表格.zip",
+          "geometry": "Polygon",
+          "keyFields": ["Field Name", "Basin Name", "Cur Contract Block Names", "Cur Operator Names", "Prod Status", "Oil Recoverable Pp Mmbbl", "Gas Recoverable Pp Mmscf"],
+          "suggestedService": "africa_fields"
+        },
+        {
+          "name": "非洲钻井",
+          "objectType": "井",
+          "format": "Shapefile Zip + Excel",
+          "path": "全球钻井-2025\\非洲\\非洲钻井-2025.zip / 非洲钻井.xlsx",
+          "geometry": "Point",
+          "keyFields": ["Well Name", "Basin Name", "Contract Name", "Block Name", "Field Name", "Operator Name", "Td Meter", "Technical Status"],
+          "suggestedService": "africa_wells"
+        },
+        {
+          "name": "非洲 Basin Monitor",
+          "objectType": "盆地资料",
+          "format": "PDF",
+          "path": "非洲-Basin monitor-PDF",
+          "geometry": "None",
+          "keyFields": ["盆地目录名", "PDF专题后缀", "gp_id"],
+          "suggestedService": "document_index"
+        }
+      ],
+      "relationKeys": [
+        {
+          "from": "盆地",
+          "to": "区块",
+          "fields": ["BASIN_NAME", "BAS_NAMES"],
+          "description": "区块字段 BAS_NAMES 中通常包含一个或多个盆地名称，可用于把区块挂接到盆地。"
+        },
+        {
+          "from": "区块",
+          "to": "油气田",
+          "fields": ["BLOCK_NAME", "Cur Contract Block Names"],
+          "description": "油气田表中的当前合同区块名称可与区块名称关联。"
+        },
+        {
+          "from": "油气田",
+          "to": "井",
+          "fields": ["Field Name", "Field Name"],
+          "description": "钻井表中的 Field Name 可与油气田名称关联。"
+        },
+        {
+          "from": "盆地",
+          "to": "PDF资料",
+          "fields": ["BASIN_NAME", "PDF目录名"],
+          "description": "Basin Monitor PDF 按盆地建目录，可作为盆地详情页的文档资料入口。"
+        }
+      ],
+      "storySteps": [
+        "选择非洲区域作为样例范围。",
+        "先发布非洲盆地和合同区块空间服务，形成区域底层空间骨架。",
+        "再接入非洲油气田空间面和油气田 CSV 表，补充资源、储量和生产状态。",
+        "继续接入非洲钻井点和钻井 Excel 表，形成从盆地到区块、油气田、井的对象链。",
+        "最后把 Basin Monitor PDF 建成盆地文档索引，支撑点击盆地查看专题报告。"
+      ],
+      "samples": {
+        "basins": [
+          { "name": "Ionian Foreland", "countries": "Italy~Greece~Libya~Malta", "class": "Marginal sag", "areaSqkm": 71243.9 },
+          { "name": "Alboran Sea Basin", "countries": "Spain~Morocco~Algeria~Gibraltar", "class": "-", "areaSqkm": 45752.3 },
+          { "name": "Bou Bernous Saddle", "countries": "Algeria", "class": "Interior sag", "areaSqkm": 29272.6 },
+          { "name": "Abadla Basin", "countries": "Algeria~Morocco", "class": "-", "areaSqkm": 21522.0 }
+        ],
+        "blocks": [
+          { "name": "Hitu", "country": "Gabon", "basins": "Lower Congo Basin~South Gabon Sub-basin (Gabon Coastal Basin)", "operator": "Petroliam Nasional Bhd (PETRONAS)", "areaSqkm": 1850.1 },
+          { "name": "Block B3", "country": "South Sudan", "basins": "Muglad Basin~Central African Shield", "operator": "Oranto Petroleum Ltd", "areaSqkm": 24998.71 },
+          { "name": "Folio 1", "country": "Botswana", "basins": "Nama-Kalahari Basins", "operator": "Sharpay Enterprises Pty Ltd", "areaSqkm": 185.48 }
+        ],
+        "fields": [
+          { "name": "Pinot", "country": "Egypt", "basin": "Shoushan Sub-basin (Northern Egypt Basin)", "operator": "Khalda Petroleum Co", "status": "Producing" },
+          { "name": "Bahga", "country": "Egypt", "basin": "Abu Gharadiq Basin", "operator": "Alam El Shawish Petroleum Co", "status": "Prod, improved recov" },
+          { "name": "Chouchet El Atrous", "country": "Tunisia", "basin": "El Djerid Basin", "operator": "Mazarine Energy Tunisia BV", "status": "Producing" }
+        ],
+        "wells": [
+          { "name": "Abbou 1", "country": "Algeria", "basin": "Amguid Spur", "block": "H'El Biod", "operator": "Cie des Petroles d'Algerie", "status": "Plugged & abandoned" },
+          { "name": "Abiod 1", "country": "Algeria", "basin": "Gourara Sub-basin (Timimoun Basin)", "block": "In Belbel", "operator": "Cie des Petroles d'Algerie", "status": "Plugged & abandoned" },
+          { "name": "Abiod 2", "country": "Algeria", "basin": "Gourara Sub-basin (Timimoun Basin)", "block": "Abiod / 325", "operator": "Sonatrach SpA", "status": "Plugged & abandoned" }
+        ],
+        "pdfFolders": [
+          { "basin": "Aaiun-Tarfaya Basin", "pdfCount": 45, "examples": ["405000.pdf", "405000_bib.pdf", "405000_dev.pdf"] },
+          { "basin": "Abu Gharadiq Basin", "pdfCount": 49, "examples": ["410700.pdf", "410700_bib.pdf", "410700_dev.pdf"] },
+          { "basin": "Ahnet Basin", "pdfCount": 34, "examples": ["406700.pdf", "406700_bib.pdf", "406700_dev.pdf"] }
+        ]
+      },
+      "publishChecklist": [
+        "African Basins-2025.shp 已发布为 africa_basins FeatureServer。",
+        "Africa Contract Blocks.shp 已发布为 africa_contract_blocks FeatureServer。",
+        "Fields_poly.shp 已发布为 africa_fields FeatureServer。",
+        "Wells_point.shp 已发布为 africa_wells FeatureServer。",
+        "下一步把非洲油气田 CSV、非洲钻井 Excel 和 PDF 目录整理为对象索引 JSON。"
+      ]
+    }
+  ]
+}

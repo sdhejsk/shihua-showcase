@@ -1,0 +1,947 @@
+{
+  "A.O.E.C. 08": {
+    "well_name": "A.O.E.C. 08",
+    "country": "Australia",
+    "basin_name": "Tasmania Basin",
+    "operator_name": "Adelaide Petroleum NL",
+    "onshore_offshore": "Onshore",
+    "terrain": "Grassland",
+    "well_class": "Stratigraphic test",
+    "resource_type": "Conventional",
+    "spud_date": "1923",
+    "last_completion_date": "1923",
+    "technical_status": "Plugged & abandoned",
+    "general_status": "P&A/Susp Dry/Shows",
+    "content": "gas shows",
+    "td_meter": 336.0,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 50.0,
+    "wel_id": 100000080351.0,
+    "history": [
+      {
+        "event_date": "1923",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "1923",
+        "event_type": "Plugged & abandoned",
+        "activity_content": "gas shows",
+        "md_meter": 336.0
+      }
+    ],
+    "latitude": -41.221831,
+    "longitude": 146.539677,
+    "coord_qual": "Approx to 1 minute",
+    "block_name": "",
+    "contract_name": "",
+    "field_name": "",
+    "political_province": "Tasmania"
+  },
+  "Abalone Deep 1": {
+    "well_name": "Abalone Deep 1",
+    "country": "Australia",
+    "basin_name": "Caswell Sub-basin (Browse Basin)",
+    "operator_name": "Murphy Australia Oil Pty Ltd",
+    "onshore_offshore": "Offshore",
+    "terrain": "Deep Water",
+    "well_class": "New-field wildcat",
+    "resource_type": "Conventional",
+    "spud_date": "27 November 2008",
+    "last_completion_date": "03 March 2009",
+    "technical_status": "Plugged & abandoned",
+    "general_status": "P&A/Susp Dry/Shows",
+    "content": "gas shows",
+    "td_meter": 5300.0,
+    "tvd_meter": "",
+    "water_depth_meter": 401.2,
+    "ground_elevation_meter": "",
+    "wel_id": 100000642614.0,
+    "history": [
+      {
+        "event_date": "27 November 2008",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "27 November 2008",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": ""
+      },
+      {
+        "event_date": "28 November 2008",
+        "event_type": "Well active",
+        "activity_content": "Running casing",
+        "md_meter": 841.0
+      },
+      {
+        "event_date": "02 December 2008",
+        "event_type": "Well active",
+        "activity_content": "Testing",
+        "md_meter": 1324.0
+      },
+      {
+        "event_date": "06 December 2008",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 2474.0
+      },
+      {
+        "event_date": "11 December 2008",
+        "event_type": "Well active",
+        "activity_content": "Running casing",
+        "md_meter": 3241.0
+      },
+      {
+        "event_date": "14 December 2008",
+        "event_type": "Well active",
+        "activity_content": "Testing",
+        "md_meter": 3244.0
+      },
+      {
+        "event_date": "15 December 2008",
+        "event_type": "Well active",
+        "activity_content": "Waiting on weather",
+        "md_meter": 3483.0
+      },
+      {
+        "event_date": "29 December 2008",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 3600.0
+      },
+      {
+        "event_date": "09 January 2009",
+        "event_type": "Well active",
+        "activity_content": "Logging",
+        "md_meter": 4587.0
+      },
+      {
+        "event_date": "10 January 2009",
+        "event_type": "Well active",
+        "activity_content": "Fishing",
+        "md_meter": 4587.0
+      },
+      {
+        "event_date": "17 January 2009",
+        "event_type": "Well active",
+        "activity_content": "Running casing",
+        "md_meter": 4587.0
+      },
+      {
+        "event_date": "27 January 2009",
+        "event_type": "Well active",
+        "activity_content": "Testing",
+        "md_meter": 4603.0
+      },
+      {
+        "event_date": "06 February 2009",
+        "event_type": "Well active",
+        "activity_content": "Testing BOP",
+        "md_meter": 4917.0
+      },
+      {
+        "event_date": "10 February 2009",
+        "event_type": "Well active",
+        "activity_content": "Waiting on weather",
+        "md_meter": 5016.0
+      },
+      {
+        "event_date": "18 February 2009",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 5044.0
+      },
+      {
+        "event_date": "20 February 2009",
+        "event_type": "TD reached",
+        "activity_content": "Operating",
+        "md_meter": 5300.0
+      },
+      {
+        "event_date": "03 March 2009",
+        "event_type": "Plugged & abandoned",
+        "activity_content": "gas shows",
+        "md_meter": 5300.0
+      }
+    ],
+    "latitude": -13.136667,
+    "longitude": 123.136667,
+    "coord_qual": "Reliable with datum",
+    "block_name": "AC/P36",
+    "contract_name": "AC/P36",
+    "field_name": "",
+    "political_province": "Ashmore and Cartier Islands (offshore)"
+  },
+  "Abduls Dam 1": {
+    "well_name": "Abduls Dam 1",
+    "country": "Australia",
+    "basin_name": "Peedamullah Shelf (North Carnarvon Basin)",
+    "operator_name": "Pan Pacific Petroleum NL",
+    "onshore_offshore": "Onshore",
+    "terrain": "Shrubland",
+    "well_class": "New-field wildcat",
+    "resource_type": "Conventional",
+    "spud_date": "18 August 1991",
+    "last_completion_date": "04 September 1991",
+    "technical_status": "Plugged & abandoned",
+    "general_status": "P&A/Suspended Gas",
+    "content": "gas",
+    "td_meter": 790.0,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 4.4,
+    "wel_id": 100000127870.0,
+    "history": [
+      {
+        "event_date": "18 August 1991",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "21 August 1991",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 77.0
+      },
+      {
+        "event_date": "28 August 1991",
+        "event_type": "Well active",
+        "activity_content": "Operating",
+        "md_meter": 695.0
+      },
+      {
+        "event_date": "02 September 1991",
+        "event_type": "TD reached",
+        "activity_content": "",
+        "md_meter": 790.0
+      },
+      {
+        "event_date": "04 September 1991",
+        "event_type": "Plugged & abandoned",
+        "activity_content": "gas",
+        "md_meter": 790.0
+      }
+    ],
+    "latitude": -21.949296,
+    "longitude": 114.830135,
+    "coord_qual": "Reliable with datum",
+    "block_name": "EP 110",
+    "contract_name": "EP 110",
+    "field_name": "",
+    "political_province": "Western Australia"
+  },
+  "Aberdeen 01": {
+    "well_name": "Aberdeen 01",
+    "country": "Australia",
+    "basin_name": "Chinchilla-Goondiwindi Slope (Bowen - Surat Bsns)",
+    "operator_name": "Bobwyns Pty Ltd",
+    "onshore_offshore": "Onshore",
+    "terrain": "Grassland",
+    "well_class": "New-field wildcat",
+    "resource_type": "Unconventional",
+    "spud_date": "25 April 2001",
+    "last_completion_date": "22 May 2001",
+    "technical_status": "Completed",
+    "general_status": "Completed Gas",
+    "content": "gas",
+    "td_meter": 570.1,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 355.4,
+    "wel_id": 100000375082.0,
+    "history": [
+      {
+        "event_date": "25 April 2001",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "26 April 2001",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 11.7
+      },
+      {
+        "event_date": "02 May 2001",
+        "event_type": "Well active",
+        "activity_content": "Running casing",
+        "md_meter": 467.0
+      },
+      {
+        "event_date": "10 May 2001",
+        "event_type": "Well active",
+        "activity_content": "Fishing",
+        "md_meter": 467.0
+      },
+      {
+        "event_date": "17 May 2001",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 509.9
+      },
+      {
+        "event_date": "22 May 2001",
+        "event_type": "Completed",
+        "activity_content": "gas",
+        "md_meter": 570.1
+      }
+    ],
+    "latitude": -27.3925,
+    "longitude": 150.730556,
+    "coord_qual": "Reliable with datum",
+    "block_name": "ATP 621-P",
+    "contract_name": "ATP 621-P",
+    "field_name": "Aberdeen 1",
+    "political_province": "Queensland"
+  },
+  "Aberdeen 02": {
+    "well_name": "Aberdeen 02",
+    "country": "Australia",
+    "basin_name": "Chinchilla-Goondiwindi Slope (Bowen - Surat Bsns)",
+    "operator_name": "Bobwyns Pty Ltd",
+    "onshore_offshore": "Onshore",
+    "terrain": "Grassland",
+    "well_class": "Outpost",
+    "resource_type": "Unconventional",
+    "spud_date": "24 October 2001",
+    "last_completion_date": "10 December 2001",
+    "technical_status": "Suspended",
+    "general_status": "P&A/Suspended",
+    "content": "result unreported",
+    "td_meter": 645.0,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 355.0,
+    "wel_id": 100000887354.0,
+    "history": [
+      {
+        "event_date": "24 October 2001",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "10 December 2001",
+        "event_type": "Susp (drlg compl)",
+        "activity_content": "result unreported",
+        "md_meter": 645.0
+      }
+    ],
+    "latitude": -27.389084,
+    "longitude": 150.733055,
+    "coord_qual": "Reliable with datum",
+    "block_name": "ATP 621-P",
+    "contract_name": "ATP 621-P",
+    "field_name": "Aberdeen 1",
+    "political_province": "Queensland"
+  },
+  "Aberdeen 08": {
+    "well_name": "Aberdeen 08",
+    "country": "Australia",
+    "basin_name": "Chinchilla-Goondiwindi Slope (Bowen - Surat Bsns)",
+    "operator_name": "Bobwyns Pty Ltd",
+    "onshore_offshore": "Onshore",
+    "terrain": "Grassland",
+    "well_class": "Outpost",
+    "resource_type": "Unconventional",
+    "spud_date": "20 October 2006",
+    "last_completion_date": "26 October 2006",
+    "technical_status": "Suspended",
+    "general_status": "P&A/Suspended Gas",
+    "content": "gas",
+    "td_meter": 839.0,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 357.0,
+    "wel_id": 100000579175.0,
+    "history": [
+      {
+        "event_date": "20 October 2006",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "24 October 2006",
+        "event_type": "TD reached",
+        "activity_content": "",
+        "md_meter": 839.0
+      },
+      {
+        "event_date": "26 October 2006",
+        "event_type": "Susp (drlg compl)",
+        "activity_content": "gas",
+        "md_meter": 839.0
+      }
+    ],
+    "latitude": -27.394307,
+    "longitude": 150.731204,
+    "coord_qual": "Reliable with datum",
+    "block_name": "ATP 621-P",
+    "contract_name": "ATP 621-P",
+    "field_name": "Aberdeen 1",
+    "political_province": "Queensland"
+  },
+  "Aberdeen 14M": {
+    "well_name": "Aberdeen 14M",
+    "country": "Australia",
+    "basin_name": "Chinchilla-Goondiwindi Slope (Bowen - Surat Bsns)",
+    "operator_name": "QGC Pty Ltd",
+    "onshore_offshore": "Onshore",
+    "terrain": "Grassland",
+    "well_class": "Outpost",
+    "resource_type": "Unconventional",
+    "spud_date": "02 July 2009",
+    "last_completion_date": "06 July 2009",
+    "technical_status": "Suspended",
+    "general_status": "P&A/Suspended Gas",
+    "content": "gas",
+    "td_meter": 669.44,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 363.39,
+    "wel_id": 100000712993.0,
+    "history": [
+      {
+        "event_date": "02 July 2009",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "04 July 2009",
+        "event_type": "TD reached",
+        "activity_content": "",
+        "md_meter": 669.44
+      },
+      {
+        "event_date": "06 July 2009",
+        "event_type": "Susp (drlg compl)",
+        "activity_content": "gas",
+        "md_meter": 669.44
+      }
+    ],
+    "latitude": -27.401701,
+    "longitude": 150.73738,
+    "coord_qual": "Reliable with datum",
+    "block_name": "ATP 621-P",
+    "contract_name": "ATP 621-P",
+    "field_name": "Aberdeen 1",
+    "political_province": "Queensland"
+  },
+  "Aberfoyle 1A": {
+    "well_name": "Aberfoyle 1A",
+    "country": "Australia",
+    "basin_name": "Galilee - Eromanga Basins",
+    "operator_name": "Enron Explor.Australia Pty Ltd",
+    "onshore_offshore": "Onshore",
+    "terrain": "Shrubland",
+    "well_class": "New-field wildcat",
+    "resource_type": "Unconventional",
+    "spud_date": "29 October 1993",
+    "last_completion_date": "29 November 1993",
+    "technical_status": "Plugged & abandoned",
+    "general_status": "P&A/Susp Dry/Shows",
+    "content": "gas shows",
+    "td_meter": 1494.4,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 290.0,
+    "wel_id": 100000500034.0,
+    "history": [
+      {
+        "event_date": "29 October 1993",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "29 November 1993",
+        "event_type": "Plugged & abandoned",
+        "activity_content": "gas shows",
+        "md_meter": 1494.4
+      }
+    ],
+    "latitude": -21.53429,
+    "longitude": 145.21558,
+    "coord_qual": "Reliable with datum",
+    "block_name": "ATP 529-P",
+    "contract_name": "ATP 529-P",
+    "field_name": "",
+    "political_province": "Queensland"
+  },
+  "AC 18-56-1": {
+    "well_name": "AC 18-56-1",
+    "country": "Australia",
+    "basin_name": "Comet Ridge (Bowen - Surat Bsns)",
+    "operator_name": "Santos TOGA Pty Ltd",
+    "onshore_offshore": "Onshore",
+    "terrain": "Grassland",
+    "well_class": "Development",
+    "resource_type": "Unconventional",
+    "spud_date": "17 May 2019",
+    "last_completion_date": "20 May 2019",
+    "technical_status": "Suspended",
+    "general_status": "P&A/Suspended Gas",
+    "content": "gas",
+    "td_meter": 731.0,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 337.0,
+    "wel_id": 100000865936.0,
+    "history": [
+      {
+        "event_date": "17 May 2019",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "20 May 2019",
+        "event_type": "Susp (drlg compl)",
+        "activity_content": "gas",
+        "md_meter": 731.0
+      }
+    ],
+    "latitude": -25.237597,
+    "longitude": 148.871905,
+    "coord_qual": "Reliable with datum",
+    "block_name": "PL 420",
+    "contract_name": "PL 420",
+    "field_name": "Arcadia Valley",
+    "political_province": "Queensland"
+  },
+  "AC 18-97-6": {
+    "well_name": "AC 18-97-6",
+    "country": "Australia",
+    "basin_name": "Nebo Syncline (Bowen - Surat Bsns)",
+    "operator_name": "Santos TOGA Pty Ltd",
+    "onshore_offshore": "Onshore",
+    "terrain": "Grassland",
+    "well_class": "Development",
+    "resource_type": "Unconventional",
+    "spud_date": "01 May 2019",
+    "last_completion_date": "05 May 2019",
+    "technical_status": "Suspended",
+    "general_status": "P&A/Suspended Gas",
+    "content": "gas",
+    "td_meter": 960.0,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 369.0,
+    "wel_id": 100000865939.0,
+    "history": [
+      {
+        "event_date": "01 May 2019",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "05 May 2019",
+        "event_type": "Susp (drlg compl)",
+        "activity_content": "gas",
+        "md_meter": 960.0
+      }
+    ],
+    "latitude": -25.232252,
+    "longitude": 148.901903,
+    "coord_qual": "Reliable with datum",
+    "block_name": "PL 440",
+    "contract_name": "PL 440",
+    "field_name": "Arcadia Valley",
+    "political_province": "Queensland"
+  },
+  "Acacia (AGL) 1ST1": {
+    "well_name": "Acacia (AGL) 1ST1",
+    "country": "Australia",
+    "basin_name": "Galilee - Eromanga Basins",
+    "operator_name": "AGL Energy Ltd",
+    "onshore_offshore": "Onshore",
+    "terrain": "Shrubland",
+    "well_class": "New-field wildcat",
+    "resource_type": "Unconventional",
+    "spud_date": "25 July 2010",
+    "last_completion_date": "02 August 2010",
+    "technical_status": "Plugged & abandoned",
+    "general_status": "P&A/Suspended Gas",
+    "content": "gas",
+    "td_meter": 1354.91,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 217.0,
+    "wel_id": 100000793610.0,
+    "history": [
+      {
+        "event_date": "25 July 2010",
+        "event_type": "Started sidetrack",
+        "activity_content": "",
+        "md_meter": 222.19
+      },
+      {
+        "event_date": "02 August 2010",
+        "event_type": "Plugged & abandoned",
+        "activity_content": "gas",
+        "md_meter": 1354.91
+      }
+    ],
+    "latitude": -22.837284,
+    "longitude": 144.666655,
+    "coord_qual": "Reliable with datum",
+    "block_name": "ATP 529-P",
+    "contract_name": "ATP 529-P",
+    "field_name": "",
+    "political_province": "Queensland"
+  },
+  "Acacia 1": {
+    "well_name": "Acacia 1",
+    "country": "Australia",
+    "basin_name": "Barbwire Terrace (Canning Basin)",
+    "operator_name": "Western Mining Corp Ltd",
+    "onshore_offshore": "Onshore",
+    "terrain": "Desert",
+    "well_class": "Stratigraphic test",
+    "resource_type": "Conventional",
+    "spud_date": "19 August 1981",
+    "last_completion_date": "20 September 1981",
+    "technical_status": "Plugged & abandoned",
+    "general_status": "P&A/Susp Dry/Shows",
+    "content": "oil & gas shows",
+    "td_meter": 1209.0,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 211.4,
+    "wel_id": 100000079096.0,
+    "history": [
+      {
+        "event_date": "19 August 1981",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "22 August 1981",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 204.0
+      },
+      {
+        "event_date": "28 August 1981",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 423.0
+      },
+      {
+        "event_date": "08 September 1981",
+        "event_type": "Well active",
+        "activity_content": "Coring",
+        "md_meter": 807.0
+      },
+      {
+        "event_date": "15 September 1981",
+        "event_type": "TD reached",
+        "activity_content": "",
+        "md_meter": 1209.0
+      },
+      {
+        "event_date": "20 September 1981",
+        "event_type": "Plugged & abandoned",
+        "activity_content": "oil & gas shows",
+        "md_meter": 1209.0
+      }
+    ],
+    "latitude": -19.32918,
+    "longitude": 124.995466,
+    "coord_qual": "Reliable with datum",
+    "block_name": "EP 143",
+    "contract_name": "EP 143",
+    "field_name": "",
+    "political_province": "Western Australia"
+  },
+  "ACH1815-4 5536": {
+    "well_name": "ACH1815-4 5536",
+    "country": "Australia",
+    "basin_name": "Saint George Bollon Slope (Bowen - Surat Bsns)",
+    "operator_name": "Unknown",
+    "onshore_offshore": "Onshore",
+    "terrain": "Farmland",
+    "well_class": "Mineral explor",
+    "resource_type": "Conventional",
+    "spud_date": "",
+    "last_completion_date": "",
+    "technical_status": "Plugged & abandoned",
+    "general_status": "P&A/Susp Dry/Shows",
+    "content": "dry",
+    "td_meter": 183.0,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 100.0,
+    "wel_id": 100000787996.0,
+    "history": [
+      {
+        "event_date": "",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "",
+        "event_type": "Plugged & abandoned",
+        "activity_content": "dry",
+        "md_meter": 183.0
+      }
+    ],
+    "latitude": -31.955272,
+    "longitude": 147.563094,
+    "coord_qual": "Reliable coords",
+    "block_name": "",
+    "contract_name": "",
+    "field_name": "",
+    "political_province": "New South Wales"
+  },
+  "Achilles 1": {
+    "well_name": "Achilles 1",
+    "country": "Australia",
+    "basin_name": "Exmouth Plateau (North Carnarvon Basin)",
+    "operator_name": "Chevron Australia (WA-374-P) Pty Ltd",
+    "onshore_offshore": "Offshore",
+    "terrain": "Deep Water",
+    "well_class": "New-field wildcat",
+    "resource_type": "Conventional",
+    "spud_date": "24 July 2009",
+    "last_completion_date": "04 October 2009",
+    "technical_status": "Plugged & abandoned",
+    "general_status": "P&A/Suspended Gas",
+    "content": "gas",
+    "td_meter": 4533.0,
+    "tvd_meter": 4505.4,
+    "water_depth_meter": 1151.0,
+    "ground_elevation_meter": "",
+    "wel_id": 100000665491.0,
+    "history": [
+      {
+        "event_date": "24 July 2009",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "28 July 2009",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 1764.0
+      },
+      {
+        "event_date": "05 August 2009",
+        "event_type": "Well active",
+        "activity_content": "Testing",
+        "md_meter": 1767.0
+      },
+      {
+        "event_date": "14 August 2009",
+        "event_type": "Well active",
+        "activity_content": "Repairing rig",
+        "md_meter": ""
+      },
+      {
+        "event_date": "19 August 2009",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 2518.0
+      },
+      {
+        "event_date": "28 August 2009",
+        "event_type": "Well active",
+        "activity_content": "Testing",
+        "md_meter": 3235.0
+      },
+      {
+        "event_date": "04 September 2009",
+        "event_type": "Susp (drlg incompl)",
+        "activity_content": "",
+        "md_meter": 4140.0
+      },
+      {
+        "event_date": "15 September 2009",
+        "event_type": "Re-entry",
+        "activity_content": "",
+        "md_meter": 4184.0
+      },
+      {
+        "event_date": "17 September 2009",
+        "event_type": "TD reached",
+        "activity_content": "Operating",
+        "md_meter": 4533.0
+      },
+      {
+        "event_date": "20 September 2009",
+        "event_type": "Well active",
+        "activity_content": "Logging",
+        "md_meter": 4533.0
+      },
+      {
+        "event_date": "04 October 2009",
+        "event_type": "Plugged & abandoned",
+        "activity_content": "gas",
+        "md_meter": 4533.0
+      }
+    ],
+    "latitude": -20.215221,
+    "longitude": 114.537134,
+    "coord_qual": "Reliable with datum",
+    "block_name": "WA-374-P",
+    "contract_name": "WA-374-P",
+    "field_name": "Achilles 1",
+    "political_province": "Western Australia area (offshore)"
+  },
+  "Acrasia 1": {
+    "well_name": "Acrasia 1",
+    "country": "Australia",
+    "basin_name": "Warburton - Cooper - Eromanga Basins",
+    "operator_name": "Stuart Petroleum NL",
+    "onshore_offshore": "Onshore",
+    "terrain": "Shrubland",
+    "well_class": "New-field wildcat",
+    "resource_type": "Conventional",
+    "spud_date": "29 March 2002",
+    "last_completion_date": "20 June 2002",
+    "technical_status": "Completed",
+    "general_status": "Completed Oil",
+    "content": "oil",
+    "td_meter": 2360.0,
+    "tvd_meter": "",
+    "water_depth_meter": "",
+    "ground_elevation_meter": 131.7,
+    "wel_id": 100000431821.0,
+    "history": [
+      {
+        "event_date": "29 March 2002",
+        "event_type": "Spudded",
+        "activity_content": "",
+        "md_meter": ""
+      },
+      {
+        "event_date": "04 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Cleaning hole",
+        "md_meter": 879.0
+      },
+      {
+        "event_date": "06 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Running casing",
+        "md_meter": 926.0
+      },
+      {
+        "event_date": "07 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Testing",
+        "md_meter": 929.0
+      },
+      {
+        "event_date": "09 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Tripping",
+        "md_meter": 1877.0
+      },
+      {
+        "event_date": "11 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Testing",
+        "md_meter": 1909.0
+      },
+      {
+        "event_date": "12 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Tripping",
+        "md_meter": 1928.5
+      },
+      {
+        "event_date": "15 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Drilling",
+        "md_meter": 2085.0
+      },
+      {
+        "event_date": "16 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Tripping",
+        "md_meter": 2187.0
+      },
+      {
+        "event_date": "17 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Tripping",
+        "md_meter": 2187.0
+      },
+      {
+        "event_date": "18 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Testing",
+        "md_meter": 2189.0
+      },
+      {
+        "event_date": "18 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Coring",
+        "md_meter": 2189.0
+      },
+      {
+        "event_date": "21 April 2002",
+        "event_type": "TD reached",
+        "activity_content": "Operating",
+        "md_meter": 2360.0
+      },
+      {
+        "event_date": "22 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Logging",
+        "md_meter": 2360.0
+      },
+      {
+        "event_date": "23 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Tripping",
+        "md_meter": 2360.0
+      },
+      {
+        "event_date": "24 April 2002",
+        "event_type": "Well active",
+        "activity_content": "Operating",
+        "md_meter": 2360.0
+      },
+      {
+        "event_date": "26 April 2002",
+        "event_type": "Susp (drlg compl)",
+        "activity_content": "oil",
+        "md_meter": 2360.0
+      },
+      {
+        "event_date": "20 June 2002",
+        "event_type": "Re-entry",
+        "activity_content": "",
+        "md_meter": 2360.0
+      },
+      {
+        "event_date": "20 June 2002",
+        "event_type": "Completed",
+        "activity_content": "oil",
+        "md_meter": 2360.0
+      }
+    ],
+    "latitude": -27.232944,
+    "longitude": 140.996548,
+    "coord_qual": "Reliable with datum",
+    "block_name": "PEL 90",
+    "contract_name": "PEL 90",
+    "field_name": "Acrasia",
+    "political_province": "South Australia"
+  }
+}

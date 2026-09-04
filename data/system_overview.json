@@ -1,0 +1,111 @@
+{
+  "modules": [
+    {
+      "name": "数据接入中心",
+      "status": "持续完善",
+      "owner": "数据组",
+      "description": "统一接入井位、盆地、区块、油气田 Shapefile 及专题表文件。",
+      "inputs": ["Shapefile", "Excel", "LAS/DLIS/LIS"],
+      "outputs": ["标准化对象数据", "专题资料摘要"]
+    },
+    {
+      "name": "空间服务发布",
+      "status": "已接入",
+      "owner": "GIS 组",
+      "description": "优先通过 MapGIS IGServer 发布 wells、main_basins、contract_blocks 和 fields 要素服务。",
+      "inputs": ["Wells.shp", "Main_Basins.shp", "Valid_Contract_Blocks.shp", "Fields.shp"],
+      "outputs": ["盆地服务", "井位服务", "区块服务", "油气田服务"]
+    },
+    {
+      "name": "井资料工作台",
+      "status": "已接入",
+      "owner": "前端组",
+      "description": "围绕井位对象展示井档案摘要、井史、测试、分层、井斜与 checkshot 等专题资料，并保留样例曲线区。",
+      "inputs": ["井位服务", "井表 Excel", "well_logs.csv"],
+      "outputs": ["井档案摘要", "专题资料卡片", "样例曲线区"]
+    },
+    {
+      "name": "盆地专题工作台",
+      "status": "已接入",
+      "owner": "业务组",
+      "description": "展示盆地范围、分类、面积、时代、油气系统、play 和地层摘要等信息。",
+      "inputs": ["盆地服务", "盆地 Excel"],
+      "outputs": ["盆地名录", "专题摘要", "空间筛选结果"]
+    },
+    {
+      "name": "区块工作台",
+      "status": "已接入",
+      "owner": "业务组",
+      "description": "展示合同区块范围、基础信息、历史、计划事件和公司权益。",
+      "inputs": ["区块服务", "区块 Excel"],
+      "outputs": ["区块名录", "区块详情", "区块资料页"]
+    },
+    {
+      "name": "油气田工作台",
+      "status": "已接入",
+      "owner": "业务组",
+      "description": "展示油气田位置、资源规模、生产摘要、事件和公司权益。",
+      "inputs": ["Fields.shp", "油气田 Excel"],
+      "outputs": ["油气田名录", "油气田详情"]
+    },
+    {
+      "name": "区域专题闭环",
+      "status": "新建样例",
+      "owner": "数据组",
+      "description": "以非洲区域为样例，组织盆地、合同区块、油气田、钻井和 Basin Monitor PDF 的关联链路。",
+      "inputs": ["非洲盆地 Shapefile", "非洲区块 Shapefile", "非洲油气田数据包", "非洲钻井数据包", "Basin Monitor PDF"],
+      "outputs": ["区域数据链", "发布清单", "对象关联样例"]
+    },
+    {
+      "name": "评价算法模块",
+      "status": "已接入",
+      "owner": "业务组",
+      "description": "围绕盆地、区块、油气田和井对象开展可解释综合评价、排序和分项说明。",
+      "inputs": ["四类对象服务", "专题资料整合表", "evaluation_models.json"],
+      "outputs": ["评价结果", "等级建议", "分项得分明细"]
+    },
+    {
+      "name": "前后端联通层",
+      "status": "已接入",
+      "owner": "后端组",
+      "description": "当前通过 Node 静态服务和 IGServer 代理，统一向前端提供配置、样例曲线与地图服务访问入口。",
+      "inputs": ["JSON", "CSV", "IGServer 服务"],
+      "outputs": ["REST API", "IGS 代理访问"]
+    }
+  ],
+  "dataQuality": [
+    {"name": "真实井位与盆地服务", "level": "可控", "progress": 90, "action": "已切换为新发布的 wells 与 main_basins 服务，后续重点关注字段补全与刷新机制。"},
+    {"name": "区块边界服务", "level": "可控", "progress": 96, "action": "contract_blocks 已发布并接入地图工作台、区块资料页和数据目录，general、history、locations、outlines、scheduled events 与 company interests 已完成整理。"},
+    {"name": "油气田对象整理", "level": "可控", "progress": 93, "action": "fields 已发布为真实要素服务并优先接入，17 张 field 专题表已整合为统一对象资料。"},
+    {"name": "井专题表利用率", "level": "中风险", "progress": 65, "action": "继续把 periods、tests、tops、survey、costs 等表做成更强的联动视图。"},
+    {"name": "真实测井曲线文件", "level": "高风险", "progress": 25, "action": "当前仍缺少 LAS、DLIS、LIS 或带深度采样的真实曲线文件，曲线区仍为样例占位。"},
+    {"name": "服务字段治理", "level": "中风险", "progress": 70, "action": "持续核对 wells、main_basins、contract_blocks 与 fields 的字段口径，避免前端展示字段遗漏。"},
+    {"name": "评价算法配置治理", "level": "中风险", "progress": 72, "action": "已形成四类对象评价模型，后续需要结合新增对象与专家意见继续校正指标权重。"}
+  ],
+  "roadmap": [
+    {"phase": "第 1 阶段", "title": "真实对象接入", "window": "当前", "items": ["替换井与盆地 shp", "重新发布 IGServer 服务", "前端切换真实字段"]},
+    {"phase": "第 2 阶段", "title": "专题资料增强", "window": "1-2 周", "items": ["扩展井测试/分层/井斜视图", "扩展盆地油气系统与 play 视图", "完善区块资料联动"]},
+    {"phase": "第 3 阶段", "title": "评价算法深化", "window": "2-4 周", "items": ["校正四类对象评分模型", "引入更多对象数据类型", "形成评价结果专题地图"]},
+    {"phase": "第 4 阶段", "title": "真实曲线与工程化", "window": "1-2 月", "items": ["接入 LAS/DLIS/LIS", "曲线道配置", "数据库落库", "权限与审计", "部署运维"]}
+  ],
+  "apiEndpoints": [
+    {"method": "GET", "path": "/api/well-logs", "description": "返回当前样例测井曲线 CSV 数据，用于曲线区占位展示。"},
+    {"method": "GET", "path": "/api/structures", "description": "返回本地构造基础表 JSON，仅作为回退与兼容数据。"},
+    {"method": "GET", "path": "/api/system-overview", "description": "返回系统模块、数据治理重点与路线图配置。"},
+    {"method": "GET", "path": "/igs/rest/services/wells/FeatureServer/query", "description": "代理访问 MapGIS IGServer 的井位要素查询接口。"},
+    {"method": "GET", "path": "/igs/rest/services/main_basins/FeatureServer/query", "description": "代理访问 MapGIS IGServer 的盆地要素查询接口。"},
+    {"method": "GET", "path": "/igs/rest/services/contract_blocks/FeatureServer/query", "description": "代理访问 MapGIS IGServer 的合同区块要素查询接口。"},
+    {"method": "GET", "path": "/igs/rest/services/fields/FeatureServer/query", "description": "代理访问 MapGIS IGServer 的油气田要素查询接口。"},
+    {"method": "GET", "path": "/data/field_integrated_tables.json", "description": "返回油气田专题资料整合结果。"},
+    {"method": "GET", "path": "/data/evaluation_models.json", "description": "返回评价算法模块的模型、权重、等级和输入配置。"}
+  ],
+  "layerCatalog": [
+    {"name": "main_basins", "type": "Polygon", "source": "/igs/rest/services/main_basins/FeatureServer/query", "service": "MapGIS IGServer FeatureServer"},
+    {"name": "wells", "type": "Point", "source": "/igs/rest/services/wells/FeatureServer/query", "service": "MapGIS IGServer FeatureServer"},
+    {"name": "contract_blocks", "type": "Polygon", "source": "/igs/rest/services/contract_blocks/FeatureServer/query", "service": "MapGIS IGServer FeatureServer"},
+    {"name": "fields", "type": "Polygon", "source": "/igs/rest/services/fields/FeatureServer/query", "service": "MapGIS IGServer FeatureServer"},
+    {"name": "fields.geojson", "type": "Polygon", "source": "data/fields.geojson", "service": "本地兼容 GeoJSON"},
+    {"name": "structures.geojson", "type": "Polygon", "source": "data/structures.geojson", "service": "本地兼容 GeoJSON"},
+    {"name": "wells.geojson", "type": "Point", "source": "data/wells.geojson", "service": "本地兼容 GeoJSON"}
+  ]
+}

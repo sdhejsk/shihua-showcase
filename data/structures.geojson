@@ -1,0 +1,57 @@
+{
+  "type": "FeatureCollection",
+  "name": "basin_structure_demo",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "BS-001",
+        "basin_name": "塔里木盆地",
+        "first_order_name": "塔中隆起",
+        "second_order_name": "塔中北坡",
+        "block_name": "塔中北坡示例区",
+        "target_formation": "目的层A/目的层B",
+        "resource_level": "高",
+        "mapgis_layer_name": "basin_structure_trm_tzbp"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[82.9, 39.7], [84.4, 39.7], [84.4, 40.8], [82.9, 40.8], [82.9, 39.7]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "BS-002",
+        "basin_name": "鄂尔多斯盆地",
+        "first_order_name": "陕北斜坡",
+        "second_order_name": "延安-靖边区带",
+        "block_name": "陕北斜坡示例区",
+        "target_formation": "目的层C/目的层D",
+        "resource_level": "中高",
+        "mapgis_layer_name": "basin_structure_ord_sb"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[108.1, 37.6], [109.8, 37.6], [109.8, 38.7], [108.1, 38.7], [108.1, 37.6]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "BS-003",
+        "basin_name": "四川盆地",
+        "first_order_name": "川中隆起",
+        "second_order_name": "川中北部构造带",
+        "block_name": "川中隆起示例区",
+        "target_formation": "目的层E",
+        "resource_level": "高",
+        "mapgis_layer_name": "basin_structure_scb_cz"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[105.2, 30.1], [106.5, 30.1], [106.5, 31.0], [105.2, 31.0], [105.2, 30.1]]]
+      }
+    }
+  ]
+}

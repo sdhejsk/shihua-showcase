@@ -1,0 +1,42 @@
+{
+  "type": "FeatureCollection",
+  "name": "well_logs_demo",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "well_id": "WELL-SH-001",
+        "well_name": "石化-示例井1",
+        "basin": "塔里木盆地",
+        "block": "塔中北坡",
+        "depth_range": "1200-1240m",
+        "interpretation": "含油气显示/优质储层"
+      },
+      "geometry": { "type": "Point", "coordinates": [83.6721, 40.2154] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "well_id": "WELL-SH-002",
+        "well_name": "石化-示例井2",
+        "basin": "鄂尔多斯盆地",
+        "block": "陕北斜坡",
+        "depth_range": "1560-1590m",
+        "interpretation": "盖层/含油气显示/优质储层"
+      },
+      "geometry": { "type": "Point", "coordinates": [108.9462, 38.1743] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "well_id": "WELL-SH-003",
+        "well_name": "石化-示例井3",
+        "basin": "四川盆地",
+        "block": "川中隆起",
+        "depth_range": "2320-2340m",
+        "interpretation": "裂缝性储层/一般储层"
+      },
+      "geometry": { "type": "Point", "coordinates": [105.8841, 30.6549] }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>石化地学数据展示平台</title>
+    <link rel="stylesheet" href="../node_modules/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260804-spa" />
+  </head>
+  <body>
+    <div class="app-shell" data-spa-shell>
+      <header class="app-header">
+        <div class="app-header__brand">
+          <p class="app-eyebrow">Data Workspace</p>
+          <h1>石化地学数据展示平台</h1>
+          <p class="app-header__desc">统一查看盆地、区块、井位和资料服务。</p>
+        </div>
+        <div class="app-header__side">
+          <div class="mode-card">
+            <span>当前模块</span>
+            <strong>数据概览</strong>
+            <small>总览</small>
+          </div>
+          <div class="hero-tags"></div>
+        </div>
+      </header>
+      <nav class="main-nav">
+        <a class="main-nav__item" data-module-nav="overview" href="#overview"><span>数据概览</span><small>总览</small></a>
+        <a class="main-nav__item" data-module-nav="data" href="#data"><span>数据信息模块</span><small>数据</small></a>
+        <a class="main-nav__item" data-module-nav="evaluation" href="#evaluation"><span>评价算法模块</span><small>评价</small></a>
+        <a class="main-nav__item" data-module-nav="services" href="#services"><span>服务状态</span><small>服务</small></a>
+      </nav>
+      <main class="page-main">
+        <section class="page-hero">
+          <div>
+            <p class="page-hero__eyebrow">数据概览</p>
+            <h2>平台总览</h2>
+            <p>统一查看数据接入能力、模块分工与系统架构。</p>
+          </div>
+        </section>
+        <div class="page-content">
+          <section class="module-view" data-module-container="overview"></section>
+          <section class="module-view" data-module-container="data" style="display:none"></section>
+          <section class="module-view" data-module-container="evaluation" style="display:none"></section>
+          <section class="module-view" data-module-container="services" style="display:none"></section>
+        </div>
+      </main>
+    </div>
+    <script src="../node_modules/leaflet/dist/leaflet.js"></script>
+    <script type="module" src="./js/spa-shell.js?v=20260804-spa"></script>
+  </body>
+</html>

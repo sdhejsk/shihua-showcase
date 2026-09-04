@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> 表达式</title>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+                <h1> MapGIS Client for JavaScript API</h1>
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/common/api/common-mapgis/index.html"
+                        >
+                            Common
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/cesium/api/cesium-mapgis/index.html"
+                        >
+                            Cesium-Plugin
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/mapboxgl/api/mapboxgl-mapgis/index.html"
+                        >
+                            MapboxGL-Plugin
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/leaflet/api/leaflet-mapgis/index.html"
+                        >
+                            Leaflet-Plugin
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/openlayers/api/openLayers-mapgis/index.html"
+                        >
+                            OpenLayers-Plugin
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/video/api/video-mapgis/index.html"
+                        >
+                            Video-Plugin
+                        </a>
+                    
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="main">
+        <div
+            class="sidebar tutorials"
+            id="sidebarNav"
+        >
+            <div>
+                <span class="mapgis-api-document-span"><a href="index.html">API文档</a></span>
+            </div>
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="搜索文档..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <div class="category"></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header id="page-title" class="page-title">
+                    <span class="page-title-main">类名</span>
+                    <span class="page-title-sub">表达式</span>
+                </header>
+                <section>
+
+<header>
+    
+</header>
+
+<article>
+    <h2>表达式说明</h2>
+<p>目前表达式支持的功能</p>
+<ul>
+<li>
+<p>链接符</p>
+</li>
+<li>
+<p>数学运算符</p>
+</li>
+<li>
+<p>条件运算符</p>
+</li>
+</ul>
+<h4>链接符</h4>
+<p>目前仅支持$feature链接符，支持访问要素的属性信息。
+<strong>example</strong></p>
+<pre class="prettyprint source"><code>$feature.FID //表示访问要素的FID字段
+</code></pre>
+<h4><strong>数学运算</strong></h4>
+<p>支持一般通用数学运算符，如+-*/等计算符</p>
+<p><strong>example</strong></p>
+<p>计算面积占比</p>
+<pre class="prettyprint source"><code>$feature.AREA/$feature.TOTALAREA
+</code></pre>
+<h4><strong>条件运算</strong></h4>
+<p><strong>example</strong></p>
+<p>支持 || and or &gt;=  &lt;=等</p>
+<pre class="prettyprint source"><code>$feature.ISAREA || $feature.ISRIVER
+</code></pre>
+<h3>后续拟支持的表达式运算符和内置函数</h3>
+<h4>Operator Precedence</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Operator</th>
+<th style="text-align:left">Associativity</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">(...)</td>
+<td style="text-align:left">None</td>
+<td style="text-align:left">Grouping</td>
+</tr>
+<tr>
+<td style="text-align:left">f(), x.y, a[i]</td>
+<td style="text-align:left">Left</td>
+<td style="text-align:left">Function call, property access, array indexing</td>
+</tr>
+<tr>
+<td style="text-align:left">!</td>
+<td style="text-align:left">Left</td>
+<td style="text-align:left">Factorial</td>
+</tr>
+<tr>
+<td style="text-align:left">^</td>
+<td style="text-align:left">Right</td>
+<td style="text-align:left">Exponentiation</td>
+</tr>
+<tr>
+<td style="text-align:left">+, -, not, sqrt, etc.</td>
+<td style="text-align:left">Right</td>
+<td style="text-align:left">Unary prefix operators (see below for the full list)</td>
+</tr>
+<tr>
+<td style="text-align:left">*, /, %</td>
+<td style="text-align:left">Left</td>
+<td style="text-align:left">Multiplication, division, remainder</td>
+</tr>
+<tr>
+<td style="text-align:left">+, -, ||</td>
+<td style="text-align:left">Left</td>
+<td style="text-align:left">Addition, subtraction, array/list concatenation</td>
+</tr>
+<tr>
+<td style="text-align:left">==, !=, &gt;=, &lt;=, &gt;, &lt;, in</td>
+<td style="text-align:left">Left</td>
+<td style="text-align:left">Equals, not equals, etc. &quot;in&quot; means &quot;is the left operand included in the right array operand?&quot;</td>
+</tr>
+<tr>
+<td style="text-align:left">and</td>
+<td style="text-align:left">Left</td>
+<td style="text-align:left">Logical AND</td>
+</tr>
+<tr>
+<td style="text-align:left">or</td>
+<td style="text-align:left">Left</td>
+<td style="text-align:left">Logical OR</td>
+</tr>
+<tr>
+<td style="text-align:left">x ? y : z</td>
+<td style="text-align:left">Right</td>
+<td style="text-align:left">Ternary conditional (if x then y else z)</td>
+</tr>
+<tr>
+<td style="text-align:left">=</td>
+<td style="text-align:left">Right</td>
+<td style="text-align:left">Variable assignment</td>
+</tr>
+<tr>
+<td style="text-align:left">;</td>
+<td style="text-align:left">Left</td>
+<td style="text-align:left">Expression separator</td>
+</tr>
+</tbody>
+</table>
+<h4>Unary operators</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Operator</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">-x</td>
+<td style="text-align:left">Negation</td>
+</tr>
+<tr>
+<td style="text-align:left">+x</td>
+<td style="text-align:left">Unary plus. This converts it's operand to a number, but has no other effect.</td>
+</tr>
+<tr>
+<td style="text-align:left">x!</td>
+<td style="text-align:left">Factorial (x * (x-1) * (x-2) * … * 2 * 1). gamma(x + 1) for non-integers.</td>
+</tr>
+<tr>
+<td style="text-align:left">abs x</td>
+<td style="text-align:left">Absolute value (magnitude) of x</td>
+</tr>
+<tr>
+<td style="text-align:left">acos x</td>
+<td style="text-align:left">Arc cosine of x (in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">acosh x</td>
+<td style="text-align:left">Hyperbolic arc cosine of x (in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">asin x</td>
+<td style="text-align:left">Arc sine of x (in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">asinh x</td>
+<td style="text-align:left">Hyperbolic arc sine of x (in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">atan x</td>
+<td style="text-align:left">Arc tangent of x (in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">atanh x</td>
+<td style="text-align:left">Hyperbolic arc tangent of x (in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">cbrt x</td>
+<td style="text-align:left">Cube root of x</td>
+</tr>
+<tr>
+<td style="text-align:left">ceil x</td>
+<td style="text-align:left">Ceiling of x — the smallest integer that’s &gt;= x</td>
+</tr>
+<tr>
+<td style="text-align:left">cos x</td>
+<td style="text-align:left">Cosine of x (x is in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">cosh x</td>
+<td style="text-align:left">Hyperbolic cosine of x (x is in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">exp x</td>
+<td style="text-align:left">e^x (exponential/antilogarithm function with base e)</td>
+</tr>
+<tr>
+<td style="text-align:left">expm1 x</td>
+<td style="text-align:left">e^x - 1</td>
+</tr>
+<tr>
+<td style="text-align:left">floor x</td>
+<td style="text-align:left">Floor of x — the largest integer that’s &lt;= x</td>
+</tr>
+<tr>
+<td style="text-align:left">length x</td>
+<td style="text-align:left">String length of x</td>
+</tr>
+<tr>
+<td style="text-align:left">ln x</td>
+<td style="text-align:left">Natural logarithm of x</td>
+</tr>
+<tr>
+<td style="text-align:left">log x</td>
+<td style="text-align:left">Natural logarithm of x (synonym for ln, not base-10)</td>
+</tr>
+<tr>
+<td style="text-align:left">log10 x</td>
+<td style="text-align:left">Base-10 logarithm of x</td>
+</tr>
+<tr>
+<td style="text-align:left">log2 x</td>
+<td style="text-align:left">Base-2 logarithm of x</td>
+</tr>
+<tr>
+<td style="text-align:left">log1p x</td>
+<td style="text-align:left">Natural logarithm of (1 + x)</td>
+</tr>
+<tr>
+<td style="text-align:left">not x</td>
+<td style="text-align:left">Logical NOT operator</td>
+</tr>
+<tr>
+<td style="text-align:left">round x</td>
+<td style="text-align:left">X, rounded to the nearest integer, using &quot;grade-school rounding&quot;</td>
+</tr>
+<tr>
+<td style="text-align:left">sign x</td>
+<td style="text-align:left">Sign of x (-1, 0, or 1 for negative, zero, or positive respectively)</td>
+</tr>
+<tr>
+<td style="text-align:left">sin x</td>
+<td style="text-align:left">Sine of x (x is in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">sinh x</td>
+<td style="text-align:left">Hyperbolic sine of x (x is in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">sqrt x</td>
+<td style="text-align:left">Square root of x. Result is NaN (Not a Number) if x is negative.</td>
+</tr>
+<tr>
+<td style="text-align:left">tan x</td>
+<td style="text-align:left">Tangent of x (x is in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">tanh x</td>
+<td style="text-align:left">Hyperbolic tangent of x (x is in radians)</td>
+</tr>
+<tr>
+<td style="text-align:left">trunc x</td>
+<td style="text-align:left">Integral part of a X, looks like floor(x) unless for negative number</td>
+</tr>
+</tbody>
+</table>
+<h4>Pre-defined functions</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Function</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">random(n)</td>
+<td style="text-align:left">Get a random number in the range [0, n). If n is zero, or not provided, it defaults to 1.</td>
+</tr>
+<tr>
+<td style="text-align:left">fac(n)</td>
+<td style="text-align:left">n! (factorial of n: &quot;n * (n-1) * (n-2) * … * 2 * 1&quot;) Deprecated. Use the ! operator instead.</td>
+</tr>
+<tr>
+<td style="text-align:left">min(a,b,…)</td>
+<td style="text-align:left">Get the smallest (minimum) number in the list.</td>
+</tr>
+<tr>
+<td style="text-align:left">max(a,b,…)</td>
+<td style="text-align:left">Get the largest (maximum) number in the list.</td>
+</tr>
+<tr>
+<td style="text-align:left">hypot(a,b)</td>
+<td style="text-align:left">Hypotenuse, i.e. the square root of the sum of squares of its arguments.</td>
+</tr>
+<tr>
+<td style="text-align:left">pyt(a, b)</td>
+<td style="text-align:left">Alias for hypot.</td>
+</tr>
+<tr>
+<td style="text-align:left">pow(x, y)</td>
+<td style="text-align:left">Equivalent to x^y. For consistency with JavaScript's Math object.</td>
+</tr>
+<tr>
+<td style="text-align:left">atan2(y, x)</td>
+<td style="text-align:left">Arc tangent of x/y. i.e. the angle between (0, 0) and (x, y) in radians.</td>
+</tr>
+<tr>
+<td style="text-align:left">roundTo(x, n)</td>
+<td style="text-align:left">Rounds x to n places after the decimal point.</td>
+</tr>
+<tr>
+<td style="text-align:left">map(f, a)</td>
+<td style="text-align:left">Array map: Pass each element of <code>a</code> the function <code>f</code>, and return an array of the results.</td>
+</tr>
+<tr>
+<td style="text-align:left">fold(f, y, a)</td>
+<td style="text-align:left">Array fold: Fold/reduce array <code>a</code> into a single value, <code>y</code> by setting <code>y = f(y, x, index)</code> for each element <code>x</code> of the array.</td>
+</tr>
+<tr>
+<td style="text-align:left">filter(f, a)</td>
+<td style="text-align:left">Array filter: Return an array containing only the values from <code>a</code> where <code>f(x, index)</code> is <code>true</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left">indexOf(x, a)</td>
+<td style="text-align:left">Return the first index of string or array <code>a</code> matching the value <code>x</code>, or <code>-1</code> if not found.</td>
+</tr>
+<tr>
+<td style="text-align:left">join(sep, a)</td>
+<td style="text-align:left">Concatenate the elements of <code>a</code>, separated by <code>sep</code>.</td>
+</tr>
+<tr>
+<td style="text-align:left">if(c, a, b)</td>
+<td style="text-align:left">Function form of c ? a : b. Note: This always evaluates both <code>a</code> and <code>b</code>, regardless of whether <code>c</code> is <code>true</code> or not. Use <code>c ? a : b</code> instead if there are side effects, or if evaluating the branches could be expensive.</td>
+</tr>
+<tr>
+<td style="text-align:left">when(case,value,case,value,defaultValue)</td>
+<td style="text-align:left">条件语句</td>
+</tr>
+</tbody>
+</table>
+</article>
+
+</section>
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>文档生成<a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="http://www.smaryun.com" target="_blank">司马云</a> <span>© 2023 云生态圈</span>
+                        <a href="http://webclient.smaryun.com:8086/#/index" target="_blank">MapGIS Client for JavaScript</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+            <div style="margin-bottom: 10px;">
+                <img style="vertical-align: middle;margin-right: 10px;width: 30px;" src="./styles/anchor.png"/><a href="#page-title">构造函数</a>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <img style="vertical-align: middle;margin-right: 10px;width: 30px;" src="./styles/anchor.png"/><a href="#member">成员变量</a>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <img style="vertical-align: middle;margin-right: 10px;width: 30px;" src="./styles/anchor.png"/><a href="#function">方法</a>
+            </div>
+            <div>
+                <img style="vertical-align: middle;margin-right: 10px;width: 30px;" src="./styles/anchor.png"/><a href="#event">事件</a>
+            </div>
+        </div>
+    </div>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>

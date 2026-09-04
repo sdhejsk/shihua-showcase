@@ -1,0 +1,120 @@
+{
+  "models": [
+    {
+      "id": "block-exploration",
+      "name": "区块勘探与投资评价",
+      "objectType": "区块",
+      "method": "专家赋权综合评价法",
+      "description": "面向合同区块的勘探优选与投资筛选，综合合同状态、面积保有、作业条件、活动强度、权益结构和发现背景。",
+      "inputs": [
+        "contract_blocks 要素服务",
+        "BLOCK_GENERAL",
+        "BLOCK_HISTORY",
+        "BLOCK_LOCATIONS",
+        "BLOCK_SCHEDULED_EVENTS",
+        "BLOCK_COMPANY_INTERESTS",
+        "井与油气田关联信息"
+      ],
+      "dimensions": [
+        { "key": "contract_stage", "label": "合同与阶段状态", "weight": 0.18, "description": "根据合同状态、区块状态判断当前勘探与开发阶段。" },
+        { "key": "acreage_potential", "label": "面积与保有潜力", "weight": 0.2, "description": "综合区块面积和原始面积保有比例，反映资源承载潜力。" },
+        { "key": "operability", "label": "作业条件", "weight": 0.18, "description": "根据陆海属性、地形和水深评估工程进入难度。" },
+        { "key": "activity_intensity", "label": "区块活动强度", "weight": 0.18, "description": "结合历史阶段、计划事件和阶段编号判断当前活跃度。" },
+        { "key": "ownership_support", "label": "权益与主体支撑", "weight": 0.14, "description": "依据公司权益结构和作业者完整性评估资产执行基础。" },
+        { "key": "discovery_context", "label": "发现与周边背景", "weight": 0.12, "description": "结合区块周边井和油气田背景评估勘探上下文。" }
+      ],
+      "grades": [
+        { "min": 85, "label": "I类 优先", "advice": "建议优先纳入年度优选清单，进一步开展经济与风险校核。" },
+        { "min": 70, "label": "II类 良好", "advice": "具备持续跟踪价值，可结合新增资料进一步提升判断精度。" },
+        { "min": 55, "label": "III类 关注", "advice": "具备一定工作基础，但需要补充关键约束条件后再决策。" },
+        { "min": 0, "label": "IV类 补充资料", "advice": "当前资料或条件不足，建议先补齐资料和区域认识。" }
+      ]
+    },
+    {
+      "id": "basin-potential",
+      "name": "盆地资源潜力评价",
+      "objectType": "盆地",
+      "method": "专家赋权综合评价法",
+      "description": "面向区域优选的盆地潜力评价，综合规模、含油气系统、play 与地层丰富度、活动背景和资料支撑度。",
+      "inputs": [
+        "main_basins 要素服务",
+        "盆地基础资料",
+        "petroleum systems",
+        "plays",
+        "lithostrat units",
+        "井、区块、油气田关联统计"
+      ],
+      "dimensions": [
+        { "key": "scale_capacity", "label": "规模容量", "weight": 0.24, "description": "用盆地面积表征区域资源容纳规模。" },
+        { "key": "petroleum_system", "label": "含油气系统支撑", "weight": 0.24, "description": "结合含油气系统和储量生产摘要反映成藏体系支撑程度。" },
+        { "key": "play_richness", "label": "play与地层丰富度", "weight": 0.18, "description": "依据 play、地层单元和成因单元数量衡量地质组合丰富度。" },
+        { "key": "exploration_activity", "label": "勘探活动背景", "weight": 0.18, "description": "统计盆地内井、区块、油气田数量，反映勘探与开发背景。" },
+        { "key": "data_support", "label": "资料支撑度", "weight": 0.16, "description": "根据图件、地层摘要与生产储量摘要情况评估数据基础。" }
+      ],
+      "grades": [
+        { "min": 85, "label": "I类 优先", "advice": "建议作为区域优选重点盆地，优先配置专题研究工作量。" },
+        { "min": 70, "label": "II类 良好", "advice": "具备较好区域潜力，可持续补充系统认识与对象分析。" },
+        { "min": 55, "label": "III类 关注", "advice": "具备一定工作基础，但需要强化含油气系统与对象支撑。" },
+        { "min": 0, "label": "IV类 补充资料", "advice": "当前区域支撑不足，建议先补基础地学资料。" }
+      ]
+    },
+    {
+      "id": "field-development",
+      "name": "油气田开发价值评价",
+      "objectType": "油气田",
+      "method": "专家赋权综合评价法",
+      "description": "面向油气田开发价值判断，综合资源规模、开发阶段、生产基础、储层支撑、商业结构和作业条件。",
+      "inputs": [
+        "fields 要素服务",
+        "FIELD_BASIC",
+        "FIELD_GENERAL",
+        "FIELD_EVENTS",
+        "FIELD_PRODUCTION",
+        "FIELD_RESERVE_HISTORY",
+        "FIELD_COMPANY_INTERESTS",
+        "FIELD_RESERVOIRS_COMPANY_INTERESTS"
+      ],
+      "dimensions": [
+        { "key": "resource_endowment", "label": "资源规模", "weight": 0.28, "description": "依据总可采当量、油气可采规模衡量开发价值基础。" },
+        { "key": "development_stage", "label": "开发阶段", "weight": 0.2, "description": "根据生产状态判断油气田所处开发成熟度。" },
+        { "key": "production_basis", "label": "生产基础", "weight": 0.16, "description": "依据生产记录、产量摘要和储量历史支撑情况评分。" },
+        { "key": "reservoir_support", "label": "储层支撑", "weight": 0.14, "description": "依据储层数量、储层权益和储量历史数据判断地下支撑度。" },
+        { "key": "commercial_structure", "label": "商业结构", "weight": 0.12, "description": "根据公司权益、作业者和合同块信息判断经营组织基础。" },
+        { "key": "operating_conditions", "label": "作业条件", "weight": 0.1, "description": "考虑陆海属性、水深与地形的工程进入条件。" }
+      ],
+      "grades": [
+        { "min": 85, "label": "I类 优先", "advice": "建议优先纳入开发与投资跟踪清单，重点关注产储动态。" },
+        { "min": 70, "label": "II类 良好", "advice": "具备较好的开发基础，可进一步叠加经济评价和设施条件。" },
+        { "min": 55, "label": "III类 关注", "advice": "具备一定资源基础，但仍需补强生产或储层支撑。" },
+        { "min": 0, "label": "IV类 补充资料", "advice": "当前资料支撑有限，建议先补齐生产、储量或权益资料。" }
+      ]
+    },
+    {
+      "id": "well-support",
+      "name": "井资料支撑度评价",
+      "objectType": "井",
+      "method": "专家赋权综合评价法",
+      "description": "面向单井资料利用价值判断，综合档案完整性、井史丰富度、测试分层支撑、测量资料、辅助资料和曲线支撑。",
+      "inputs": [
+        "wells 要素服务",
+        "well_excel_profiles",
+        "well_integrated_tables",
+        "well_logs.csv"
+      ],
+      "dimensions": [
+        { "key": "profile_completeness", "label": "档案完整性", "weight": 0.2, "description": "根据井基础档案字段完备程度评分。" },
+        { "key": "history_richness", "label": "井史丰富度", "weight": 0.18, "description": "根据井史事件和作业周期信息评估时间维资料完整度。" },
+        { "key": "test_strat_support", "label": "测试与分层支撑", "weight": 0.22, "description": "综合测试、层顶与地层记录支撑单井认识程度。" },
+        { "key": "survey_support", "label": "测量资料支撑", "weight": 0.16, "description": "依据井斜与 checkshot 资料覆盖情况评分。" },
+        { "key": "ancillary_support", "label": "辅助资料支撑", "weight": 0.14, "description": "依据样品、设备、文献和成本等辅助资料情况评分。" },
+        { "key": "curve_support", "label": "曲线支撑", "weight": 0.1, "description": "根据曲线采样点与曲线可视化支撑情况评分。" }
+      ],
+      "grades": [
+        { "min": 85, "label": "I类 优先", "advice": "建议作为优先研究井或标杆井，持续深化解释与对比。" },
+        { "min": 70, "label": "II类 良好", "advice": "资料较为完整，可支持区域对比和专题分析。" },
+        { "min": 55, "label": "III类 关注", "advice": "基础资料可用，但关键资料类型仍需补强。" },
+        { "min": 0, "label": "IV类 补充资料", "advice": "当前资料支撑较弱，建议优先补充核心资料后再使用。" }
+      ]
+    }
+  ]
+}

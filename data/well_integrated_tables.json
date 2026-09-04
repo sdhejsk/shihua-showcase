@@ -1,0 +1,1045 @@
+{
+  "A.O.E.C. 08": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Adelaide Petroleum NL",
+        "start_date": "1923",
+        "end_date": "1923",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [],
+    "stratigraphy": [],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 0,
+    "equipments": [],
+    "equipment_count": 0,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "Abalone Deep 1": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Murphy Australia Oil Pty Ltd",
+        "start_date": "27 November 2008",
+        "end_date": "03 March 2009",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [],
+    "stratigraphy": [],
+    "deviation_summary": {
+      "survey_points": 97,
+      "max_measured_depth_m": 5300,
+      "max_deviation_angle": 4.17
+    },
+    "checkshot_summary": {
+      "survey_points": 155,
+      "max_tvd_m": 4880.9,
+      "max_twt_ms": 3315.4
+    },
+    "sampling_count": 0,
+    "equipments": [],
+    "equipment_count": 0,
+    "bibliography_count": 0,
+    "costs": [
+      {
+        "period_type": "Initial drill",
+        "cost_type": "Total",
+        "planned_actual": "Actual",
+        "cost_usd_mm": 107.76
+      },
+      {
+        "period_type": "Initial drill",
+        "cost_type": "Total",
+        "planned_actual": "Planned",
+        "cost_usd_mm": 62.31
+      }
+    ]
+  },
+  "Abduls Dam 1": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Pan Pacific Petroleum NL",
+        "start_date": "18 August 1991",
+        "end_date": "04 September 1991",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [
+      {
+        "content": "gas",
+        "test_type": "Drill stem test",
+        "status": "",
+        "environment_type": "Cased hole",
+        "number_of_tests": 1
+      }
+    ],
+    "tops": [
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "",
+        "top_young_age": "Holocene",
+        "bottom_young_age": "Holocene",
+        "lithologies": "sand"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Trealla Limestone",
+        "top_young_age": "Middle Miocene",
+        "bottom_young_age": "Middle Miocene",
+        "lithologies": "limestone~sandstone"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Cardabia Calcarenite",
+        "top_young_age": "Holocene",
+        "bottom_young_age": "Holocene",
+        "lithologies": "limestone"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Gearle Siltstone",
+        "top_young_age": "Cenomanian",
+        "bottom_young_age": "Cenomanian",
+        "lithologies": "mudstone~siltstone~sandstone"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Windalia Radiolarite",
+        "top_young_age": "Albian",
+        "bottom_young_age": "Albian",
+        "lithologies": "siltstone"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Muderong Shale",
+        "top_young_age": "Cretaceous",
+        "bottom_young_age": "Cretaceous",
+        "lithologies": "siltstone~mudstone~carbonate rock"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Locker Shale",
+        "top_young_age": "Scythian",
+        "bottom_young_age": "Scythian",
+        "lithologies": "sandstone"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Chinty Formation",
+        "top_young_age": "Scythian",
+        "bottom_young_age": "Scythian",
+        "lithologies": "sandstone~mudstone~siltstone"
+      }
+    ],
+    "stratigraphy": [
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Holocene",
+        "top_depth_meter": 0,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Middle Miocene",
+        "top_depth_meter": 24,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Trealla Limestone",
+        "top_depth_meter": 24,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Cardabia Calcarenite",
+        "top_depth_meter": 61,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Holocene",
+        "top_depth_meter": 61,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Gearle Siltstone",
+        "top_depth_meter": 75,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Cenomanian",
+        "top_depth_meter": 75,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Windalia Radiolarite",
+        "top_depth_meter": 314,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      }
+    ],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 1,
+    "equipments": [
+      {
+        "equipment_type": "Casing",
+        "equipment_size_in": 13.3858,
+        "depth_ref_type": "Kelly bushing amsl"
+      },
+      {
+        "equipment_type": "Casing",
+        "equipment_size_in": 7.00786,
+        "depth_ref_type": "Kelly bushing amsl"
+      }
+    ],
+    "equipment_count": 2,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "Aberdeen 01": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Bobwyns Pty Ltd",
+        "start_date": "25 April 2001",
+        "end_date": "22 May 2001",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [],
+    "stratigraphy": [],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 0,
+    "equipments": [],
+    "equipment_count": 0,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "Aberdeen 02": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Bobwyns Pty Ltd",
+        "start_date": "24 October 2001",
+        "end_date": "10 December 2001",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [],
+    "stratigraphy": [],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 0,
+    "equipments": [],
+    "equipment_count": 0,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "Aberdeen 08": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Bobwyns Pty Ltd",
+        "start_date": "20 October 2006",
+        "end_date": "26 October 2006",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Gubberamunda Sandstone",
+        "top_young_age": "Berriasian",
+        "bottom_young_age": "Berriasian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Westbourne Formation",
+        "top_young_age": "Lower Berriasian",
+        "bottom_young_age": "Upper Tithonian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Norwood Mudstone Member",
+        "top_young_age": "Upper Jurassic",
+        "bottom_young_age": "Upper Jurassic",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Springbok Sandstone",
+        "top_young_age": "Oxfordian",
+        "bottom_young_age": "Upper Callovian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Juandah Coal Measures",
+        "top_young_age": "Callovian",
+        "bottom_young_age": "Bathonian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Tangalooma Sandstone",
+        "top_young_age": "Callovian",
+        "bottom_young_age": "Bathonian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Taroom Coal Measures",
+        "top_young_age": "Callovian",
+        "bottom_young_age": "Bathonian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Durabilla Formation",
+        "top_young_age": "Middle Jurassic",
+        "bottom_young_age": "Middle Jurassic",
+        "lithologies": ""
+      }
+    ],
+    "stratigraphy": [
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Berriasian",
+        "top_depth_meter": 4,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Gubberamunda Sandstone",
+        "top_depth_meter": 4,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Lower Berriasian",
+        "top_depth_meter": 208.9,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Westbourne Formation",
+        "top_depth_meter": 208.9,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Upper Jurassic",
+        "top_depth_meter": 296.38,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Norwood Mudstone Member",
+        "top_depth_meter": 296.38,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Oxfordian",
+        "top_depth_meter": 300.82,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Springbok Sandstone",
+        "top_depth_meter": 300.82,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      }
+    ],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 0,
+    "equipments": [
+      {
+        "equipment_type": "Conductor",
+        "equipment_size_in": 16,
+        "depth_ref_type": "Ground level"
+      },
+      {
+        "equipment_type": "Casing",
+        "equipment_size_in": 9.625,
+        "depth_ref_type": "Ground level"
+      },
+      {
+        "equipment_type": "Casing",
+        "equipment_size_in": 7,
+        "depth_ref_type": "Ground level"
+      }
+    ],
+    "equipment_count": 3,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "Aberdeen 14M": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "QGC Pty Ltd",
+        "start_date": "02 July 2009",
+        "end_date": "06 July 2009",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Gubberamunda Sandstone",
+        "top_young_age": "Berriasian",
+        "bottom_young_age": "Berriasian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Westbourne Formation",
+        "top_young_age": "Lower Berriasian",
+        "bottom_young_age": "Upper Tithonian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Springbok Sandstone",
+        "top_young_age": "Oxfordian",
+        "bottom_young_age": "Upper Callovian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Juandah Coal Measures",
+        "top_young_age": "Callovian",
+        "bottom_young_age": "Bathonian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Tangalooma Sandstone",
+        "top_young_age": "Callovian",
+        "bottom_young_age": "Bathonian",
+        "lithologies": ""
+      }
+    ],
+    "stratigraphy": [
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Gubberamunda Sandstone",
+        "top_depth_meter": 3.3,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Berriasian",
+        "top_depth_meter": 3.3,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Westbourne Formation",
+        "top_depth_meter": 209.8,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Lower Berriasian",
+        "top_depth_meter": 209.8,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Oxfordian",
+        "top_depth_meter": 338.7,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Springbok Sandstone",
+        "top_depth_meter": 338.7,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Callovian",
+        "top_depth_meter": 490.6,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Horizon",
+        "stratigraphic_unit": "Juandah Coal Measures",
+        "top_depth_meter": 490.6,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      }
+    ],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 0,
+    "equipments": [
+      {
+        "equipment_type": "Conductor",
+        "equipment_size_in": 14,
+        "depth_ref_type": "Rotary table amsl"
+      },
+      {
+        "equipment_type": "Casing",
+        "equipment_size_in": 7,
+        "depth_ref_type": "Rotary table amsl"
+      },
+      {
+        "equipment_type": "Tubing",
+        "equipment_size_in": 3.5,
+        "depth_ref_type": "Rotary table amsl"
+      }
+    ],
+    "equipment_count": 3,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "Aberfoyle 1A": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Enron Explor.Australia Pty Ltd",
+        "start_date": "29 October 1993",
+        "end_date": "29 November 1993",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [],
+    "stratigraphy": [],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 0,
+    "equipments": [],
+    "equipment_count": 0,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "AC 18-56-1": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Santos TOGA Pty Ltd",
+        "start_date": "17 May 2019",
+        "end_date": "20 May 2019",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [],
+    "stratigraphy": [],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 0,
+    "equipments": [],
+    "equipment_count": 0,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "AC 18-97-6": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Santos TOGA Pty Ltd",
+        "start_date": "01 May 2019",
+        "end_date": "05 May 2019",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [],
+    "stratigraphy": [],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 0,
+    "equipments": [],
+    "equipment_count": 0,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "Acacia (AGL) 1ST1": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "AGL Energy Ltd",
+        "start_date": "25 July 2010",
+        "end_date": "02 August 2010",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [],
+    "stratigraphy": [],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 0,
+    "equipments": [],
+    "equipment_count": 0,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "Acacia 1": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Western Mining Corp Ltd",
+        "start_date": "19 August 1981",
+        "end_date": "20 September 1981",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [
+      {
+        "content": "oil & gas shows",
+        "test_type": "Drill stem test",
+        "status": "",
+        "environment_type": "",
+        "number_of_tests": 3
+      },
+      {
+        "content": "oil & gas shows",
+        "test_type": "Drill stem test",
+        "status": "",
+        "environment_type": "",
+        "number_of_tests": 3
+      },
+      {
+        "content": "oil & gas shows",
+        "test_type": "Drill stem test",
+        "status": "",
+        "environment_type": "",
+        "number_of_tests": 3
+      }
+    ],
+    "tops": [
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Barbwire Sandstone",
+        "top_young_age": "Jurassic",
+        "bottom_young_age": "Jurassic",
+        "lithologies": "sandstone"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Grant Group",
+        "top_young_age": "Lower Permian",
+        "bottom_young_age": "Lower Permian",
+        "lithologies": "mudstone~sandstone~siltstone"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Tandalgoo Formation",
+        "top_young_age": "Lower Permian",
+        "bottom_young_age": "Lower Permian",
+        "lithologies": "sandstone"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Worral Formation",
+        "top_young_age": "Lower Devonian",
+        "bottom_young_age": "Lower Devonian",
+        "lithologies": "limestone~mudstone~sandstone~dolomite"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Carribuddy Group",
+        "top_young_age": "Silurian",
+        "bottom_young_age": "Silurian",
+        "lithologies": "mudstone~dolomite"
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Nita Formation",
+        "top_young_age": "Ordovician",
+        "bottom_young_age": "Ordovician",
+        "lithologies": "dolomite~limestone"
+      },
+      {
+        "geological_data_type": "Horizon",
+        "lithostrat_unit": "Goldwyer Formation",
+        "top_young_age": "Lower Ordovician",
+        "bottom_young_age": "Lower Ordovician",
+        "lithologies": "limestone~sandstone~dolomite"
+      }
+    ],
+    "stratigraphy": [
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Barbwire Sandstone",
+        "top_depth_meter": 7.5,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Jurassic",
+        "top_depth_meter": 7.5,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Lower Permian",
+        "top_depth_meter": 41.5,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Grant Group",
+        "top_depth_meter": 41.5,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Lower Permian",
+        "top_depth_meter": 361.6,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Tandalgoo Formation",
+        "top_depth_meter": 361.6,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Worral Formation",
+        "top_depth_meter": 372.3,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Lower Devonian",
+        "top_depth_meter": 372.3,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      }
+    ],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 2,
+    "equipments": [
+      {
+        "equipment_type": "Casing",
+        "equipment_size_in": 5.5118,
+        "depth_ref_type": "Ground level"
+      },
+      {
+        "equipment_type": "Casing",
+        "equipment_size_in": 4.48818,
+        "depth_ref_type": "Ground level"
+      },
+      {
+        "equipment_type": "Casing",
+        "equipment_size_in": 3.50393,
+        "depth_ref_type": "Ground level"
+      }
+    ],
+    "equipment_count": 3,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "ACH1815-4 5536": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Unknown",
+        "start_date": "",
+        "end_date": "",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [],
+    "stratigraphy": [],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 0,
+    "equipments": [],
+    "equipment_count": 0,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "Achilles 1": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Chevron Australia (WA-374-P) Pty Ltd",
+        "start_date": "24 July 2009",
+        "end_date": "04 October 2009",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [],
+    "tops": [],
+    "stratigraphy": [],
+    "deviation_summary": {
+      "survey_points": 83,
+      "max_measured_depth_m": 4533,
+      "max_deviation_angle": 15.97
+    },
+    "checkshot_summary": null,
+    "sampling_count": 2,
+    "equipments": [],
+    "equipment_count": 0,
+    "bibliography_count": 0,
+    "costs": []
+  },
+  "Acrasia 1": {
+    "periods": [
+      {
+        "period_type": "Initial drill",
+        "operator_name": "Stuart Petroleum NL",
+        "start_date": "29 March 2002",
+        "end_date": "26 April 2002",
+        "content": null,
+        "status": null
+      },
+      {
+        "period_type": "Testing",
+        "operator_name": "Stuart Petroleum NL",
+        "start_date": "20 June 2002",
+        "end_date": "20 June 2002",
+        "content": null,
+        "status": null
+      }
+    ],
+    "tests": [
+      {
+        "content": "oil",
+        "test_type": "Production test",
+        "status": "flowing",
+        "environment_type": "Cased hole",
+        "number_of_tests": 8
+      },
+      {
+        "content": "oil",
+        "test_type": "Production test",
+        "status": "flowing",
+        "environment_type": "",
+        "number_of_tests": 8
+      },
+      {
+        "content": "oil",
+        "test_type": "Production test",
+        "status": "flowing",
+        "environment_type": "Cased hole",
+        "number_of_tests": 8
+      },
+      {
+        "content": "oil",
+        "test_type": "Production test",
+        "status": "flowing",
+        "environment_type": "",
+        "number_of_tests": 8
+      },
+      {
+        "content": "oil",
+        "test_type": "Drill stem test",
+        "status": "flowing",
+        "environment_type": "Cased hole",
+        "number_of_tests": 8
+      },
+      {
+        "content": "oil",
+        "test_type": "Drill stem test",
+        "status": "",
+        "environment_type": "Cased hole",
+        "number_of_tests": 8
+      }
+    ],
+    "tops": [
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Cadna-owie Formation",
+        "top_young_age": "Lower Aptian",
+        "bottom_young_age": "Valanginian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Murta Formation",
+        "top_young_age": "Valanginian",
+        "bottom_young_age": "Berriasian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Namur Sandstone Formation",
+        "top_young_age": "Berriasian",
+        "bottom_young_age": "Tithonian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Westbourne Formation",
+        "top_young_age": "Lower Berriasian",
+        "bottom_young_age": "Upper Tithonian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Adori Sandstone Formation",
+        "top_young_age": "Lower Tithonian",
+        "bottom_young_age": "Lower Tithonian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Birkhead Formation",
+        "top_young_age": "Kimmeridgian",
+        "bottom_young_age": "Bathonian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Hutton Sandstone",
+        "top_young_age": "Callovian",
+        "bottom_young_age": "Bajocian",
+        "lithologies": ""
+      },
+      {
+        "geological_data_type": "Interval",
+        "lithostrat_unit": "Poolowanna Formation",
+        "top_young_age": "Toarcian",
+        "bottom_young_age": "Hettangian",
+        "lithologies": ""
+      }
+    ],
+    "stratigraphy": [
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Cadna-owie Formation",
+        "top_depth_meter": 1500.5,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Lower Aptian",
+        "top_depth_meter": 1500.5,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Valanginian",
+        "top_depth_meter": 1581.5,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Murta Formation",
+        "top_depth_meter": 1581.5,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Namur Sandstone Formation",
+        "top_depth_meter": 1642,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Berriasian",
+        "top_depth_meter": 1642,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Lower Berriasian",
+        "top_depth_meter": 1703.5,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      },
+      {
+        "geol_data_type": "Interval",
+        "stratigraphic_unit": "Westbourne Formation",
+        "top_depth_meter": 1703.5,
+        "bottom_depth_meter": null,
+        "lithologies": null
+      }
+    ],
+    "deviation_summary": null,
+    "checkshot_summary": null,
+    "sampling_count": 1,
+    "equipments": [
+      {
+        "equipment_type": "Casing",
+        "equipment_size_in": 7,
+        "depth_ref_type": "Rotary table amsl"
+      }
+    ],
+    "equipment_count": 1,
+    "bibliography_count": 1,
+    "costs": []
+  }
+}

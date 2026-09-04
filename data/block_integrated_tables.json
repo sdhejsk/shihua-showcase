@@ -1,0 +1,1744 @@
+{
+  "profiles": {
+    "AC/L10": {
+      "block_name": "AC/L10",
+      "country_name": "Australia",
+      "basin_names": "Caswell Sub-basin (Browse Basin)~Prudhoe Terrace (Browse Basin)",
+      "contract_name": "AC/L10",
+      "operator_name": "Shell Australia Pty Ltd",
+      "onshore_offshore": "Offshore",
+      "terrains": "Shelf",
+      "main_political_province": "Ashmore and Cartier Islands",
+      "general_class": "Contract",
+      "general_contract_type": "License/Lease",
+      "contract_type": "Production Licence",
+      "rights_type": "Explorat/Production",
+      "contract_status": "Surface Exploration",
+      "block_status": "Surface Exploration",
+      "group_name": "SHELL 26",
+      "stage_numb": 2,
+      "application_date": null,
+      "award_date": "26 May 2022",
+      "expiry_date": "",
+      "block_sqkm": 166.72,
+      "pct_original_area_remaining": 100,
+      "resource_type": "Conventional",
+      "unconventional_type": "",
+      "unconv_type_2": "",
+      "min_water_depth_meter": "",
+      "median_water_depth_meter": "",
+      "max_water_depth_meter": "",
+      "main_fss_zone": "Ashmore and Cartier Islands",
+      "approx_latitude": "S 12`57'24.941\"",
+      "approx_longitude": "E 124`30'04.468\"",
+      "approx_latitude_dec_deg": -12.956928,
+      "approx_longitude_dec_deg": 124.501241,
+      "date_of_last_db_update": "2022-05-31 00:00:00",
+      "block_local_companies_curr": "Shell Australia Pty Ltd (Operator)   84.50% ; SGH Energy Pty Ltd   15.50%",
+      "block_parent_companies_curr": "Shell plc (Operator)   84.50% ; SGH Energy Pty Ltd   15.50%",
+      "block_share_companies_curr": "Shell plc (Operator)   84.50% ; SGH Energy Pty Ltd   15.50%",
+      "block_local_companies_prev": "Shell Australia Pty Ltd (Operator)   82.00% ; SGH Energy Pty Ltd   15.00% ; Osaka Gas Crux Pty Ltd    3.00%",
+      "block_parent_companies_prev": "Shell plc (Operator)   82.00% ; SGH Energy Pty Ltd   15.00% ; Osaka Gas Co., Ltd    3.00%",
+      "block_share_companies_prev": "Shell plc (Operator)   82.00% ; SGH Energy Pty Ltd   15.00% ; Osaka Gas Co., Ltd    3.00%"
+    },
+    "AC/L5 Corallina/Laminaria": {
+      "block_name": "AC/L5 Corallina/Laminaria",
+      "country_name": "Australia",
+      "basin_names": "Nancar Trough (Bonaparte Basin)",
+      "contract_name": "AC/L5",
+      "operator_name": "Timor Sea Oil & Gas Australia Pty Ltd",
+      "onshore_offshore": "Offshore",
+      "terrains": "Deep Water",
+      "main_political_province": "Ashmore and Cartier Islands (offshore)",
+      "general_class": "Contract",
+      "general_contract_type": "License/Lease",
+      "contract_type": "Production Licence",
+      "rights_type": "Dev/Production",
+      "contract_status": "Production",
+      "block_status": "Production",
+      "group_name": "TIMOR SEA",
+      "stage_numb": 17,
+      "application_date": null,
+      "award_date": "06 February 1997",
+      "expiry_date": "",
+      "block_sqkm": 127,
+      "pct_original_area_remaining": 92.74,
+      "resource_type": "Conventional",
+      "unconventional_type": "",
+      "unconv_type_2": "",
+      "min_water_depth_meter": 390,
+      "median_water_depth_meter": 500,
+      "max_water_depth_meter": 570,
+      "main_fss_zone": "Ashmore and Cartier Islands",
+      "approx_latitude": "S 10`37'24.913\"",
+      "approx_longitude": "E 125`59'06.176\"",
+      "approx_latitude_dec_deg": -10.623587,
+      "approx_longitude_dec_deg": 125.985049,
+      "date_of_last_db_update": "2021-12-16 00:00:00",
+      "block_local_companies_curr": "Timor Sea Oil & Gas Australia Pty Ltd (Operator)  100.00%",
+      "block_parent_companies_curr": "Northern Oil and Gas Australia Pty Ltd (NOGA) (Operator)  100.00%",
+      "block_share_companies_curr": "Northern Oil and Gas Australia Pty Ltd (NOGA) (Operator)  100.00%",
+      "block_local_companies_prev": "",
+      "block_parent_companies_prev": "",
+      "block_share_companies_prev": ""
+    },
+    "AC/L7 Montara": {
+      "block_name": "AC/L7 Montara",
+      "country_name": "Australia",
+      "basin_names": "Vulcan Sub-basin (Bonaparte Basin)",
+      "contract_name": "AC/L7",
+      "operator_name": "Jadestone Energy (Eagle) Pty Ltd",
+      "onshore_offshore": "Offshore",
+      "terrains": "Shelf",
+      "main_political_province": "Ashmore and Cartier Islands",
+      "general_class": "Contract",
+      "general_contract_type": "License/Lease",
+      "contract_type": "Production Licence",
+      "rights_type": "Dev/Production",
+      "contract_status": "Production",
+      "block_status": "Production",
+      "group_name": "JADESTONE EAG",
+      "stage_numb": 6,
+      "application_date": null,
+      "award_date": "20 March 2007",
+      "expiry_date": "",
+      "block_sqkm": 250,
+      "pct_original_area_remaining": 100,
+      "resource_type": "Conventional",
+      "unconventional_type": "",
+      "unconv_type_2": "",
+      "min_water_depth_meter": "",
+      "median_water_depth_meter": "",
+      "max_water_depth_meter": "",
+      "main_fss_zone": "Ashmore and Cartier Islands",
+      "approx_latitude": "S 12`39'54.940\"",
+      "approx_longitude": "E 124`30'04.464\"",
+      "approx_latitude_dec_deg": -12.665261,
+      "approx_longitude_dec_deg": 124.50124,
+      "date_of_last_db_update": "2021-12-16 00:00:00",
+      "block_local_companies_curr": "Jadestone Energy (Eagle) Pty Ltd (Operator)  100.00%",
+      "block_parent_companies_curr": "Jadestone Energy Plc (Operator)  100.00%",
+      "block_share_companies_curr": "Jadestone Energy Plc (Operator)  100.00%",
+      "block_local_companies_prev": "Jadestone Energy (Eagle) Pty Ltd (Operator)  100.00%",
+      "block_parent_companies_prev": "Jadestone Energy Plc (Operator)  100.00%",
+      "block_share_companies_prev": "Jadestone Energy Plc (Operator)  100.00%"
+    },
+    "AC/L8": {
+      "block_name": "AC/L8",
+      "country_name": "Australia",
+      "basin_names": "Vulcan Sub-basin (Bonaparte Basin)",
+      "contract_name": "AC/L8",
+      "operator_name": "Jadestone Energy (Eagle) Pty Ltd",
+      "onshore_offshore": "Offshore",
+      "terrains": "Shelf",
+      "main_political_province": "Ashmore and Cartier Islands",
+      "general_class": "Contract",
+      "general_contract_type": "License/Lease",
+      "contract_type": "Production Licence",
+      "rights_type": "Explorat/Production",
+      "contract_status": "Explorat/Production",
+      "block_status": "Explorat/Production",
+      "group_name": "JADESTONE EAG",
+      "stage_numb": 6,
+      "application_date": null,
+      "award_date": "09 August 2007",
+      "expiry_date": "",
+      "block_sqkm": 419,
+      "pct_original_area_remaining": 100,
+      "resource_type": "Conventional",
+      "unconventional_type": "",
+      "unconv_type_2": "",
+      "min_water_depth_meter": "",
+      "median_water_depth_meter": "",
+      "max_water_depth_meter": "",
+      "main_fss_zone": "Ashmore and Cartier Islands",
+      "approx_latitude": "S 12`32'24.940\"",
+      "approx_longitude": "E 124`25'04.462\"",
+      "approx_latitude_dec_deg": -12.540261,
+      "approx_longitude_dec_deg": 124.417906,
+      "date_of_last_db_update": "2021-12-16 00:00:00",
+      "block_local_companies_curr": "Jadestone Energy (Eagle) Pty Ltd (Operator)  100.00%",
+      "block_parent_companies_curr": "Jadestone Energy Plc (Operator)  100.00%",
+      "block_share_companies_curr": "Jadestone Energy Plc (Operator)  100.00%",
+      "block_local_companies_prev": "Jadestone Energy (Eagle) Pty Ltd (Operator)  100.00%",
+      "block_parent_companies_prev": "Jadestone Energy Plc (Operator)  100.00%",
+      "block_share_companies_prev": "Jadestone Energy Plc (Operator)  100.00%"
+    },
+    "AC/P41": {
+      "block_name": "AC/P41",
+      "country_name": "Australia",
+      "basin_names": "Caswell Sub-basin (Browse Basin)~Prudhoe Terrace (Browse Basin)~Vulcan Sub-basin (Bonaparte Basin)~Londonderry High (Bonaparte Basin)",
+      "contract_name": "AC/P41",
+      "operator_name": "Shell Australia Pty Ltd",
+      "onshore_offshore": "Offshore",
+      "terrains": "Shelf",
+      "main_political_province": "Ashmore and Cartier Islands",
+      "general_class": "Contract",
+      "general_contract_type": "License/Lease",
+      "contract_type": "Exploration Permit",
+      "rights_type": "Surf Expl/Drilling",
+      "contract_status": "Surf Expl/Drilling",
+      "block_status": "Surf Expl/Drilling",
+      "group_name": "SHELL 25",
+      "stage_numb": 14,
+      "application_date": null,
+      "award_date": "01 March 2007",
+      "expiry_date": "",
+      "block_sqkm": 583.4,
+      "pct_original_area_remaining": 31.1,
+      "resource_type": "Conventional",
+      "unconventional_type": "",
+      "unconv_type_2": "",
+      "min_water_depth_meter": "",
+      "median_water_depth_meter": "",
+      "max_water_depth_meter": "",
+      "main_fss_zone": "Ashmore and Cartier Islands",
+      "approx_latitude": "S 12`59'54.942\"",
+      "approx_longitude": "E 124`27'34.470\"",
+      "approx_latitude_dec_deg": -12.998595,
+      "approx_longitude_dec_deg": 124.459575,
+      "date_of_last_db_update": "2026-04-22 00:00:00",
+      "block_local_companies_curr": "Shell Australia Pty Ltd (Operator)   75.00% ; Mitsui E & P Australia Pty. Ltd   25.00%",
+      "block_parent_companies_curr": "Shell plc (Operator)   75.00% ; Mitsui Group   25.00%",
+      "block_share_companies_curr": "Shell plc (Operator)   75.00% ; Mitsui Group   25.00%",
+      "block_local_companies_prev": "Shell Australia Pty Ltd (Operator)   75.00% ; Mitsui E & P Australia Pty. Ltd   25.00%",
+      "block_parent_companies_prev": "Shell plc (Operator)   75.00% ; Mitsui Group   25.00%",
+      "block_share_companies_prev": "Shell plc (Operator)   75.00% ; Mitsui Group   25.00%"
+    },
+    "ATP 1015-P Deep": {
+      "block_name": "ATP 1015-P Deep",
+      "country_name": "Australia",
+      "basin_names": "Drummond - Galilee Basins~Galilee - Eromanga Basins",
+      "contract_name": "ATP 1015-P",
+      "operator_name": "Comet Ridge Ltd",
+      "onshore_offshore": "Onshore",
+      "terrains": "Land",
+      "main_political_province": "Queensland",
+      "general_class": "Contract",
+      "general_contract_type": "License/Lease",
+      "contract_type": "Auth to Prospect",
+      "rights_type": "Surf Expl/Drilling",
+      "contract_status": "Surface Exploration",
+      "block_status": "Surface Exploration",
+      "group_name": "COMET RDG 8",
+      "stage_numb": 15,
+      "application_date": "04 August 2008",
+      "award_date": "25 November 2010",
+      "expiry_date": "",
+      "block_sqkm": 1811.1,
+      "pct_original_area_remaining": 44.11,
+      "resource_type": "Conventional",
+      "unconventional_type": "",
+      "unconv_type_2": "",
+      "min_water_depth_meter": "",
+      "median_water_depth_meter": "",
+      "max_water_depth_meter": "",
+      "main_fss_zone": "Queensland",
+      "approx_latitude": "S 22`14'54.463\"",
+      "approx_longitude": "E 145`50'04.031\"",
+      "approx_latitude_dec_deg": -22.248462,
+      "approx_longitude_dec_deg": 145.834453,
+      "date_of_last_db_update": "2024-01-04 00:00:00",
+      "block_local_companies_curr": "Comet Ridge Ltd (Operator)   70.00% ; Vintage Energy Ltd   30.00%",
+      "block_parent_companies_curr": "Comet Ridge Ltd (Operator)   70.00% ; Vintage Energy Ltd   30.00%",
+      "block_share_companies_curr": "Comet Ridge Ltd (Operator)   70.00% ; Vintage Energy Ltd   30.00%",
+      "block_local_companies_prev": "",
+      "block_parent_companies_prev": "",
+      "block_share_companies_prev": ""
+    },
+    "ATP 1015-P Shallow": {
+      "block_name": "ATP 1015-P Shallow",
+      "country_name": "Australia",
+      "basin_names": "Drummond - Galilee Basins~Galilee - Eromanga Basins",
+      "contract_name": "ATP 1015-P",
+      "operator_name": "Comet Ridge Ltd",
+      "onshore_offshore": "Onshore",
+      "terrains": "Land",
+      "main_political_province": "Queensland",
+      "general_class": "Contract",
+      "general_contract_type": "License/Lease",
+      "contract_type": "Auth to Prospect",
+      "rights_type": "Surf Expl/Drilling",
+      "contract_status": "Surface Exploration",
+      "block_status": "Surface Exploration",
+      "group_name": "COMET RDG",
+      "stage_numb": 15,
+      "application_date": "04 August 2008",
+      "award_date": "25 November 2010",
+      "expiry_date": "",
+      "block_sqkm": 1811.1,
+      "pct_original_area_remaining": 44.11,
+      "resource_type": "Unconventional",
+      "unconventional_type": "Coal Bed Methane",
+      "unconv_type_2": "",
+      "min_water_depth_meter": "",
+      "median_water_depth_meter": "",
+      "max_water_depth_meter": "",
+      "main_fss_zone": "Queensland",
+      "approx_latitude": "S 22`14'54.463\"",
+      "approx_longitude": "E 145`50'04.031\"",
+      "approx_latitude_dec_deg": -22.248462,
+      "approx_longitude_dec_deg": 145.834453,
+      "date_of_last_db_update": "2024-01-04 00:00:00",
+      "block_local_companies_curr": "Comet Ridge Ltd (Operator)  100.00%",
+      "block_parent_companies_curr": "Comet Ridge Ltd (Operator)  100.00%",
+      "block_share_companies_curr": "Comet Ridge Ltd (Operator)  100.00%",
+      "block_local_companies_prev": "Comet Ridge Ltd (Operator)  100.00%",
+      "block_parent_companies_prev": "Comet Ridge Ltd (Operator)  100.00%",
+      "block_share_companies_prev": "Comet Ridge Ltd (Operator)  100.00%"
+    },
+    "ATP 1025-P": {
+      "block_name": "ATP 1025-P",
+      "country_name": "Australia",
+      "basin_names": "Nebo Syncline (Bowen - Surat Bsns)~Comet Ridge (Bowen - Surat Bsns)",
+      "contract_name": "ATP 1025-P",
+      "operator_name": "Bow CSG Pty Ltd",
+      "onshore_offshore": "Onshore",
+      "terrains": "Land",
+      "main_political_province": "Queensland",
+      "general_class": "Contract",
+      "general_contract_type": "License/Lease",
+      "contract_type": "Auth to Prospect",
+      "rights_type": "Surf Expl/Drilling",
+      "contract_status": "Surf Expl/Drilling",
+      "block_status": "Surf Expl/Drilling",
+      "group_name": "BOW CSG",
+      "stage_numb": 15,
+      "application_date": "04 August 2008",
+      "award_date": "26 February 2009",
+      "expiry_date": "",
+      "block_sqkm": 597.15,
+      "pct_original_area_remaining": 52.55,
+      "resource_type": "Unconventional",
+      "unconventional_type": "Coal Bed Methane",
+      "unconv_type_2": "",
+      "min_water_depth_meter": "",
+      "median_water_depth_meter": "",
+      "max_water_depth_meter": "",
+      "main_fss_zone": "Queensland",
+      "approx_latitude": "S 23`25'54.415\"",
+      "approx_longitude": "E 148`55'03.922\"",
+      "approx_latitude_dec_deg": -23.431782,
+      "approx_longitude_dec_deg": 148.917756,
+      "date_of_last_db_update": "2022-07-06 00:00:00",
+      "block_local_companies_curr": "Bow CSG Pty Ltd (Operator)  100.00%",
+      "block_parent_companies_curr": "Arrow Energy Holdings Pty Ltd (Operator)  100.00%",
+      "block_share_companies_curr": "Shell plc (Operator)   50.00% ; China National Petroleum Corp (CNPC) (Operator)   40.52% ; Other partner(s) (Operator)    9.49%",
+      "block_local_companies_prev": "Bow CSG Pty Ltd (Operator)  100.00%",
+      "block_parent_companies_prev": "Arrow Energy Holdings Pty Ltd (Operator)  100.00%",
+      "block_share_companies_prev": "Shell plc (Operator)   50.00% ; China National Petroleum Corp (CNPC) (Operator)   40.52% ; Other partner(s) (Operator)    9.49%"
+    },
+    "ATP 1031-P": {
+      "block_name": "ATP 1031-P",
+      "country_name": "Australia",
+      "basin_names": "Comet Ridge (Bowen - Surat Bsns)~Nebo Syncline (Bowen - Surat Bsns)",
+      "contract_name": "ATP 1031-P",
+      "operator_name": "Bow CSG Pty Ltd",
+      "onshore_offshore": "Onshore",
+      "terrains": "Land",
+      "main_political_province": "Queensland",
+      "general_class": "Contract",
+      "general_contract_type": "License/Lease",
+      "contract_type": "Auth to Prospect",
+      "rights_type": "Surf Expl/Drilling",
+      "contract_status": "Surf Expl/Drilling",
+      "block_status": "Surf Expl/Drilling",
+      "group_name": "BOW CSG",
+      "stage_numb": 14,
+      "application_date": "04 August 2008",
+      "award_date": "26 February 2009",
+      "expiry_date": "",
+      "block_sqkm": 745.5,
+      "pct_original_area_remaining": 85.44,
+      "resource_type": "Unconventional",
+      "unconventional_type": "Coal Bed Methane",
+      "unconv_type_2": "",
+      "min_water_depth_meter": "",
+      "median_water_depth_meter": "",
+      "max_water_depth_meter": "",
+      "main_fss_zone": "Queensland",
+      "approx_latitude": "S 22`34'24.431\"",
+      "approx_longitude": "E 148`32'33.904\"",
+      "approx_latitude_dec_deg": -22.573453,
+      "approx_longitude_dec_deg": 148.542751,
+      "date_of_last_db_update": "2022-07-06 00:00:00",
+      "block_local_companies_curr": "Bow CSG Pty Ltd (Operator)  100.00%",
+      "block_parent_companies_curr": "Arrow Energy Holdings Pty Ltd (Operator)  100.00%",
+      "block_share_companies_curr": "Shell plc (Operator)   50.00% ; China National Petroleum Corp (CNPC) (Operator)   40.52% ; Other partner(s) (Operator)    9.49%",
+      "block_local_companies_prev": "Bow CSG Pty Ltd (Operator)  100.00%",
+      "block_parent_companies_prev": "Arrow Energy Holdings Pty Ltd (Operator)  100.00%",
+      "block_share_companies_prev": "Shell plc (Operator)   50.00% ; China National Petroleum Corp (CNPC) (Operator)   40.52% ; Other partner(s) (Operator)    9.49%"
+    },
+    "ATP 1056-P": {
+      "block_name": "ATP 1056-P",
+      "country_name": "Australia",
+      "basin_names": "Warburton - Cooper - Eromanga Basins~Warburton - Eromanga Basins",
+      "contract_name": "ATP 1056-P",
+      "operator_name": "Texas-Tickalara Holdings LP",
+      "onshore_offshore": "Onshore",
+      "terrains": "Land",
+      "main_political_province": "Queensland",
+      "general_class": "Contract",
+      "general_contract_type": "License/Lease",
+      "contract_type": "Auth to Prospect",
+      "rights_type": "Surf Expl/Drilling",
+      "contract_status": "Surface Exploration",
+      "block_status": "Surface Exploration",
+      "group_name": "TX TICKALAR 1",
+      "stage_numb": 16,
+      "application_date": "01 September 2008",
+      "award_date": "19 May 2010",
+      "expiry_date": "",
+      "block_sqkm": 590.07,
+      "pct_original_area_remaining": 13.83,
+      "resource_type": "Conventional",
+      "unconventional_type": "",
+      "unconv_type_2": "",
+      "min_water_depth_meter": "",
+      "median_water_depth_meter": "",
+      "max_water_depth_meter": "",
+      "main_fss_zone": "Queensland",
+      "approx_latitude": "S 28`04'24.524\"",
+      "approx_longitude": "E 142`12'34.459\"",
+      "approx_latitude_dec_deg": -28.073479,
+      "approx_longitude_dec_deg": 142.209572,
+      "date_of_last_db_update": "2024-10-07 00:00:00",
+      "block_local_companies_curr": "Texas-Tickalara Holdings LP (Operator)   17.83% ; Discovery Geo Corp   36.67% ; Texas-Tickalara Energy Partners LP   20.74% ; Tamark Pty Ltd   13.03% ; Matariki Petroleum Ltd    6.19% ; Rockwall Oil LP    5.56%",
+      "block_parent_companies_curr": "Texas-Tickalara Energy Partners LP (Operator)   38.56% ; Discovery Geo Corp   36.67% ; Tamark Pty Ltd   13.03% ; Matariki Petroleum Ltd    6.19% ; Rockwall Oil LP    5.56%",
+      "block_share_companies_curr": "Texas-Tickalara Energy Partners LP (Operator)   38.56% ; Discovery Geo Corp   36.67% ; Tamark Pty Ltd   13.03% ; Matariki Petroleum Ltd    6.19% ; Rockwall Oil LP    5.56%",
+      "block_local_companies_prev": "Texas-Tickalara Holdings LP (Operator)   17.83% ; Discovery Geo Corp   36.67% ; Texas-Tickalara Energy Partners LP   20.74% ; Tamark Pty Ltd   13.03% ; Matariki Petroleum Ltd    6.19% ; Rockwall Oil LP    5.56%",
+      "block_parent_companies_prev": "Texas-Tickalara Energy Partners LP (Operator)   38.56% ; Discovery Geo Corp   36.67% ; Tamark Pty Ltd   13.03% ; Matariki Petroleum Ltd    6.19% ; Rockwall Oil LP    5.56%",
+      "block_share_companies_prev": "Texas-Tickalara Energy Partners LP (Operator)   38.56% ; Discovery Geo Corp   36.67% ; Tamark Pty Ltd   13.03% ; Matariki Petroleum Ltd    6.19% ; Rockwall Oil LP    5.56%"
+    }
+  },
+  "tables": {
+    "AC/L10": {
+      "history": [
+        {
+          "stage_numb": 2,
+          "start_date": "23 August 2023",
+          "end_date": "",
+          "contract_stage_events": "New Interests",
+          "block_events": "",
+          "contract_status": "Surface Exploration",
+          "block_status": "Surface Exploration",
+          "contract_sqkm": 167,
+          "block_sqkm": 167,
+          "pct_original_area_remaining": 100,
+          "resource_type": "Conventional"
+        }
+      ],
+      "scheduled_events": [
+        {
+          "application_date": "",
+          "award_date": "26 May 2022",
+          "expiry_date": "",
+          "renewal_sch_dates": "",
+          "reduction_sch_dates": "",
+          "exp_expiry_sch_date": "",
+          "prod_expiry_sch_date": "",
+          "expiry_sch_date": "",
+          "contract_status": "Surface Exploration",
+          "block_status": "Surface Exploration"
+        }
+      ],
+      "company_interests": [
+        {
+          "company_name": "SGH Energy Pty Ltd",
+          "company_acronym": "SGH EN",
+          "company_type": "Privately owned",
+          "business_activity": "Midstream + Upstream",
+          "international_flag": "Yes",
+          "interests_pct": 15.5,
+          "operator_name": "Shell Australia Pty Ltd",
+          "operator_flag": "N",
+          "total_sqkm": 166.72,
+          "total_net_sqkm": 25.842,
+          "net_onshore_sqkm": "",
+          "net_shelf_sqkm": 25.842,
+          "net_deep_sqkm": ""
+        },
+        {
+          "company_name": "Shell Australia Pty Ltd",
+          "company_acronym": "SHELL",
+          "company_type": "Privately owned",
+          "business_activity": "Midstream + Upstream",
+          "international_flag": "No",
+          "interests_pct": 84.5,
+          "operator_name": "Shell Australia Pty Ltd",
+          "operator_flag": "Y",
+          "total_sqkm": 166.72,
+          "total_net_sqkm": 140.878,
+          "net_onshore_sqkm": "",
+          "net_shelf_sqkm": 140.878,
+          "net_deep_sqkm": ""
+        }
+      ],
+      "locations": [
+        {
+          "onshore_offshore": "Offshore",
+          "terrains": "Shelf",
+          "block_sqkm": 166.72,
+          "onshore_sqkm": "",
+          "shelf_sqkm": 166.72,
+          "deep_water_sqkm": "",
+          "min_water_depth_meter": "",
+          "median_water_depth_meter": "",
+          "max_water_depth_meter": "",
+          "main_fss_zone": "Ashmore and Cartier Islands",
+          "main_political_province": "Ashmore and Cartier Islands",
+          "approx_latitude_dec_deg": -12.956928,
+          "approx_longitude_dec_deg": 124.501241
+        }
+      ],
+      "outline_summary": {
+        "point_count": 61,
+        "min_latitude": -12.998595,
+        "max_latitude": -12.915261,
+        "min_longitude": 124.417908,
+        "max_longitude": 124.584574,
+        "sample_points": [
+          {
+            "point_number": 1,
+            "latitude_dd": -12.915261,
+            "longitude_dd": 124.417908,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 2,
+            "latitude_dd": -12.915261,
+            "longitude_dd": 124.426241,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 3,
+            "latitude_dd": -12.915261,
+            "longitude_dd": 124.434574,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 4,
+            "latitude_dd": -12.915261,
+            "longitude_dd": 124.442908,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 5,
+            "latitude_dd": -12.915261,
+            "longitude_dd": 124.451241,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 6,
+            "latitude_dd": -12.915261,
+            "longitude_dd": 124.459574,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 7,
+            "latitude_dd": -12.915261,
+            "longitude_dd": 124.467908,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 8,
+            "latitude_dd": -12.915261,
+            "longitude_dd": 124.476241,
+            "pen_command": "pen down"
+          }
+        ]
+      }
+    },
+    "AC/L5 Corallina/Laminaria": {
+      "history": [
+        {
+          "stage_numb": 17,
+          "start_date": "30 August 2019",
+          "end_date": "",
+          "contract_stage_events": "Area Change",
+          "block_events": "",
+          "contract_status": "Production",
+          "block_status": "Production",
+          "contract_sqkm": 127,
+          "block_sqkm": 127,
+          "pct_original_area_remaining": 92.74,
+          "resource_type": "Conventional"
+        }
+      ],
+      "scheduled_events": [
+        {
+          "application_date": "",
+          "award_date": "06 February 1997",
+          "expiry_date": "",
+          "renewal_sch_dates": "",
+          "reduction_sch_dates": "",
+          "exp_expiry_sch_date": "",
+          "prod_expiry_sch_date": "",
+          "expiry_sch_date": "05 February 2039",
+          "contract_status": "Production",
+          "block_status": "Production"
+        }
+      ],
+      "company_interests": [
+        {
+          "company_name": "Timor Sea Oil & Gas Australia Pty Ltd",
+          "company_acronym": "TIMOR SEA",
+          "company_type": "Privately owned",
+          "business_activity": "Midstream + Upstream",
+          "international_flag": "No",
+          "interests_pct": 100,
+          "operator_name": "Timor Sea Oil & Gas Australia Pty Ltd",
+          "operator_flag": "Y",
+          "total_sqkm": 127,
+          "total_net_sqkm": 127,
+          "net_onshore_sqkm": "",
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": 127
+        }
+      ],
+      "locations": [
+        {
+          "onshore_offshore": "Offshore",
+          "terrains": "Deep Water",
+          "block_sqkm": 127,
+          "onshore_sqkm": "",
+          "shelf_sqkm": "",
+          "deep_water_sqkm": 127,
+          "min_water_depth_meter": 390,
+          "median_water_depth_meter": 500,
+          "max_water_depth_meter": 570,
+          "main_fss_zone": "Ashmore and Cartier Islands",
+          "main_political_province": "Ashmore and Cartier Islands (offshore)",
+          "approx_latitude_dec_deg": -10.623587,
+          "approx_longitude_dec_deg": 125.985049
+        }
+      ],
+      "outline_summary": {
+        "point_count": 6,
+        "min_latitude": -10.665253,
+        "max_latitude": -10.58192,
+        "min_longitude": 125.917889,
+        "max_longitude": 126.052208,
+        "sample_points": [
+          {
+            "point_number": 1,
+            "latitude_dd": -10.665253,
+            "longitude_dd": 125.91789,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 2,
+            "latitude_dd": -10.58192,
+            "longitude_dd": 125.917889,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 3,
+            "latitude_dd": -10.58192,
+            "longitude_dd": 126.039173,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 4,
+            "latitude_dd": -10.621956,
+            "longitude_dd": 126.052208,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 5,
+            "latitude_dd": -10.665253,
+            "longitude_dd": 126.031926,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 6,
+            "latitude_dd": -10.665253,
+            "longitude_dd": 125.91789,
+            "pen_command": "end of feature"
+          }
+        ]
+      }
+    },
+    "AC/L7 Montara": {
+      "history": [
+        {
+          "stage_numb": 6,
+          "start_date": "26 April 2021",
+          "end_date": "",
+          "contract_stage_events": "Company Name Change",
+          "block_events": "",
+          "contract_status": "Production",
+          "block_status": "Production",
+          "contract_sqkm": 250,
+          "block_sqkm": 250,
+          "pct_original_area_remaining": 100,
+          "resource_type": "Conventional"
+        }
+      ],
+      "scheduled_events": [
+        {
+          "application_date": "",
+          "award_date": "20 March 2007",
+          "expiry_date": "",
+          "renewal_sch_dates": "",
+          "reduction_sch_dates": "",
+          "exp_expiry_sch_date": "",
+          "prod_expiry_sch_date": "",
+          "expiry_sch_date": "",
+          "contract_status": "Production",
+          "block_status": "Production"
+        }
+      ],
+      "company_interests": [
+        {
+          "company_name": "Jadestone Energy (Eagle) Pty Ltd",
+          "company_acronym": "JADEST EAG",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "No",
+          "interests_pct": 100,
+          "operator_name": "Jadestone Energy (Eagle) Pty Ltd",
+          "operator_flag": "Y",
+          "total_sqkm": 250,
+          "total_net_sqkm": 250,
+          "net_onshore_sqkm": "",
+          "net_shelf_sqkm": 250,
+          "net_deep_sqkm": ""
+        }
+      ],
+      "locations": [
+        {
+          "onshore_offshore": "Offshore",
+          "terrains": "Shelf",
+          "block_sqkm": 250,
+          "onshore_sqkm": "",
+          "shelf_sqkm": 250,
+          "deep_water_sqkm": "",
+          "min_water_depth_meter": "",
+          "median_water_depth_meter": "",
+          "max_water_depth_meter": "",
+          "main_fss_zone": "Ashmore and Cartier Islands",
+          "main_political_province": "Ashmore and Cartier Islands",
+          "approx_latitude_dec_deg": -12.665261,
+          "approx_longitude_dec_deg": 124.50124
+        }
+      ],
+      "outline_summary": {
+        "point_count": 81,
+        "min_latitude": -12.748594,
+        "max_latitude": -12.581927,
+        "min_longitude": 124.417907,
+        "max_longitude": 124.584573,
+        "sample_points": [
+          {
+            "point_number": 1,
+            "latitude_dd": -12.665261,
+            "longitude_dd": 124.417907,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 2,
+            "latitude_dd": -12.665261,
+            "longitude_dd": 124.42624,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 3,
+            "latitude_dd": -12.665261,
+            "longitude_dd": 124.434573,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 4,
+            "latitude_dd": -12.665261,
+            "longitude_dd": 124.442906,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 5,
+            "latitude_dd": -12.665261,
+            "longitude_dd": 124.45124,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 6,
+            "latitude_dd": -12.665261,
+            "longitude_dd": 124.459573,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 7,
+            "latitude_dd": -12.665261,
+            "longitude_dd": 124.467906,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 8,
+            "latitude_dd": -12.665261,
+            "longitude_dd": 124.47624,
+            "pen_command": "pen down"
+          }
+        ]
+      }
+    },
+    "AC/L8": {
+      "history": [
+        {
+          "stage_numb": 6,
+          "start_date": "26 April 2021",
+          "end_date": "",
+          "contract_stage_events": "Company Name Change",
+          "block_events": "",
+          "contract_status": "Explorat/Production",
+          "block_status": "Explorat/Production",
+          "contract_sqkm": 419,
+          "block_sqkm": 419,
+          "pct_original_area_remaining": 100,
+          "resource_type": "Conventional"
+        }
+      ],
+      "scheduled_events": [
+        {
+          "application_date": "",
+          "award_date": "09 August 2007",
+          "expiry_date": "",
+          "renewal_sch_dates": "",
+          "reduction_sch_dates": "",
+          "exp_expiry_sch_date": "",
+          "prod_expiry_sch_date": "",
+          "expiry_sch_date": "",
+          "contract_status": "Explorat/Production",
+          "block_status": "Explorat/Production"
+        }
+      ],
+      "company_interests": [
+        {
+          "company_name": "Jadestone Energy (Eagle) Pty Ltd",
+          "company_acronym": "JADEST EAG",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "No",
+          "interests_pct": 100,
+          "operator_name": "Jadestone Energy (Eagle) Pty Ltd",
+          "operator_flag": "Y",
+          "total_sqkm": 419,
+          "total_net_sqkm": 419,
+          "net_onshore_sqkm": "",
+          "net_shelf_sqkm": 419,
+          "net_deep_sqkm": ""
+        }
+      ],
+      "locations": [
+        {
+          "onshore_offshore": "Offshore",
+          "terrains": "Shelf",
+          "block_sqkm": 419,
+          "onshore_sqkm": "",
+          "shelf_sqkm": 419,
+          "deep_water_sqkm": "",
+          "min_water_depth_meter": "",
+          "median_water_depth_meter": "",
+          "max_water_depth_meter": "",
+          "main_fss_zone": "Ashmore and Cartier Islands",
+          "main_political_province": "Ashmore and Cartier Islands",
+          "approx_latitude_dec_deg": -12.540261,
+          "approx_longitude_dec_deg": 124.417906
+        }
+      ],
+      "outline_summary": {
+        "point_count": 101,
+        "min_latitude": -12.665261,
+        "max_latitude": -12.415261,
+        "min_longitude": 124.334572,
+        "max_longitude": 124.501239,
+        "sample_points": [
+          {
+            "point_number": 1,
+            "latitude_dd": -12.415261,
+            "longitude_dd": 124.334572,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 2,
+            "latitude_dd": -12.415261,
+            "longitude_dd": 124.342906,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 3,
+            "latitude_dd": -12.415261,
+            "longitude_dd": 124.351239,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 4,
+            "latitude_dd": -12.415261,
+            "longitude_dd": 124.359572,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 5,
+            "latitude_dd": -12.415261,
+            "longitude_dd": 124.367905,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 6,
+            "latitude_dd": -12.415261,
+            "longitude_dd": 124.376239,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 7,
+            "latitude_dd": -12.415261,
+            "longitude_dd": 124.384572,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 8,
+            "latitude_dd": -12.415261,
+            "longitude_dd": 124.392905,
+            "pen_command": "pen down"
+          }
+        ]
+      }
+    },
+    "AC/P41": {
+      "history": [
+        {
+          "stage_numb": 14,
+          "start_date": "17 April 2026",
+          "end_date": "",
+          "contract_stage_events": "Appl for Suspension~Appl for Validit Ext",
+          "block_events": "",
+          "contract_status": "Surf Expl/Drilling",
+          "block_status": "Surf Expl/Drilling",
+          "contract_sqkm": 583,
+          "block_sqkm": 583,
+          "pct_original_area_remaining": 31.1,
+          "resource_type": "Conventional"
+        }
+      ],
+      "scheduled_events": [
+        {
+          "application_date": "",
+          "award_date": "01 March 2007",
+          "expiry_date": "",
+          "renewal_sch_dates": "",
+          "reduction_sch_dates": "",
+          "exp_expiry_sch_date": "",
+          "prod_expiry_sch_date": "",
+          "expiry_sch_date": "06 June 2026",
+          "contract_status": "Surf Expl/Drilling",
+          "block_status": "Surf Expl/Drilling"
+        }
+      ],
+      "company_interests": [
+        {
+          "company_name": "Mitsui E & P Australia Pty. Ltd",
+          "company_acronym": "MEPAU",
+          "company_type": "Privately owned",
+          "business_activity": "Midstream + Upstream",
+          "international_flag": "No",
+          "interests_pct": 25,
+          "operator_name": "Shell Australia Pty Ltd",
+          "operator_flag": "N",
+          "total_sqkm": 583.4,
+          "total_net_sqkm": 145.85,
+          "net_onshore_sqkm": "",
+          "net_shelf_sqkm": 145.85,
+          "net_deep_sqkm": ""
+        },
+        {
+          "company_name": "Shell Australia Pty Ltd",
+          "company_acronym": "SHELL",
+          "company_type": "Privately owned",
+          "business_activity": "Midstream + Upstream",
+          "international_flag": "No",
+          "interests_pct": 75,
+          "operator_name": "Shell Australia Pty Ltd",
+          "operator_flag": "Y",
+          "total_sqkm": 583.4,
+          "total_net_sqkm": 437.55,
+          "net_onshore_sqkm": "",
+          "net_shelf_sqkm": 437.55,
+          "net_deep_sqkm": ""
+        }
+      ],
+      "locations": [
+        {
+          "onshore_offshore": "Offshore",
+          "terrains": "Shelf",
+          "block_sqkm": 583.4,
+          "onshore_sqkm": "",
+          "shelf_sqkm": 583.4,
+          "deep_water_sqkm": "",
+          "min_water_depth_meter": "",
+          "median_water_depth_meter": "",
+          "max_water_depth_meter": "",
+          "main_fss_zone": "Ashmore and Cartier Islands",
+          "main_political_province": "Ashmore and Cartier Islands",
+          "approx_latitude_dec_deg": -12.998595,
+          "approx_longitude_dec_deg": 124.459575
+        }
+      ],
+      "outline_summary": {
+        "point_count": 162,
+        "min_latitude": -13.165262,
+        "max_latitude": -12.831927,
+        "min_longitude": 124.334575,
+        "max_longitude": 124.584574,
+        "sample_points": [
+          {
+            "point_number": 1,
+            "latitude_dd": -12.915262,
+            "longitude_dd": 124.334575,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 2,
+            "latitude_dd": -12.915262,
+            "longitude_dd": 124.342908,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 3,
+            "latitude_dd": -12.915262,
+            "longitude_dd": 124.351242,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 4,
+            "latitude_dd": -12.915262,
+            "longitude_dd": 124.359575,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 5,
+            "latitude_dd": -12.915262,
+            "longitude_dd": 124.367908,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 6,
+            "latitude_dd": -12.915262,
+            "longitude_dd": 124.376241,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 7,
+            "latitude_dd": -12.915262,
+            "longitude_dd": 124.384575,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 8,
+            "latitude_dd": -12.915262,
+            "longitude_dd": 124.392908,
+            "pen_command": "pen down"
+          }
+        ]
+      }
+    },
+    "ATP 1015-P Deep": {
+      "history": [
+        {
+          "stage_numb": 15,
+          "start_date": "09 June 2023",
+          "end_date": "",
+          "contract_stage_events": "Renewal",
+          "block_events": "Farm-out",
+          "contract_status": "Surface Exploration",
+          "block_status": "Surface Exploration",
+          "contract_sqkm": 1811,
+          "block_sqkm": 1811,
+          "pct_original_area_remaining": 44.11,
+          "resource_type": "Conventional"
+        }
+      ],
+      "scheduled_events": [
+        {
+          "application_date": "04 August 2008",
+          "award_date": "25 November 2010",
+          "expiry_date": "",
+          "renewal_sch_dates": "",
+          "reduction_sch_dates": "",
+          "exp_expiry_sch_date": "",
+          "prod_expiry_sch_date": "",
+          "expiry_sch_date": "30 November 2034",
+          "contract_status": "Surface Exploration",
+          "block_status": "Surface Exploration"
+        }
+      ],
+      "company_interests": [
+        {
+          "company_name": "Comet Ridge Ltd",
+          "company_acronym": "COMET RDG",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "Yes",
+          "interests_pct": 70,
+          "operator_name": "Comet Ridge Ltd",
+          "operator_flag": "Y",
+          "total_sqkm": 1811.1,
+          "total_net_sqkm": 1267.77,
+          "net_onshore_sqkm": 1267.77,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        },
+        {
+          "company_name": "Vintage Energy Ltd",
+          "company_acronym": "VINTAGE EN",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "No",
+          "interests_pct": 30,
+          "operator_name": "Comet Ridge Ltd",
+          "operator_flag": "N",
+          "total_sqkm": 1811.1,
+          "total_net_sqkm": 543.33,
+          "net_onshore_sqkm": 543.33,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        }
+      ],
+      "locations": [
+        {
+          "onshore_offshore": "Onshore",
+          "terrains": "Land",
+          "block_sqkm": 1811.1,
+          "onshore_sqkm": 1811.1,
+          "shelf_sqkm": "",
+          "deep_water_sqkm": "",
+          "min_water_depth_meter": "",
+          "median_water_depth_meter": "",
+          "max_water_depth_meter": "",
+          "main_fss_zone": "Queensland",
+          "main_political_province": "Queensland",
+          "approx_latitude_dec_deg": -22.248462,
+          "approx_longitude_dec_deg": 145.834453
+        }
+      ],
+      "outline_summary": {
+        "point_count": 162,
+        "min_latitude": -22.49846,
+        "max_latitude": -21.998463,
+        "min_longitude": 145.501123,
+        "max_longitude": 146.167783,
+        "sample_points": [
+          {
+            "point_number": 1,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.001117,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 2,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.017784,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 3,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.03445,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 4,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.051117,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 5,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.067783,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 6,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.08445,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 7,
+            "latitude_dd": -22.098461,
+            "longitude_dd": 146.08445,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 8,
+            "latitude_dd": -22.115128,
+            "longitude_dd": 146.08445,
+            "pen_command": "pen down"
+          }
+        ]
+      }
+    },
+    "ATP 1015-P Shallow": {
+      "history": [
+        {
+          "stage_numb": 15,
+          "start_date": "09 June 2023",
+          "end_date": "",
+          "contract_stage_events": "Renewal",
+          "block_events": "",
+          "contract_status": "Surface Exploration",
+          "block_status": "Surface Exploration",
+          "contract_sqkm": 1811,
+          "block_sqkm": 1811,
+          "pct_original_area_remaining": 44.11,
+          "resource_type": "Unconventional"
+        }
+      ],
+      "scheduled_events": [
+        {
+          "application_date": "04 August 2008",
+          "award_date": "25 November 2010",
+          "expiry_date": "",
+          "renewal_sch_dates": "",
+          "reduction_sch_dates": "",
+          "exp_expiry_sch_date": "",
+          "prod_expiry_sch_date": "",
+          "expiry_sch_date": "30 November 2034",
+          "contract_status": "Surface Exploration",
+          "block_status": "Surface Exploration"
+        }
+      ],
+      "company_interests": [
+        {
+          "company_name": "Comet Ridge Ltd",
+          "company_acronym": "COMET RDG",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "Yes",
+          "interests_pct": 100,
+          "operator_name": "Comet Ridge Ltd",
+          "operator_flag": "Y",
+          "total_sqkm": 1811.1,
+          "total_net_sqkm": 1811.1,
+          "net_onshore_sqkm": 1811.1,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        }
+      ],
+      "locations": [
+        {
+          "onshore_offshore": "Onshore",
+          "terrains": "Land",
+          "block_sqkm": 1811.1,
+          "onshore_sqkm": 1811.1,
+          "shelf_sqkm": "",
+          "deep_water_sqkm": "",
+          "min_water_depth_meter": "",
+          "median_water_depth_meter": "",
+          "max_water_depth_meter": "",
+          "main_fss_zone": "Queensland",
+          "main_political_province": "Queensland",
+          "approx_latitude_dec_deg": -22.248462,
+          "approx_longitude_dec_deg": 145.834453
+        }
+      ],
+      "outline_summary": {
+        "point_count": 162,
+        "min_latitude": -22.49846,
+        "max_latitude": -21.998463,
+        "min_longitude": 145.501123,
+        "max_longitude": 146.167783,
+        "sample_points": [
+          {
+            "point_number": 1,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.001117,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 2,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.017784,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 3,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.03445,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 4,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.051117,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 5,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.067783,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 6,
+            "latitude_dd": -22.081795,
+            "longitude_dd": 146.08445,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 7,
+            "latitude_dd": -22.098461,
+            "longitude_dd": 146.08445,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 8,
+            "latitude_dd": -22.115128,
+            "longitude_dd": 146.08445,
+            "pen_command": "pen down"
+          }
+        ]
+      }
+    },
+    "ATP 1025-P": {
+      "history": [
+        {
+          "stage_numb": 15,
+          "start_date": "21 January 2022",
+          "end_date": "",
+          "contract_stage_events": "Company Name Change",
+          "block_events": "",
+          "contract_status": "Surf Expl/Drilling",
+          "block_status": "Surf Expl/Drilling",
+          "contract_sqkm": 597,
+          "block_sqkm": 597,
+          "pct_original_area_remaining": 52.55,
+          "resource_type": "Unconventional"
+        }
+      ],
+      "scheduled_events": [
+        {
+          "application_date": "04 August 2008",
+          "award_date": "26 February 2009",
+          "expiry_date": "",
+          "renewal_sch_dates": "28 February 2033",
+          "reduction_sch_dates": "",
+          "exp_expiry_sch_date": "",
+          "prod_expiry_sch_date": "",
+          "expiry_sch_date": "",
+          "contract_status": "Surf Expl/Drilling",
+          "block_status": "Surf Expl/Drilling"
+        }
+      ],
+      "company_interests": [
+        {
+          "company_name": "Bow CSG Pty Ltd",
+          "company_acronym": "BOW CSG",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "No",
+          "interests_pct": 100,
+          "operator_name": "Bow CSG Pty Ltd",
+          "operator_flag": "Y",
+          "total_sqkm": 597.15,
+          "total_net_sqkm": 597.15,
+          "net_onshore_sqkm": 597.15,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        }
+      ],
+      "locations": [
+        {
+          "onshore_offshore": "Onshore",
+          "terrains": "Land",
+          "block_sqkm": 597.15,
+          "onshore_sqkm": 597.15,
+          "shelf_sqkm": "",
+          "deep_water_sqkm": "",
+          "min_water_depth_meter": "",
+          "median_water_depth_meter": "",
+          "max_water_depth_meter": "",
+          "main_fss_zone": "Queensland",
+          "main_political_province": "Queensland",
+          "approx_latitude_dec_deg": -23.431782,
+          "approx_longitude_dec_deg": 148.917756
+        }
+      ],
+      "outline_summary": {
+        "point_count": 77,
+        "min_latitude": -23.665114,
+        "max_latitude": -23.198449,
+        "min_longitude": 148.834423,
+        "max_longitude": 149.001089,
+        "sample_points": [
+          {
+            "point_number": 1,
+            "latitude_dd": -23.498448,
+            "longitude_dd": 148.834423,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 2,
+            "latitude_dd": -23.498448,
+            "longitude_dd": 148.851089,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 3,
+            "latitude_dd": -23.498448,
+            "longitude_dd": 148.867756,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 4,
+            "latitude_dd": -23.498448,
+            "longitude_dd": 148.884422,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 5,
+            "latitude_dd": -23.498448,
+            "longitude_dd": 148.901089,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 6,
+            "latitude_dd": -23.498447,
+            "longitude_dd": 148.917755,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 7,
+            "latitude_dd": -23.481781,
+            "longitude_dd": 148.917755,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 8,
+            "latitude_dd": -23.465114,
+            "longitude_dd": 148.917755,
+            "pen_command": "pen down"
+          }
+        ]
+      }
+    },
+    "ATP 1031-P": {
+      "history": [
+        {
+          "stage_numb": 14,
+          "start_date": "21 January 2022",
+          "end_date": "",
+          "contract_stage_events": "Company Name Change",
+          "block_events": "",
+          "contract_status": "Surf Expl/Drilling",
+          "block_status": "Surf Expl/Drilling",
+          "contract_sqkm": 746,
+          "block_sqkm": 746,
+          "pct_original_area_remaining": 85.44,
+          "resource_type": "Unconventional"
+        }
+      ],
+      "scheduled_events": [
+        {
+          "application_date": "04 August 2008",
+          "award_date": "26 February 2009",
+          "expiry_date": "",
+          "renewal_sch_dates": "10 August 2029",
+          "reduction_sch_dates": "",
+          "exp_expiry_sch_date": "",
+          "prod_expiry_sch_date": "",
+          "expiry_sch_date": "",
+          "contract_status": "Surf Expl/Drilling",
+          "block_status": "Surf Expl/Drilling"
+        }
+      ],
+      "company_interests": [
+        {
+          "company_name": "Bow CSG Pty Ltd",
+          "company_acronym": "BOW CSG",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "No",
+          "interests_pct": 100,
+          "operator_name": "Bow CSG Pty Ltd",
+          "operator_flag": "Y",
+          "total_sqkm": 745.5,
+          "total_net_sqkm": 745.5,
+          "net_onshore_sqkm": 745.5,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        }
+      ],
+      "locations": [
+        {
+          "onshore_offshore": "Onshore",
+          "terrains": "Land",
+          "block_sqkm": 745.5,
+          "onshore_sqkm": 745.5,
+          "shelf_sqkm": "",
+          "deep_water_sqkm": "",
+          "min_water_depth_meter": "",
+          "median_water_depth_meter": "",
+          "max_water_depth_meter": "",
+          "main_fss_zone": "Queensland",
+          "main_political_province": "Queensland",
+          "approx_latitude_dec_deg": -22.573453,
+          "approx_longitude_dec_deg": 148.542751
+        }
+      ],
+      "outline_summary": {
+        "point_count": 100,
+        "min_latitude": -22.81512,
+        "max_latitude": -22.331785,
+        "min_longitude": 148.417751,
+        "max_longitude": 148.66775,
+        "sample_points": [
+          {
+            "point_number": 1,
+            "latitude_dd": -22.748453,
+            "longitude_dd": 148.567751,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 2,
+            "latitude_dd": -22.748453,
+            "longitude_dd": 148.584417,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 3,
+            "latitude_dd": -22.76512,
+            "longitude_dd": 148.584417,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 4,
+            "latitude_dd": -22.781787,
+            "longitude_dd": 148.584417,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 5,
+            "latitude_dd": -22.798453,
+            "longitude_dd": 148.584417,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 6,
+            "latitude_dd": -22.81512,
+            "longitude_dd": 148.584418,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 7,
+            "latitude_dd": -22.81512,
+            "longitude_dd": 148.567752,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 8,
+            "latitude_dd": -22.815119,
+            "longitude_dd": 148.551086,
+            "pen_command": "pen down"
+          }
+        ]
+      }
+    },
+    "ATP 1056-P": {
+      "history": [
+        {
+          "stage_numb": 16,
+          "start_date": "October 2024",
+          "end_date": "",
+          "contract_stage_events": "Appl for Renewal",
+          "block_events": "",
+          "contract_status": "Surface Exploration",
+          "block_status": "Surface Exploration",
+          "contract_sqkm": 590,
+          "block_sqkm": 590,
+          "pct_original_area_remaining": 13.83,
+          "resource_type": "Conventional"
+        }
+      ],
+      "scheduled_events": [
+        {
+          "application_date": "01 September 2008",
+          "award_date": "19 May 2010",
+          "expiry_date": "",
+          "renewal_sch_dates": "",
+          "reduction_sch_dates": "",
+          "exp_expiry_sch_date": "",
+          "prod_expiry_sch_date": "",
+          "expiry_sch_date": "31 May 2022",
+          "contract_status": "Surface Exploration",
+          "block_status": "Surface Exploration"
+        }
+      ],
+      "company_interests": [
+        {
+          "company_name": "Discovery Geo Corp",
+          "company_acronym": "DISC GEO",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "Yes",
+          "interests_pct": 36.66667,
+          "operator_name": "Texas-Tickalara Holdings LP",
+          "operator_flag": "N",
+          "total_sqkm": 590.07,
+          "total_net_sqkm": 216.359,
+          "net_onshore_sqkm": 216.359,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        },
+        {
+          "company_name": "Matariki Petroleum Ltd",
+          "company_acronym": "MATARIKI",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "Yes",
+          "interests_pct": 6.19034,
+          "operator_name": "Texas-Tickalara Holdings LP",
+          "operator_flag": "N",
+          "total_sqkm": 590.07,
+          "total_net_sqkm": 36.527,
+          "net_onshore_sqkm": 36.527,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        },
+        {
+          "company_name": "Rockwall Oil LP",
+          "company_acronym": "ROCKWALL",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "Yes",
+          "interests_pct": 5.55556,
+          "operator_name": "Texas-Tickalara Holdings LP",
+          "operator_flag": "N",
+          "total_sqkm": 590.07,
+          "total_net_sqkm": 32.782,
+          "net_onshore_sqkm": 32.782,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        },
+        {
+          "company_name": "Tamark Pty Ltd",
+          "company_acronym": "TAMARK",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "Yes",
+          "interests_pct": 13.02588,
+          "operator_name": "Texas-Tickalara Holdings LP",
+          "operator_flag": "N",
+          "total_sqkm": 590.07,
+          "total_net_sqkm": 76.862,
+          "net_onshore_sqkm": 76.862,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        },
+        {
+          "company_name": "Texas-Tickalara Energy Partners LP",
+          "company_acronym": "TX TICKALA",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "Yes",
+          "interests_pct": 20.73546,
+          "operator_name": "Texas-Tickalara Holdings LP",
+          "operator_flag": "N",
+          "total_sqkm": 590.07,
+          "total_net_sqkm": 122.354,
+          "net_onshore_sqkm": 122.354,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        },
+        {
+          "company_name": "Texas-Tickalara Holdings LP",
+          "company_acronym": "TX-TICKA H",
+          "company_type": "Privately owned",
+          "business_activity": "E/P Co.",
+          "international_flag": "Yes",
+          "interests_pct": 17.82609,
+          "operator_name": "Texas-Tickalara Holdings LP",
+          "operator_flag": "Y",
+          "total_sqkm": 590.07,
+          "total_net_sqkm": 105.186,
+          "net_onshore_sqkm": 105.186,
+          "net_shelf_sqkm": "",
+          "net_deep_sqkm": ""
+        }
+      ],
+      "locations": [
+        {
+          "onshore_offshore": "Onshore",
+          "terrains": "Land",
+          "block_sqkm": 590.07,
+          "onshore_sqkm": 590.07,
+          "shelf_sqkm": "",
+          "deep_water_sqkm": "",
+          "min_water_depth_meter": "",
+          "median_water_depth_meter": "",
+          "max_water_depth_meter": "",
+          "main_fss_zone": "Queensland",
+          "main_political_province": "Queensland",
+          "approx_latitude_dec_deg": -28.073479,
+          "approx_longitude_dec_deg": 142.209572
+        }
+      ],
+      "outline_summary": {
+        "point_count": 101,
+        "min_latitude": -28.231813,
+        "max_latitude": -27.915144,
+        "min_longitude": 142.017908,
+        "max_longitude": 142.401235,
+        "sample_points": [
+          {
+            "point_number": 1,
+            "latitude_dd": -28.165146,
+            "longitude_dd": 142.017908,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 2,
+            "latitude_dd": -28.165146,
+            "longitude_dd": 142.034575,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 3,
+            "latitude_dd": -28.165146,
+            "longitude_dd": 142.051241,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 4,
+            "latitude_dd": -28.165146,
+            "longitude_dd": 142.067908,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 5,
+            "latitude_dd": -28.165146,
+            "longitude_dd": 142.084574,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 6,
+            "latitude_dd": -28.165146,
+            "longitude_dd": 142.101241,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 7,
+            "latitude_dd": -28.148479,
+            "longitude_dd": 142.101241,
+            "pen_command": "pen down"
+          },
+          {
+            "point_number": 8,
+            "latitude_dd": -28.131813,
+            "longitude_dd": 142.101241,
+            "pen_command": "pen down"
+          }
+        ]
+      }
+    }
+  }
+}

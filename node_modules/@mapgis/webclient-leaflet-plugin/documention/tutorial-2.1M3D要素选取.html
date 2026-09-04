@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> 2.1M3D要素选取</title>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+                <h1> MapGIS Client for JavaScript API</h1>
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/common/api/common-mapgis/index.html"
+                        >
+                            Common
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/cesium/api/cesium-mapgis/index.html"
+                        >
+                            Cesium-Plugin
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/mapboxgl/api/mapboxgl-mapgis/index.html"
+                        >
+                            MapboxGL-Plugin
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/leaflet/api/leaflet-mapgis/index.html"
+                        >
+                            Leaflet-Plugin
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/openlayers/api/openLayers-mapgis/index.html"
+                        >
+                            OpenLayers-Plugin
+                        </a>
+                    
+                        <a
+                            class="link user-link "
+                            href="/static/modules/video/api/video-mapgis/index.html"
+                        >
+                            Video-Plugin
+                        </a>
+                    
+                
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="main">
+        <div
+            class="sidebar tutorials"
+            id="sidebarNav"
+        >
+            <div>
+                <span class="mapgis-api-document-span"><a href="index.html">API文档</a></span>
+            </div>
+            
+                <div class="search-wrapper">
+                    <input id="search" type="text" placeholder="搜索文档..." class="input">
+                </div>
+            
+            <nav>
+                
+                    <div class="category"></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header id="page-title" class="page-title">
+                    <span class="page-title-main">类名</span>
+                    <span class="page-title-sub">2.1M3D要素选取</span>
+                </header>
+                <section>
+
+<header>
+    
+</header>
+
+<article>
+    <h1>M3D</h1>
+<blockquote>
+<p>M3D的加载代码相对比较简单，如下所示</p>
+</blockquote>
+<pre class="prettyprint source lang-javascript"><code>m3dlayer = webGlobe.append(&quot;http://192.168.10.186:6163/igs/rest/g3d/福田钻孔&quot;, {});
+</code></pre>
+<h2>地下模式</h2>
+<p>地下模式的核心是<code>关闭天空盒</code>以及改变透明度以及调整光线角度，同时针对特定模型进行<code>沉降操作</code>已达到对应的地下效果。</p>
+<pre class="prettyprint source lang-javascript"><code>webGlobe.viewer.imageryLayers.removeAll();
+webGlobe.viewer.scene.skyAtmosphere.show = false;
+webGlobe.viewer.scene.globe.enableTransparent = true;
+webGlobe.viewer.scene.globe.baseColor = new Cesium.Color(1, 1, 1, 0.001);
+</code></pre>
+<h2>加载完毕后的回调</h2>
+<pre class="prettyprint source lang-javascript"><code>m3dlayer = webGlobe.append(&quot;http://192.168.10.186:6163/igs/rest/g3d/福田钻孔&quot;, {
+    loaded: function(layer) {
+        // 加载完毕后执行业务逻辑
+    },
+});
+</code></pre>
+<h2>图层的属性</h2>
+<p>M3D的图层属性保持Cesium的3DTIle一致
+<a href="https://cesium.com/docs/cesiumjs-ref-doc/Cesium3DTileset.html?classFilter=3Dtile">Cesium3DTileset</a></p>
+<pre class="prettyprint source lang-javascript"><code>{
+  url: { type: String, required: true },
+  show: { typs: Boolean, default: true },
+
+  /**
+   * @type Cesium.Matrix4
+   * @default Matrix4.IDENTITY
+   */
+  /* modelMatrix: { typs: Object, default: undefined }, */
+  /**
+   * @type Cesium.ShadowMode
+   * @default ShadowMode.ENABLED
+   */
+  /* shadows: { type: Object, default: undefined }, */
+
+  maximumScreenSpaceError: { type: Number, default: 16 },
+  maximumMemoryUsage: { type: Number, default: 512 },
+
+  cullWithChildrenBounds: { typs: Boolean, default: true },
+  cullRequestsWhileMoving: { typs: Boolean, default: true },
+  cullRequestsWhileMovingMultiplier: { type: Number, default: 60.0 },
+
+  preloadWhenHidden: { typs: Boolean, default: false },
+  preloadFlightDestinations: { typs: Boolean, default: true },
+  preferLeaves: { typs: Boolean, default: false },
+
+  dynamicScreenSpaceError: { typs: Boolean, default: false },
+  dynamicScreenSpaceErrorDensity: { type: Number, default: 0.00278 },
+  dynamicScreenSpaceErrorFactor: { type: Number, default: 4.0 },
+  dynamicScreenSpaceErrorHeightFalloff: { type: Number, default: 0.25 },
+
+  progressiveResolutionHeightFraction: { type: Number, default: 0.3 },
+
+  foveatedScreenSpaceError: { typs: Boolean, default: true },
+  foveatedConeSize: { type: Number, default: 0.1 },
+  foveatedMinimumScreenSpaceErrorRelaxation: { type: Number, default: 0.0 },
+  /**
+   * @type Cesium3DTileset~foveatedInterpolationCallback
+   * @default Cesium.Math.lerp
+   */
+  /* foveatedInterpolationCallback: { type: Function, default: undefined }, */
+  foveatedTimeDelay: { type: Number, default: 0.2 },
+
+  skipLevelOfDetail: { typs: Boolean, default: false },
+  baseScreenSpaceError: { type: Number, default: 1024 },
+  skipScreenSpaceErrorFactor: { type: Number, default: 16 },
+  skipLevels: { type: Number, default: 1 },
+
+  immediatelyLoadDesiredLevelOfDetail: { typs: Boolean, default: false },
+  loadSiblings: { typs: Boolean, default: false },
+
+  /**
+   * @type Cesium.ClippingPlaneCollection
+   */
+  /* clippingPlanes: { typs: Object, default: undefined }, */
+  /**
+   * @type Cesium.ClassificationType
+   */
+  /* classificationType: { typs: Object, default: undefined }, */
+  /**
+   * @type Cesium.Ellipsoid
+   * @default Ellipsoid.WGS84
+   */
+  /* ellipsoid: { typs: Object, default: undefined }, */
+
+  /* pointCloudShading: { typs: Object, default: undefined }, */
+  /**
+   * @type Cartesian2
+   * @default new Cartesian2(1.0, 1.0)
+   */
+  /* imageBasedLightingFactor: { typs: Object, default: undefined }, */
+  /**
+   * @type Cartesian3
+   */
+  /* lightColor: { typs: Object, default: undefined }, */
+  luminanceAtZenith: { type: Number, default: 0.2 },
+  /**
+   * @type Array.&lt;Cartesian3>
+   */
+  /* sphericalHarmonicCoefficients: { type: Array, default: undefined }, */
+  specularEnvironmentMaps: { type: String, default: &quot;&quot; },
+
+  debugHeatmapTilePropertyName: { type: String, default: &quot;&quot; },
+  debugFreezeFrame: { typs: Boolean, default: false },
+  debugColorizeTiles: { typs: Boolean, default: false },
+  debugWireframe: { typs: Boolean, default: false },
+  debugShowBoundingVolume: { typs: Boolean, default: false },
+  debugShowContentBoundingVolume: { typs: Boolean, default: false },
+  debugShowViewerRequestVolume: { typs: Boolean, default: false },
+  debugShowGeometricError: { typs: Boolean, default: false },
+  debugShowRenderingStatistics: { typs: Boolean, default: false },
+  debugShowMemoryUsage: { typs: Boolean, default: false },
+  debugShowUrl: { typs: Boolean, default: false }
+}
+</code></pre>
+<h2>分层预览原理</h2>
+<ol>
+<li>
+<p>通过平台选取对应的某一层的地物的id，并将其记录进一个数组中：</p>
+<pre class="prettyprint source lang-javascript"><code>var layer1Ids = [1, 13, 23, 35, 46, 68];
+var layer2Ids = [2, 14, 24, 27, 41, 57, 65, 70, 78];
+var layer3Ids = [11, 15, 21, 33, 44, 66, 79];
+var layer4Ids = [12, 22, 34, 45, 67, 80];
+var layerIdList = [layer1Ids, layer2Ids, layer3Ids, layer4Ids];
+</code></pre>
+</li>
+<li>
+<p>当需要显示某一层的时候，通过自定义显示的方式来控制对应的图层开关</p>
+<pre class="prettyprint source lang-javascript"><code>var layerIds = layerIdList[index];
+webGlobe.stopCustomDisplay(m3dlayer);
+webGlobe.startCustomDisplay(m3dlayer, layerIds, {
+     colorBlendMode: Cesium.Cesium3DTileColorBlendMode.MIX,
+     color: new Cesium.Color(1, 1, 1, 0.0),
+     //applyForLayer: true,
+     negate: true,
+ });
+</code></pre>
+</li>
+</ol>
+<blockquote>
+<p>本例的注记是通过一个高度注记 + 高度虚线共同组成实现的</p>
+</blockquote>
+</article>
+
+</section>
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>文档生成<a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="http://www.smaryun.com" target="_blank">司马云</a> <span>© 2023 云生态圈</span>
+                        <a href="http://webclient.smaryun.com:8086/#/index" target="_blank">MapGIS Client for JavaScript</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+            <div style="margin-bottom: 10px;">
+                <img style="vertical-align: middle;margin-right: 10px;width: 30px;" src="./styles/anchor.png"/><a href="#page-title">构造函数</a>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <img style="vertical-align: middle;margin-right: 10px;width: 30px;" src="./styles/anchor.png"/><a href="#member">成员变量</a>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <img style="vertical-align: middle;margin-right: 10px;width: 30px;" src="./styles/anchor.png"/><a href="#function">方法</a>
+            </div>
+            <div>
+                <img style="vertical-align: middle;margin-right: 10px;width: 30px;" src="./styles/anchor.png"/><a href="#event">事件</a>
+            </div>
+        </div>
+    </div>
+<script src="scripts/linenumber.js"> </script>
+
+<script src="scripts/search.js"> </script>
+
+</body>
+</html>

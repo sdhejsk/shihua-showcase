@@ -1,0 +1,77 @@
+{
+  "modules": [
+    {
+      "name": "数据接入中心",
+      "status": "规划扩展",
+      "owner": "数据组",
+      "description": "统一接入测井 CSV、构造基础表、GeoJSON/Shapefile 和后续数据库表。",
+      "inputs": ["测井曲线", "构造边界", "基础属性表"],
+      "outputs": ["标准化数据集", "数据质量报告"]
+    },
+    {
+      "name": "空间图层服务",
+      "status": "原型完成",
+      "owner": "GIS 组",
+      "description": "先用本地 GeoJSON 保底展示，后续通过 GeoServer 或 MapGIS IGServer 发布 WMS/WFS。",
+      "inputs": ["QGIS 整理成果", "构造边界", "井位点"],
+      "outputs": ["WMS 图层", "WFS 要素服务"]
+    },
+    {
+      "name": "测井分析看板",
+      "status": "原型完成",
+      "owner": "前端组",
+      "description": "展示井位、测井曲线、岩性解释和关键曲线指标，支持按井切换。",
+      "inputs": ["well_logs.csv", "wells.geojson"],
+      "outputs": ["曲线图", "样例表格", "井位弹窗"]
+    },
+    {
+      "name": "构造基础库",
+      "status": "待专家确认",
+      "owner": "业务组",
+      "description": "维护盆地、一级构造、二级构造、区块、层系和资源潜力等基础字段。",
+      "inputs": ["专家模板", "历史资料", "MapGIS 属性表"],
+      "outputs": ["50 字段基础表", "属性映射规范"]
+    },
+    {
+      "name": "会议汇报工作台",
+      "status": "原型完成",
+      "owner": "项目组",
+      "description": "汇总阶段成果、问题清单、需协调事项和下一步计划，服务专题推进会展示。",
+      "inputs": ["进展清单", "PPT 提纲", "系统截图"],
+      "outputs": ["会议展示页", "PPT 素材"]
+    },
+    {
+      "name": "后端接口服务",
+      "status": "骨架完成",
+      "owner": "后端组",
+      "description": "当前提供静态资源接口，后续演进为 Spring Boot + 数据库 + 权限 + MapGIS 服务代理。",
+      "inputs": ["CSV/JSON 资源", "数据库表", "外部图层服务"],
+      "outputs": ["REST API", "统一数据服务"]
+    }
+  ],
+  "dataQuality": [
+    {"name": "真实测井数据", "level": "高风险", "progress": 35, "action": "协调数据责任方提供脱敏样例或真实授权数据。"},
+    {"name": "专家基础表模板", "level": "中风险", "progress": 55, "action": "组织字段口径确认会，锁定必填字段和命名规范。"},
+    {"name": "MapGIS 服务环境", "level": "高风险", "progress": 30, "action": "确认授权、服务地址、坐标系和图层发布方式。"},
+    {"name": "会议展示材料", "level": "可控", "progress": 80, "action": "补入原 PPT 背景、技术路线和阶段成果图件。"}
+  ],
+  "roadmap": [
+    {"phase": "第 1 阶段", "title": "演示原型", "window": "当前", "items": ["本地看板", "样例数据", "GeoJSON 地图", "后端接口骨架"]},
+    {"phase": "第 2 阶段", "title": "数据服务化", "window": "1-2 周", "items": ["接入真实数据", "GeoServer/MapGIS 发布图层", "完善 REST API", "字段模板确认"]},
+    {"phase": "第 3 阶段", "title": "工程化改造", "window": "2-4 周", "items": ["Vue 前端工程", "数据库落库", "权限与审计", "多专题扩展"]},
+    {"phase": "第 4 阶段", "title": "生产试运行", "window": "1-2 月", "items": ["性能优化", "数据质量流程", "运维监控", "正式验收材料"]}
+  ],
+  "apiEndpoints": [
+    {"method": "GET", "path": "/api/well-logs", "description": "返回测井 CSV 样例数据。"},
+    {"method": "GET", "path": "/api/structures", "description": "返回构造基础表 JSON。"},
+    {"method": "GET", "path": "/api/progress", "description": "返回会议准备进展和问题清单。"},
+    {"method": "GET", "path": "/api/system-overview", "description": "返回系统模块、质量风险和路线图配置。"},
+    {"method": "GET", "path": "/api/map-layers", "description": "返回地图图层目录和后续服务接入建议。"}
+  ],
+  "layerCatalog": [
+    {"name": "构造范围图层", "type": "Polygon", "source": "data/structures.geojson", "service": "本地 GeoJSON / 后续 WMS"},
+    {"name": "测井井位图层", "type": "Point", "source": "data/wells.geojson", "service": "本地 GeoJSON / 后续 WFS"},
+    {"name": "GeoServer WMS 图层", "type": "Raster/Tile", "source": "http://localhost:8080/geoserver/shihua/wms", "service": "GeoServer WMS"},
+    {"name": "MapGIS IGServer 图层", "type": "待定", "source": "待授权后配置", "service": "MapGIS 服务"}
+  ]
+}

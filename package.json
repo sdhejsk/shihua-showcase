@@ -1,0 +1,13 @@
+{
+  "name": "shihua-mapgis-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "专题进展推进会测井数据与基础构造表展示原型",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@mapgis/webclient-leaflet-plugin": "^17.8.1",
+    "leaflet": "^1.9.4"
+  }
+}
