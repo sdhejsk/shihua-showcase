@@ -14,7 +14,12 @@
 | 数据接入 | `tools/migrate-to-database.cjs` | 扫描源数据，登记资产，解析表格和 Shapefile 并导入数据库。 |
 | 迁移输入 | `data/`、`SHIHUA_SOURCE_ROOT` | 仅在执行迁移时使用，不是运行期数据源。 |
 
-详细的数据实体与存储形式见 [数据库架构说明](docs/database_architecture.md)，从克隆到部署见 [部署与数据接入指南](docs/deployment_guide.md)。
+## 文档索引
+
+| 文档 | 仓库位置 | 用途 |
+| --- | --- | --- |
+| [部署与数据接入指南](docs/deployment_guide.md) | `docs/deployment_guide.md` | 提供给克隆仓库后的部署人员，包含环境配置、数据交接、入库、启动、验收、令牌更换和故障排查。 |
+| [数据库架构说明](docs/database_architecture.md) | `docs/database_architecture.md` | 说明 PostgreSQL/PostGIS、MinIO、核心表、原始资料和 API 边界。 |
 
 ## 本机启动
 
