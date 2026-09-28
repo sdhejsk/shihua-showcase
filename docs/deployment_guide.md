@@ -104,8 +104,8 @@ SHIHUA_SOURCE_ROOT=E:/shihua_data
 POSTGRES_DATA_DIR=E:/shihua-runtime/postgres
 MINIO_DATA_DIR=E:/shihua-runtime/minio
 
-# 在线底图
-TDT_TOKEN=04265e698b77d4fd1d990d5e69d65647
+# 在线底图。请填写部署人员自行申请的天地图令牌。
+TDT_TOKEN=
 ```
 
 重要规则：
@@ -114,7 +114,23 @@ TDT_TOKEN=04265e698b77d4fd1d990d5e69d65647
 - `MINIO_ROOT_USER` 与 `MINIO_ACCESS_KEY` 保持一致；`MINIO_ROOT_PASSWORD` 与 `MINIO_SECRET_KEY` 保持一致。
 - 如果本机端口 `5432`、`9000`、`9001` 或 `5173` 被占用，可以修改对应端口。修改 `POSTGRES_PORT` 后必须同步修改 `DATABASE_URL`。
 - `SHIHUA_SOURCE_ROOT` 指向资料目录的最外层，不是其内部的 `Africa` 子目录。
-- 未取得可用天地图令牌时，可保留示例值；若网络、白名单或应用类型限制导致地图瓦片加载失败，应向天地图申请或替换为该部署环境可用的令牌。
+- 天地图令牌需要由部署人员为目标环境自行申请和填写，不能沿用交付方的个人令牌。
+
+## 4.1 更换天地图令牌
+
+空间总览的在线底图使用天地图 WMTS 服务。令牌会经系统的 `/api/client-config` 下发到浏览器并随瓦片请求使用，因此它应视为可见的客户端访问凭据，而不是服务端私密密码。
+
+部署人员应按以下步骤配置自己的令牌：
+
+1. 在天地图开发者平台为该部署环境申请或创建新的应用令牌，并按天地图要求配置应用类型、域名、IP 白名单或调用配额。
+2. 打开仓库根目录下本机私有的 `.env` 文件，设置 `TDT_TOKEN=<新令牌>`。
+3. 不要把令牌写入 `.env.example`、前端 JavaScript、截图、部署手册或 Git 提交；`.env` 已被 `.gitignore` 排除。
+4. 重启 Node 服务：先在运行 `npm start` 的窗口按 `Ctrl + C`，再重新执行 `npm start`。
+5. 执行 `npm run config:check`，确认输出 `OK  TianDiTu token: configured`，随后刷新空间总览页面并检查底图是否加载。
+
+若地图仍为空白，请确认目标网络能够访问 `*.tianditu.gov.cn`，并在天地图开发者平台检查该令牌的应用类型、白名单和剩余配额。
+
+当前仓库历史中曾出现过交付方令牌；交付方应在天地图开发者平台将其撤销或轮换，并仅在自己的 `.env` 中保存新令牌。
 
 ## 5. 首次启动数据服务
 
