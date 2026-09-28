@@ -10,7 +10,7 @@ services:
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - ./runtime-data/postgres:/var/lib/postgresql/data
+      - ${POSTGRES_DATA_DIR:-./runtime-data/postgres}:/var/lib/postgresql/data
       - ./database/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
@@ -30,4 +30,4 @@ services:
       - "${MINIO_PORT:-9000}:9000"
       - "${MINIO_CONSOLE_PORT:-9001}:9001"
     volumes:
-      - ./runtime-data/minio:/data
+      - ${MINIO_DATA_DIR:-./runtime-data/minio}:/data

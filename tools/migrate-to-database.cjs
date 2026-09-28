@@ -11,7 +11,8 @@ const { uploadFile } = require("../server/data-access/object-store.cjs");
 
 const ROOT = path.resolve(__dirname, "..");
 const LOCAL_DATA_ROOT = path.join(ROOT, "data");
-const SOURCE_DATA_ROOT = path.resolve(process.env.SHIHUA_SOURCE_ROOT || "D:\\shihua_data");
+const sourceRootSetting = String(process.env.SHIHUA_SOURCE_ROOT || "").trim();
+const SOURCE_DATA_ROOT = sourceRootSetting ? path.resolve(sourceRootSetting) : "";
 const args = new Set(process.argv.slice(2));
 const uploadOnly = args.has("--upload-only");
 const uploadObjects = args.has("--upload-objects") || uploadOnly;
@@ -430,8 +431,8 @@ async function run() {
     printUsage();
     return;
   }
-  if (!fs.existsSync(SOURCE_DATA_ROOT)) {
-    throw new Error(`未找到源数据目录：${SOURCE_DATA_ROOT}`);
+  if (!SOURCE_DATA_ROOT || !fs.existsSync(SOURCE_DATA_ROOT)) {
+    throw new Error("未找到源数据目录。请先在 .env 中设置 SHIHUA_SOURCE_ROOT，例如 D:/shihua_data。");
   }
   const client = dryRun ? null : await getPool().connect();
   const assets = new Map();

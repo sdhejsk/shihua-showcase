@@ -1,46 +1,49 @@
-const TDT_TOKEN = "04265e698b77d4fd1d990d5e69d65647";
 const TDT_SUBDOMAINS = ["0", "1", "2", "3", "4", "5", "6", "7"];
 
-function tiandituWmtsUrl(layerCode) {
+function tiandituWmtsUrl(layerCode, token = "") {
   const layerName = layerCode.split("_")[0];
-  return `http://t{s}.tianditu.gov.cn/${layerCode}/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=${layerName}&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=${TDT_TOKEN}`;
+  const key = token ? `&tk=${encodeURIComponent(token)}` : "";
+  return `http://t{s}.tianditu.gov.cn/${layerCode}/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=${layerName}&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}${key}`;
 }
 
 export const DEFAULT_ONLINE_BASEMAP_KEY = "tiandituVector";
 
-export const ONLINE_BASEMAPS = {
+export function getOnlineBasemaps(token = "") {
+  return {
   tiandituImage: {
     name: "天地图影像",
-    baseUrl: tiandituWmtsUrl("img_w"),
-    labelUrl: tiandituWmtsUrl("cia_w"),
+    baseUrl: tiandituWmtsUrl("img_w", token),
+    labelUrl: tiandituWmtsUrl("cia_w", token),
     baseAttribution: "天地图影像底图",
     labelAttribution: "天地图影像注记",
     subdomains: TDT_SUBDOMAINS
   },
   tiandituVector: {
     name: "天地图矢量",
-    baseUrl: tiandituWmtsUrl("vec_w"),
-    labelUrl: tiandituWmtsUrl("cva_w"),
+    baseUrl: tiandituWmtsUrl("vec_w", token),
+    labelUrl: tiandituWmtsUrl("cva_w", token),
     baseAttribution: "天地图矢量底图",
     labelAttribution: "天地图矢量注记",
     subdomains: TDT_SUBDOMAINS
   },
   tiandituTerrain: {
     name: "天地图地形",
-    baseUrl: tiandituWmtsUrl("ter_w"),
-    labelUrl: tiandituWmtsUrl("cta_w"),
+    baseUrl: tiandituWmtsUrl("ter_w", token),
+    labelUrl: tiandituWmtsUrl("cta_w", token),
     baseAttribution: "天地图地形晕渲",
     labelAttribution: "天地图地形注记",
     subdomains: TDT_SUBDOMAINS
   }
-};
-
-export function getOnlineBasemapOptions() {
-  return Object.entries(ONLINE_BASEMAPS).map(([key, item]) => ({ key, name: item.name }));
+  };
 }
 
-export function createOnlineBasemapLayers(LMap, key = DEFAULT_ONLINE_BASEMAP_KEY) {
-  const config = ONLINE_BASEMAPS[key] || ONLINE_BASEMAPS[DEFAULT_ONLINE_BASEMAP_KEY];
+export function getOnlineBasemapOptions() {
+  return Object.entries(getOnlineBasemaps()).map(([key, item]) => ({ key, name: item.name }));
+}
+
+export function createOnlineBasemapLayers(LMap, key = DEFAULT_ONLINE_BASEMAP_KEY, token = "") {
+  const basemaps = getOnlineBasemaps(token);
+  const config = basemaps[key] || basemaps[DEFAULT_ONLINE_BASEMAP_KEY];
   const commonOptions = {
     maxZoom: 18,
     minZoom: 1,

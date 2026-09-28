@@ -1,19 +1,19 @@
 const { Pool } = require("pg");
+const config = require("../config.cjs");
 
 let pool = null;
 
 function getDatabaseUrl() {
-  return process.env.DATABASE_URL
-    || "postgresql://shihua:shihua_dev_password@localhost:5432/shihua";
+  return config.database.url;
 }
 
 function getPool() {
   if (!pool) {
     pool = new Pool({
       connectionString: getDatabaseUrl(),
-      max: Number(process.env.DB_POOL_SIZE || 12),
+      max: config.database.poolSize,
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: Number(process.env.DB_CONNECT_TIMEOUT_MS || 5000),
+      connectionTimeoutMillis: config.database.connectTimeoutMs,
       application_name: "shihua-data-platform"
     });
   }

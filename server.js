@@ -1,6 +1,7 @@
 ﻿const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const config = require("./server/config.cjs");
 const { URL } = require("url");
 const {
   getConfig: getEconomicEvaluationConfig,
@@ -17,14 +18,8 @@ const {
 const { getObjectStream } = require("./server/data-access/object-store.cjs");
 
 const root = __dirname;
-const port = Number(process.env.PORT || 5173);
-// Kept only until the PostGIS migration has completed and been accepted.
-const migrationFallbackEnabled = process.env.MIGRATION_FALLBACK !== "false";
-const igsTarget = {
-  protocol: "http:",
-  hostname: "localhost",
-  port: 8089
-};
+const port = config.http.port;
+const migrationFallbackEnabled = config.http.allowLegacyLocalData;
 const types = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -80,6 +75,11 @@ async function handleApi(req, res) {
   try {
     if (req.method === "GET" && urlPath === "/api/health") {
       sendJson(res, 200, { status: "ok", database: await healthcheck() });
+      return true;
+    }
+
+    if (req.method === "GET" && urlPath === "/api/client-config") {
+      sendJson(res, 200, { basemap: { tiandituToken: config.client.tiandituToken } });
       return true;
     }
 
@@ -156,46 +156,6 @@ async function handleApi(req, res) {
   return false;
 }
 
-function proxyIgs(req, res) {
-  const targetUrl = new URL(req.url, `${igsTarget.protocol}//${igsTarget.hostname}:${igsTarget.port}`);
-
-  const proxyReq = http.request({
-    protocol: igsTarget.protocol,
-    hostname: igsTarget.hostname,
-    port: igsTarget.port,
-    path: `${targetUrl.pathname}${targetUrl.search}`,
-    method: req.method,
-    headers: {
-      ...req.headers,
-      host: `${igsTarget.hostname}:${igsTarget.port}`
-    }
-  }, proxyRes => {
-    const chunks = [];
-    proxyRes.on("data", chunk => {
-      chunks.push(chunk);
-    });
-    proxyRes.on("end", () => {
-      const body = Buffer.concat(chunks);
-      const headers = {
-        ...proxyRes.headers
-      };
-      res.writeHead(proxyRes.statusCode || 502, headers);
-      res.end(body);
-    });
-  });
-
-  proxyReq.setTimeout(180000, () => {
-    proxyReq.destroy(new Error("IGServer proxy timeout"));
-  });
-
-  proxyReq.on("error", error => {
-    res.writeHead(502, { "Content-Type": "application/json; charset=utf-8" });
-    res.end(JSON.stringify({ message: "IGServer proxy error", detail: error.message }));
-  });
-
-  req.pipe(proxyReq);
-}
-
 function sendFile(target, res) {
   fs.readFile(target, (err, data) => {
     if (err) {
@@ -216,11 +176,6 @@ function sendFile(target, res) {
 http.createServer(async (req, res) => {
   if ((req.url || "").startsWith("/api/")) {
     if (await handleApi(req, res)) return;
-  }
-
-  if ((req.url || "").startsWith("/igs/")) {
-    proxyIgs(req, res);
-    return;
   }
 
   const urlPath = decodeURIComponent((req.url || "/").split("?")[0]);

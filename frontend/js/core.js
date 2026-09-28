@@ -29,63 +29,6 @@
   }
 ];
 
-const SAMPLE_WELL_LOGS_CSV = `well_id,well_name,basin,block,longitude,latitude,depth_m,gr_api,rt_ohmm,rhob_gcc,nphi_vv,ac_usft,cal_in,sp_mv,lithology,formation,interpretation
-WELL-SH-001,石化-示例井1,塔里木盆地,塔中北坡,83.6721,40.2154,1200,78,18.6,2.42,0.22,78.4,8.6,-42,粉砂岩,目的层A,含油气显示
-WELL-SH-001,石化-示例井1,塔里木盆地,塔中北坡,83.6721,40.2154,1210,82,21.3,2.39,0.24,80.1,8.5,-45,粉砂岩,目的层A,含油气显示
-WELL-SH-001,石化-示例井1,塔里木盆地,塔中北坡,83.6721,40.2154,1220,95,8.9,2.55,0.18,74.2,8.4,-38,泥质粉砂岩,目的层A,致密层
-WELL-SH-002,石化-示例井2,鄂尔多斯盆地,陕北斜坡,108.9462,38.1743,1560,112,6.2,2.61,0.13,69.5,8.3,-31,泥岩,目的层C,盖层
-WELL-SH-002,石化-示例井2,鄂尔多斯盆地,陕北斜坡,108.9462,38.1743,1580,71,28.4,2.35,0.25,82.8,8.6,-48,细砂岩,目的层D,含油气显示
-WELL-SH-003,石化-示例井3,四川盆地,川中隆起,105.8841,30.6549,2320,49,58.2,2.67,0.08,62.3,8.2,-22,白云岩,目的层E,裂缝性储层
-WELL-SH-003,石化-示例井3,四川盆地,川中隆起,105.8841,30.6549,2340,76,19.5,2.56,0.16,70.9,8.4,-29,灰质白云岩,目的层E,一般储层`;
-
-const FALLBACK_STRUCTURE_TABLE = {
-  records: [
-    { basin_name: "塔里木盆地", first_order_name: "塔中隆起", second_order_name: "塔中北坡", block_name: "塔中北坡示例区", min_longitude: 82.9, max_longitude: 84.4, min_latitude: 39.7, max_latitude: 40.8 },
-    { basin_name: "鄂尔多斯盆地", first_order_name: "陕北斜坡", second_order_name: "延安-靖边区带", block_name: "陕北斜坡示例区", min_longitude: 108.1, max_longitude: 109.8, min_latitude: 37.6, max_latitude: 38.7 },
-    { basin_name: "四川盆地", first_order_name: "川中隆起", second_order_name: "川中北部构造带", block_name: "川中隆起示例区", min_longitude: 105.2, max_longitude: 106.5, min_latitude: 30.1, max_latitude: 31.0 }
-  ]
-};
-
-const FALLBACK_MAP_SERVICE_CONFIG = {
-  serviceMode: "mapgis-igs",
-  enabled: false,
-  serviceName: "MapGIS IGServer",
-  igs: {
-    baseUrl: "/igs/rest/services",
-    outSrs: "EPSG:4326",
-    wells: { serviceName: "wells", layerId: "0", outFields: ["objectid", "well_name", "country", "basin_name", "operator", "class", "tch_stat", "td_m", "tvd_meter", "wel_id", "lat_dec", "long_dec"] },
-    basins: { serviceName: "main_basins", layerId: "0", outFields: ["objectid", "basin_name", "countries", "prt_bsn_nm", "king_class", "bs_skm", "bs_dp_wat"] },
-    contractBlocks: { serviceName: "contract_blocks", layerId: "0", outFields: ["objectid", "block_name", "contract", "country", "bas_names", "operator", "con_status", "blk_status", "blk_sqkm", "ons_off", "terrains", "province", "min_wd_mt", "med_wd_mt", "max_wd_mt", "app_date", "exp_date", "group", "grp_name"] },
-    fields: { serviceName: "fields", layerId: "0", outFields: ["objectid", "field_name", "countries", "basin_name", "opr_curr", "prod_stat", "hc_type", "field_type", "wd_max_m", "fie_id", "lat_dec", "long_dec"] }
-  }
-};
-
-const FALLBACK_SYSTEM_OVERVIEW = {
-  modules: [
-    { name: "空间服务发布", status: "已接入", owner: "GIS 组", description: "提供盆地、区块、井位与油气田要素服务。", inputs: ["Wells.shp", "Main_Basins.shp", "Valid_Contract_Blocks.shp", "Fields.shp"], outputs: ["井位服务", "盆地服务", "区块服务", "油气田服务"] },
-    { name: "井资料工作台", status: "已接入", owner: "前端组", description: "查看井档案、井史、专题表和曲线。", inputs: ["井位服务", "井表 Excel", "well_logs.csv"], outputs: ["井对象视图", "样例曲线区"] },
-    { name: "区块工作台", status: "已接入", owner: "业务组", description: "查看区块边界、状态、面积与水深。", inputs: ["Valid_Contract_Blocks.shp", "区块 Excel"], outputs: ["区块图层", "区块名录"] },
-    { name: "油气田工作台", status: "已接入", owner: "业务组", description: "查看油气田位置、资源属性、生产摘要和公司权益。", inputs: ["Fields.shp", "Field Excel"], outputs: ["油气田对象", "油气田详情"] },
-    { name: "评价算法模块", status: "已重构", owner: "业务组", description: "围绕非洲油气田经济评价流程提供参数输入、筛选条件和后端实时计算。", inputs: ["非洲油气田 CSV", "非洲合同区块服务", "非洲盆地服务", "油气田井证据字段"], outputs: ["资源基础结果", "生产状态结果", "工程成本结果", "商业条件结果", "经济评价分级"] }
-  ],
-  dataQuality: [],
-  roadmap: [],
-  apiEndpoints: [],
-  layerCatalog: []
-};
-
-const FALLBACK_DATA_INVENTORY = {
-  well_tables: {},
-  basin_tables: {},
-  block_tables: {},
-  contract_tables: {},
-  field_tables: {}
-};
-
-const FALLBACK_REGIONAL_STORIES = {
-  stories: []
-};
-
 export function unique(values) {
   return [...new Set(values)];
 }
@@ -1232,11 +1175,15 @@ export function getWellOptions(state) {
 }
 
 export async function loadAfricaIndex() {
+  return loadJson("../api/africa/index");
+}
+
+export async function loadClientConfig() {
   try {
-    return await loadJson("../api/africa/index");
+    return await loadJson("../api/client-config");
   } catch (error) {
-    console.warn("数据库索引暂不可用，使用迁移期间的只读数据副本。", error);
-    return loadJson("../data/africa_integrated_index.json");
+    console.warn("公开前端配置暂不可用，使用无令牌底图配置。", error);
+    return { basemap: { tiandituToken: "" } };
   }
 }
 
@@ -1628,54 +1575,12 @@ export async function getIgsLayerTotalCounts(state) {
 
 export async function loadPlatformState(options = {}) {
   const includeMapLayers = options.includeMapLayers !== false;
-  try {
-    const platformState = await loadJson("../api/platform-state");
-    const mapLayerState = includeMapLayers
-      ? await loadDatabaseMapLayers(platformState)
-      : unloadedMapLayerState();
-    return {
-      ...platformState,
-      ...mapLayerState
-    };
-  } catch (error) {
-    console.warn("数据库暂不可用，使用迁移期间的只读数据副本。", error);
-    return loadTransitionPlatformState(includeMapLayers);
-  }
-}
-
-async function loadTransitionPlatformState(includeMapLayers) {
-  const [csvText, structure, overview, serviceConfig, wellProfiles, wellTables, basinData, blockData, contractData, fieldData, dataInventory, regionalStories] = await Promise.all([
-    loadText("../data/well_logs.csv"),
-    loadJson("../data/structure_base_table.json"),
-    loadJson("../data/system_overview.json"),
-    loadJson("../data/map_service_config.json"),
-    loadJson("../data/well_excel_profiles.json"),
-    loadJson("../data/well_integrated_tables.json"),
-    loadJson("../data/basin_integrated_tables.json"),
-    loadJson("../data/block_integrated_tables.json"),
-    loadJson("../data/contract_integrated_tables.json"),
-    loadJson("../data/field_integrated_tables.json"),
-    loadJson("../data/data_inventory.json"),
-    loadJson("../data/regional_story_africa.json")
-  ]);
-  const logs = parseCsv(csvText);
+  const platformState = await loadJson("../api/platform-state");
   const mapLayerState = includeMapLayers
-    ? await loadMapLayers(structure, logs, serviceConfig)
+    ? await loadDatabaseMapLayers(platformState)
     : unloadedMapLayerState();
   return {
-    logs,
-    structure,
-    overview,
-    serviceConfig,
-    wellProfiles,
-    wellTables,
-    basinData,
-    blockData,
-    contractData,
-    fieldData,
-    dataInventory,
-    regionalStories,
-    migrationMode: "read-only-fallback",
+    ...platformState,
     ...mapLayerState
   };
 }

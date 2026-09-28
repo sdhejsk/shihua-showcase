@@ -1,51 +1,58 @@
 # 石化海外油气数据评价协同平台
 
-本工程已从静态展示原型切换为数据库优先的全栈实现。运行期数据仅通过后端 API 获取：结构化业务资料、经济评价和空间对象来自 PostgreSQL/PostGIS；PDF、Excel、Shapefile 等原始文件由 MinIO 对象存储管理。
+这是一个数据库优先的全栈系统。浏览器只调用 Node.js 提供的同域 `/api/*`；Node 服务负责访问 PostgreSQL/PostGIS、MinIO 和经济评价引擎。运行期不会读取仓库中的 `data/` 文件，也不依赖 MapGIS Server。
 
-`data/` 与 `D:\shihua_data` 是迁移输入，不是前端或评价服务的运行期数据源。
+## 系统结构
 
-## 数据底座
+| 层级 | 目录/服务 | 职责 |
+| --- | --- | --- |
+| 前端 | `frontend/` | 数据概览、对象资料、空间地图、评价流程和方法库。 |
+| API 与业务 | `server.js`、`server/` | REST API、数据访问边界、经济评价计算。 |
+| 关系与空间数据 | PostgreSQL + PostGIS | 业务对象、专题行、空间几何、评价记录。 |
+| 原始文件 | MinIO | PDF、Excel、Shapefile 及其 `.shp/.shx/.dbf/.prj/.cpg` 附属文件。 |
+| 数据库初始化 | `database/init/` | PostGIS 扩展、Schema、索引和表定义。 |
+| 数据接入 | `tools/migrate-to-database.cjs` | 扫描源数据，登记资产，解析表格和 Shapefile 并导入数据库。 |
+| 迁移输入 | `data/`、`SHIHUA_SOURCE_ROOT` | 仅在执行迁移时使用，不是运行期数据源。 |
 
-- PostgreSQL + PostGIS：盆地、区块、合同、油气田、井、空间几何、测井曲线、专题表和评价运行记录。
-- MinIO：PDF、Excel、Shapefile 及其他原始资料本体。
-- Node.js 数据 API：统一提供基础状态、区域统计、PostGIS GeoJSON、文档下载与经济评价接口。
+详细的数据实体与存储形式见 [数据库架构说明](docs/database_architecture.md)，从克隆到部署见 [部署与数据接入指南](docs/deployment_guide.md)。
 
-完整表结构、导入策略和接口说明见 [数据库架构说明](docs/database_architecture.md)。
+## 本机启动
 
-## 首次启动
-
-前置条件：Docker Desktop 已启动，Node.js 已安装。
+前置条件：Docker Desktop 已启动，Node.js 已安装。首次启动前创建本机配置：
 
 ```powershell
 Copy-Item .env.example .env
+notepad .env
 npm install
 npm run db:up
+```
+
+在 `.env` 中至少设置 `SHIHUA_SOURCE_ROOT` 为完整源数据根目录。需要重新构建数据库时执行：
+
+```powershell
 npm run db:migrate
 npm start
 ```
 
-访问 `http://localhost:5173/frontend/index.html`。
+访问 `http://localhost:5173/frontend/index.html`。若已有恢复好的数据库与对象存储，跳过 `npm run db:migrate` 即可。
 
-迁移会扫描当前 `data/` 和 `D:\shihua_data`，登记全部来源资产、导入 CSV/Excel、将四份 Shapefile 转换并写入 PostGIS。默认只登记原始文件元数据与校验和；需要把原始文件本体上传到 MinIO 时执行：
-
-```powershell
-npm run db:migrate -- --upload-objects
-```
-
-这一步会处理约 3,200 份 PDF，请预留足够磁盘空间和执行时间。
-
-## 校验命令
+## 日常命令
 
 ```powershell
-npm run db:validate
+npm run db:up
+npm start
 npm run db:health
+npm run config:check
+npm run config:check -- --migration
+npm run db:down
 ```
 
-`db:validate` 不连接数据库，用于检查迁移器是否能扫描当前全部来源目录；`db:health` 检查 Node API 与 PostgreSQL/PostGIS 的连通性。
+`runtime-data/` 是 Docker 的本机持久化目录，默认不提交 Git。可在 `.env` 通过 `POSTGRES_DATA_DIR` 和 `MINIO_DATA_DIR` 指向 D 盘或服务器挂载盘。
 
 ## 主要 API
 
 - `GET /api/health`
+- `GET /api/client-config`
 - `GET /api/platform-state`
 - `GET /api/africa/index`
 - `GET /api/spatial/{basins|contract_blocks|fields|wells}`
@@ -54,4 +61,4 @@ npm run db:health
 - `GET /api/evaluation/economic/config`
 - `POST /api/evaluation/economic/run`
 
-为防止回退到本地文件读取，`/data/*` 和 `/source-data/*` 均会被服务端拒绝。
+`/data/*` 与 `/source-data/*` 默认返回 `410`，防止前端或业务逻辑重新绕过数据库读取本地文件。

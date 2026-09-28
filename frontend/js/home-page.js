@@ -58,26 +58,22 @@ function renderArchitecture(root, state) {
   root.insertAdjacentHTML("beforeend", `
     <section class="content-section content-grid">
       <article class="content-card">
-        <h3>当前数据构成</h3>
+        <h3>数据底座与读取边界</h3>
         <ul class="plain-list">
-          <li>盆地范围：MapGIS 发布的 <code>main_basins</code> 要素服务</li>
-          <li>合同区块：MapGIS 发布的 <code>contract_blocks</code> 要素服务</li>
-          <li>区块专题资料：General、History、Locations、Outlines、Scheduled Events、Company Interests</li>
-          <li>合同资料：General、History、Locations、Scheduled Events、Company Interests、Commitments、Bibliography、Related Blocks</li>
-          <li>油气田对象：MapGIS 发布的 <code>fields</code> 要素服务</li>
-          <li>油气田专题资料：17 张 field 专题表已整合为统一对象资料</li>
-          <li>井位点：MapGIS 发布的 <code>wells</code> 要素服务</li>
-          <li>井基础资料：Excel 整理后的井档案摘要</li>
-          <li>曲线区：当前保留样例曲线</li>
-          <li>空间图层：进入数据信息模块的空间总览后按需读取 PostGIS 数据库</li>
+          <li>PostgreSQL：对象档案、专题表、测井序列、评价参数与评价运行记录</li>
+          <li>PostGIS：盆地、合同区块、油气田和井位的属性与几何，按需输出 GeoJSON</li>
+          <li>MinIO：PDF、Excel、Shapefile 及其附属文件的原件；数据库仅保存目录和对象键</li>
+          <li>Node 数据 API：前端唯一的数据入口，负责查询、空间筛选、文件下载和评价计算</li>
+          <li>空间总览：先加载小图层，井位按批次读取；全量井位由用户在地图中显式触发</li>
         </ul>
       </article>
       <article class="content-card">
-        <h3>当前模块分工</h3>
+        <h3>业务模块分工</h3>
         <ul class="plain-list">
-          <li>数据信息模块：统一查看盆地、区块、油气田、井位、曲线和目录</li>
-          <li>评价算法模块：输入评价参数、执行计算，并查看排序结果、分项得分和解释</li>
-          <li>服务状态：接口、图层、资料文件检查</li>
+          <li>数据概览：数据规模、模块入口与数据底座说明</li>
+          <li>数据信息模块：空间总览、对象资料、区域专题和资料目录</li>
+          <li>评价算法模块：经济评价流程与评价方法库；计算由后端使用库内数据执行</li>
+          <li>服务状态：API、图层数量、资料清单与数据治理待办</li>
         </ul>
       </article>
     </section>
@@ -94,7 +90,7 @@ function renderLoadingHome(root) {
       <div class="section-heading">
         <div>
           <h3>数据加载中</h3>
-          <p>正在读取本地整理表和模块配置；空间图层进入地图工作区后再读取。</p>
+          <p>正在通过平台数据 API 读取数据库中的对象资料与模块配置；空间图层进入地图工作区后再读取。</p>
         </div>
       </div>
       <div class="module-grid module-grid--wide">
@@ -173,7 +169,7 @@ async function init() {
     currentKey: "overview",
     heroTitle: "数据概览",
     heroDesc: "查看当前接入的数据对象、专题资料和模块入口。",
-    heroMeta: ["MapGIS IGServer", "盆地 / 区块 / 井位"]
+    heroMeta: ["PostgreSQL / PostGIS", "盆地 / 区块 / 井位"]
   });
   const views = renderOverviewWorkspace(root);
   renderLoadingHome(views.platform);

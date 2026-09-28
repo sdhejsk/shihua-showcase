@@ -1,23 +1,24 @@
 const fs = require("fs");
 const { Client } = require("minio");
+const config = require("../config.cjs");
 
 let client = null;
 
 function getObjectStore() {
   if (!client) {
     client = new Client({
-      endPoint: process.env.MINIO_ENDPOINT || "localhost",
-      port: Number(process.env.MINIO_PORT || 9000),
-      useSSL: String(process.env.MINIO_USE_SSL || "false").toLowerCase() === "true",
-      accessKey: process.env.MINIO_ACCESS_KEY || "shihua",
-      secretKey: process.env.MINIO_SECRET_KEY || "shihua_minio_password"
+      endPoint: config.objectStore.endpoint,
+      port: config.objectStore.port,
+      useSSL: config.objectStore.useSSL,
+      accessKey: config.objectStore.accessKey,
+      secretKey: config.objectStore.secretKey
     });
   }
   return client;
 }
 
 function getBucketName() {
-  return process.env.MINIO_BUCKET || "shihua-source-data";
+  return config.objectStore.bucket;
 }
 
 async function ensureBucket() {

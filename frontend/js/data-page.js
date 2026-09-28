@@ -1,4 +1,4 @@
-import { forceRefreshMapLayers, formatNumber, getIgsLayerTotalCounts, getWellOptions, getWellRecords, loadAfricaIndex, loadMapLayersForState, loadPlatformState, loadSpatialLayerBatches, renderShell, safeText, setShellContext, unique } from "./core.js";
+import { forceRefreshMapLayers, formatNumber, getIgsLayerTotalCounts, getWellOptions, getWellRecords, loadAfricaIndex, loadClientConfig, loadMapLayersForState, loadPlatformState, loadSpatialLayerBatches, renderShell, safeText, setShellContext, unique } from "./core.js";
 
 import { DEFAULT_ONLINE_BASEMAP_KEY, createOnlineBasemapLayers, getOnlineBasemapOptions } from "./basemaps.js?v=20260802-diag";
 import { createCanvasPointLayer } from "./canvas-points.js";
@@ -268,7 +268,7 @@ function renderLayerDiagnostics(root, diagnostics = []) {
   const container = root.querySelector("#layerDiagnostics");
   if (!container) return;
   if (!diagnostics.length) {
-    container.innerHTML = renderEmptyCard("等待空间服务", "进入空间总览后，会显示每个 MapGIS 图层的读取数量和耗时。");
+    container.innerHTML = renderEmptyCard("等待空间服务", "进入空间总览后，会显示每个 PostGIS 图层的读取数量和耗时。");
     return;
   }
   container.innerHTML = diagnostics.map(item => `
@@ -1312,7 +1312,7 @@ function renderRegionalStory(root, regionalStories = {}, africaIndex = {}) {
       <h4>${label}</h4>
       <p>${safeText(service?.name)} / ${safeText(service?.geometry)}</p>
       <small>${safeText(service?.path)}</small>
-      <div class="tag-row"><b>${safeText(source?.name)}</b><b>MapGIS IGServer</b></div>
+      <div class="tag-row"><b>${safeText(source?.name)}</b><b>PostgreSQL / PostGIS</b></div>
     </article>
   `).join("");
 
@@ -1469,7 +1469,7 @@ async function init() {
       </div>
       <div class="module-grid module-grid--wide">
         <article class="module-card">
-          <div class="module-head"><span>空间</span><small>MapGIS</small></div>
+          <div class="module-head"><span>空间</span><small>PostGIS</small></div>
           <h3>空间总览</h3>
           <p>加载盆地、区块、油气田和井位图层。</p>
         </article>
@@ -1482,6 +1482,7 @@ async function init() {
     </section>
   `;
   const state = await loadPlatformState({ includeMapLayers: false });
+  const clientConfig = await loadClientConfig();
   const blockProfiles = state.blockData?.profiles || {};
   const blockTables = state.blockData?.tables || {};
   const contractProfiles = state.contractData?.profiles || {};
@@ -2446,10 +2447,10 @@ async function init() {
         setTimeout(() => mapRef.invalidateSize(), 80);
       }
     });
-    map.attributionControl.addAttribution("Leaflet + 天地图；业务图层来自 MapGIS IGServer FeatureServer");
+    map.attributionControl.addAttribution("Leaflet + 天地图；业务图层来自 PostgreSQL/PostGIS");
 
     const onlineBasemapLayers = Object.fromEntries(
-      getOnlineBasemapOptions().map(option => [option.key, createOnlineBasemapLayers(LMap, option.key)])
+      getOnlineBasemapOptions().map(option => [option.key, createOnlineBasemapLayers(LMap, option.key, clientConfig.basemap?.tiandituToken)])
     );
     let onlineBasemap = onlineBasemapLayers[DEFAULT_ONLINE_BASEMAP_KEY];
     let baseMapLayer = onlineBasemap.baseLayer;
@@ -2751,7 +2752,7 @@ async function init() {
     async function ensureMapLayersLoaded() {
       if (mapLayersLoaded || mapLayersLoading) return;
       mapLayersLoading = true;
-      updateMapRuntime("正在从 MapGIS IGServer 读取空间图层...");
+      updateMapRuntime("正在从 PostgreSQL/PostGIS 读取空间图层...");
       try {
         await loadMapLayersForState(state, {
           onRefreshed: () => {
