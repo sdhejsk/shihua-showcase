@@ -18,7 +18,7 @@
     href: "./evaluation.html",
     title: "评价算法模块",
     subtitle: "评价",
-    description: "设置评价参数、执行计算，并查看盆地、区块、油气田和井对象的专业评价结果。"
+    description: "按经济评价流程输入参数、筛选对象，并由后端实时计算阶段结果。"
   },
   {
     key: "services",
@@ -66,7 +66,7 @@ const FALLBACK_SYSTEM_OVERVIEW = {
     { name: "井资料工作台", status: "已接入", owner: "前端组", description: "查看井档案、井史、专题表和曲线。", inputs: ["井位服务", "井表 Excel", "well_logs.csv"], outputs: ["井对象视图", "样例曲线区"] },
     { name: "区块工作台", status: "已接入", owner: "业务组", description: "查看区块边界、状态、面积与水深。", inputs: ["Valid_Contract_Blocks.shp", "区块 Excel"], outputs: ["区块图层", "区块名录"] },
     { name: "油气田工作台", status: "已接入", owner: "业务组", description: "查看油气田位置、资源属性、生产摘要和公司权益。", inputs: ["Fields.shp", "Field Excel"], outputs: ["油气田对象", "油气田详情"] },
-    { name: "评价算法模块", status: "已接入", owner: "业务组", description: "面向盆地、区块、油气田和井对象提供参数录入、计算执行和结果解释。", inputs: ["四类对象服务", "专题资料整合表", "evaluation_models.json"], outputs: ["排序结果", "分项得分", "等级建议"] }
+    { name: "评价算法模块", status: "已重构", owner: "业务组", description: "围绕非洲油气田经济评价流程提供参数输入、筛选条件和后端实时计算。", inputs: ["非洲油气田 CSV", "非洲合同区块服务", "非洲盆地服务", "油气田井证据字段"], outputs: ["资源基础结果", "生产状态结果", "工程成本结果", "商业条件结果", "经济评价分级"] }
   ],
   dataQuality: [],
   roadmap: [],
@@ -302,46 +302,35 @@ export function parseCsv(text) {
 }
 
 async function loadText(path) {
-  try {
-    const response = await fetch(path);
-    if (!response.ok) throw new Error(`无法加载 ${path}`);
-    return response.text();
-  } catch (error) {
-    if (path.includes("well_logs.csv")) return SAMPLE_WELL_LOGS_CSV;
-    throw error;
+  const response = await fetch(path);
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    throw new Error(`无法加载 ${path}: ${response.status}${detail ? ` ${detail}` : ""}`);
   }
+  return response.text();
 }
 
 async function loadJson(path) {
-  try {
-    const response = await fetch(path);
-    if (!response.ok) throw new Error(`无法加载 ${path}`);
-    return response.json();
-  } catch (error) {
-    if (path.includes("structure_base_table.json")) return FALLBACK_STRUCTURE_TABLE;
-    if (path.includes("map_service_config.json")) return FALLBACK_MAP_SERVICE_CONFIG;
-    if (path.includes("system_overview.json")) return FALLBACK_SYSTEM_OVERVIEW;
-    if (path.includes("data_inventory.json")) return FALLBACK_DATA_INVENTORY;
-    if (path.includes("well_excel_profiles.json")) return {};
-    if (path.includes("well_integrated_tables.json")) return {};
-    if (path.includes("basin_integrated_tables.json")) return { profiles: {}, tables: {} };
-    if (path.includes("block_integrated_tables.json")) return { profiles: {}, tables: {} };
-    if (path.includes("contract_integrated_tables.json")) return { profiles: {}, tables: {}, global_tables: {} };
-    if (path.includes("field_integrated_tables.json")) return { profiles: {}, tables: {} };
-    if (path.includes("regional_story_africa.json")) return FALLBACK_REGIONAL_STORIES;
-    if (path.includes("africa_integrated_index.json")) return { summary: {}, services: {}, tables: {}, pdfIndex: { folders: [] }, samples: {} };
-    throw error;
+  const response = await fetch(path);
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    throw new Error(`无法加载 ${path}: ${response.status}${detail ? ` ${detail}` : ""}`);
   }
+  return response.json();
 }
 
 export function renderShell({ currentKey, heroTitle, heroDesc, heroMeta = [] }) {
   const currentModule = MODULES.find(module => module.key === currentKey) || MODULES[0];
-  const navItems = MODULES.map(module => `
+  const navItems = `
+    <div class="main-nav__label">平台工作区</div>
+    ${MODULES.map(module => `
     <a class="main-nav__item ${module.key === currentKey ? "is-active" : ""}" href="${module.href}">
+      <i aria-hidden="true"></i>
       <span>${module.title}</span>
-      <small>${module.subtitle}</small>
     </a>
-  `).join("");
+    `).join("")}
+    <div class="main-nav__context" data-shell-context></div>
+  `;
   const metaItems = heroMeta.map(item => `<span>${item}</span>`).join("");
 
   const spaShell = document.querySelector(".app-shell[data-spa-shell]");
@@ -357,8 +346,10 @@ export function renderShell({ currentKey, heroTitle, heroDesc, heroMeta = [] }) 
     const applyShell = () => {
       const modeTitle = spaShell.querySelector(".mode-card strong");
       const modeSubtitle = spaShell.querySelector(".mode-card small");
+      const workspaceCurrent = spaShell.querySelector("[data-workspace-current]");
       if (modeTitle) modeTitle.textContent = currentModule.title;
       if (modeSubtitle) modeSubtitle.textContent = currentModule.subtitle;
+      if (workspaceCurrent) workspaceCurrent.textContent = currentModule.title;
       spaShell.querySelectorAll(".main-nav__item").forEach(item => {
         item.classList.toggle("is-active", item.dataset.moduleNav === currentKey);
       });
@@ -380,33 +371,47 @@ export function renderShell({ currentKey, heroTitle, heroDesc, heroMeta = [] }) 
     <div class="app-shell">
       <header class="app-header">
         <div class="app-header__brand">
-          <p class="app-eyebrow">Data Workspace</p>
-          <h1>石化地学数据展示平台</h1>
-          <p class="app-header__desc">统一查看盆地、区块、井位和资料服务。</p>
+          <img class="platform-logo" src="./assets/sinopec-logo.svg" alt="中国石化" />
+          <div>
+            <h1>石化海外油气数据评价协同平台</h1>
+            <p class="app-header__desc">Overseas Oil &amp; Gas Data Evaluation Collaboration Platform</p>
+          </div>
         </div>
         <div class="app-header__side">
+          <div class="header-utilities">
+            <span>个人信息</span><i></i><span>问题反馈</span><i></i><span>在线帮助</span>
+          </div>
           <div class="mode-card">
-            <span>当前模块</span>
-            <strong>${currentModule.title}</strong>
-            <small>${currentModule.subtitle}</small>
+            <span>当前模块：</span><strong>${currentModule.title}</strong><small>${currentModule.subtitle}</small>
           </div>
           <div class="hero-tags">${metaItems}</div>
         </div>
       </header>
-      <nav class="main-nav">${navItems}</nav>
-      <main class="page-main">
-        <section class="page-hero">
-          <div>
-            <p class="page-hero__eyebrow">${currentModule.title}</p>
-            <h2>${heroTitle}</h2>
-            <p>${heroDesc}</p>
-          </div>
-        </section>
-        <div id="page-root" class="page-content"></div>
-      </main>
+      <div class="app-workspace">
+        <aside class="main-nav" aria-label="平台模块">${navItems}</aside>
+        <main class="page-main">
+          <div class="workspace-crumb"><span>首页</span><i>/</i><strong data-workspace-current>${currentModule.title}</strong></div>
+          <div id="page-root" class="page-content"></div>
+        </main>
+      </div>
     </div>
   `;
   return document.querySelector("#page-root");
+}
+
+export function getShellContext() {
+  return document.querySelector(".app-shell [data-shell-context]");
+}
+
+export function setShellContext(markup = "") {
+  const context = getShellContext();
+  if (context) context.innerHTML = markup;
+  return context;
+}
+
+export function clearShellContext() {
+  const context = getShellContext();
+  if (context) context.innerHTML = "";
 }
 
 function buildStructuresGeoJson(structure) {
@@ -749,16 +754,10 @@ async function loadMapLayers(structure, logs, serviceConfig, options = {}) {
       error: detail?.error || ""
     });
   };
-  const localStructuresPromise = loadJson("../data/structures.geojson")
-    .then(data => normalizeLocalFeatureCollection(data, "local_basins"))
-    .catch(() => buildStructuresGeoJson(structure));
-  const localWellsPromise = loadJson("../data/wells.geojson")
-    .then(data => normalizeLocalFeatureCollection(data, "local_wells"))
-    .catch(() => buildWellsGeoJson(logs));
+  const localStructuresPromise = Promise.resolve(emptyFeatureCollection("basins_database_required"));
+  const localWellsPromise = Promise.resolve(emptyFeatureCollection("wells_database_required"));
   const localBlocksPromise = Promise.resolve(emptyFeatureCollection("contract_blocks_local"));
-  const localFieldsPromise = loadJson("../data/fields.geojson")
-    .then(data => normalizeLocalFeatureCollection(data, "fields_local"))
-    .catch(() => emptyFeatureCollection("fields_local"));
+  const localFieldsPromise = Promise.resolve(emptyFeatureCollection("fields_database_required"));
 
   if (!serviceConfig.enabled) {
     structuresGeoJson = await localStructuresPromise;
@@ -1233,7 +1232,12 @@ export function getWellOptions(state) {
 }
 
 export async function loadAfricaIndex() {
-  return loadJson("../data/africa_integrated_index.json");
+  try {
+    return await loadJson("../api/africa/index");
+  } catch (error) {
+    console.warn("数据库索引暂不可用，使用迁移期间的只读数据副本。", error);
+    return loadJson("../data/africa_integrated_index.json");
+  }
 }
 
 function unloadedMapLayerState() {
@@ -1245,6 +1249,107 @@ function unloadedMapLayerState() {
     layerSource: "not-loaded",
     layerDiagnostics: []
   };
+}
+
+export async function loadSpatialLayer(layerKey, filters = {}) {
+  const params = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") params.set(key, String(value));
+  });
+  const suffix = params.size ? `?${params.toString()}` : "";
+  return normalizeLocalFeatureCollection(
+    await loadJson(`../api/spatial/${layerKey}${suffix}`),
+    `database_${layerKey}`
+  );
+}
+
+// Fetching all well points in one response makes both JSON parsing and canvas work block the UI.
+// Consumers can render each page as it arrives and cancel by changing shouldContinue().
+export async function loadSpatialLayerBatches(layerKey, options = {}) {
+  const {
+    batchSize = 2000,
+    total = 0,
+    onBatch,
+    shouldContinue,
+    ...filters
+  } = options;
+  const size = Math.max(100, Math.min(Number(batchSize) || 2000, 5000));
+  const features = [];
+  let offset = 0;
+
+  while (!total || offset < total) {
+    if (shouldContinue && !shouldContinue()) {
+      return { type: "FeatureCollection", features, cancelled: true };
+    }
+    const collection = await loadSpatialLayer(layerKey, { ...filters, limit: size, offset });
+    const page = collection.features || [];
+    if (!page.length) break;
+    features.push(...page);
+    offset += page.length;
+    const done = page.length < size || (total > 0 && offset >= total);
+    onBatch?.(collection, { loadedCount: features.length, totalCount: total || null, done, offset });
+    if (done) break;
+    await yieldToBrowser();
+  }
+
+  return { type: "FeatureCollection", features, cancelled: false };
+}
+
+async function loadDatabaseMapLayers(state, options = {}) {
+  const layerDiagnostics = [];
+  const notifyLayerLoaded = typeof options.onLayerLoaded === "function" ? options.onLayerLoaded : null;
+  const notifyBatchLoaded = typeof options.onBatchLoaded === "function" ? options.onBatchLoaded : null;
+  const skipLayer = featureType => Array.isArray(options.skipLayers) && options.skipLayers.includes(featureType);
+  const layers = [
+    { featureType: "basins", apiLayer: "basins", stateKey: "structuresGeoJson", label: "盆地" },
+    { featureType: "blocks", apiLayer: "contract_blocks", stateKey: "blocksGeoJson", label: "合同区块" },
+    { featureType: "fields", apiLayer: "fields", stateKey: "fieldsGeoJson", label: "油气田" },
+    { featureType: "wells", apiLayer: "wells", stateKey: "wellsGeoJson", label: "井位" }
+  ];
+  const mapLayerState = unloadedMapLayerState();
+  mapLayerState.layerSource = "database";
+
+  for (const layer of layers) {
+    if (skipLayer(layer.featureType)) {
+      mapLayerState[layer.stateKey] = state?.[layer.stateKey] || emptyFeatureCollection(`${layer.apiLayer}_skipped`);
+      continue;
+    }
+    const startedAt = performance.now();
+    const collection = await loadSpatialLayer(layer.apiLayer, {
+      mode: "map",
+      limit: layer.featureType === "wells" ? (options.wellLimit || 5000) : 100000
+    });
+    mapLayerState[layer.stateKey] = collection;
+    const detail = {
+      key: `database:${layer.apiLayer}`,
+      featureType: layer.featureType,
+      label: `${layer.label}（PostGIS）`,
+      serviceName: "PostgreSQL/PostGIS",
+      loadedCount: collection.features?.length || 0,
+      requestLimit: 100000,
+      pageCount: 1,
+      durationMs: Math.round(performance.now() - startedAt),
+      hasMore: false,
+      status: "ok",
+      message: "由平台数据 API 从 PostGIS 读取。"
+    };
+    layerDiagnostics.push(detail);
+    if (notifyBatchLoaded) {
+      notifyBatchLoaded(layer.featureType, collection, {
+        loadedCount: detail.loadedCount,
+        totalCount: detail.loadedCount,
+        done: true,
+        sourceLabel: detail.label,
+        sourceServiceName: detail.serviceName
+      });
+    }
+    if (notifyLayerLoaded) {
+      notifyLayerLoaded({ ...mapLayerState, layerDiagnostics: [...layerDiagnostics], ...detail });
+    }
+    await yieldToBrowser();
+  }
+  mapLayerState.layerDiagnostics = layerDiagnostics;
+  return mapLayerState;
 }
 
 async function restoreAllCachedLayers(state, options = {}) {
@@ -1385,29 +1490,7 @@ function verifyLayerCountsInBackground(state, restoredState, options = {}) {
 }
 
 export async function loadMapLayersForState(state, options = {}) {
-  const urlParams = getUrlParams();
-  const noCache = options.useLayerCache === false || urlParams?.get("nocache") === "1";
-  const forceRefresh = options.refreshCache === true || urlParams?.get("refresh") === "1";
-  const useCache = state.serviceConfig?.enabled && !noCache;
-  if (useCache) {
-    await purgeOldLayerCache();
-  }
-  if (useCache) {
-    const restored = await restoreAllCachedLayers(state, options);
-    if (restored.complete) {
-      Object.assign(state, restored.mapLayerState);
-      state.layerSource = "service";
-      state.layerSourceCached = true;
-      const stale = forceRefresh || Date.now() - restored.savedAt > (options.cacheTtlMs ?? LAYER_CACHE_TTL_MS);
-      if (!stale || options.refreshCache === false) {
-        if (!stale) verifyLayerCountsInBackground(state, restored.mapLayerState, options);
-        return state;
-      }
-      refreshMapLayersInBackground(state, options);
-      return state;
-    }
-  }
-  const mapLayerState = await loadMapLayers(state.structure, state.logs, state.serviceConfig, options);
+  const mapLayerState = await loadDatabaseMapLayers(state, options);
   Object.assign(state, mapLayerState);
   state.layerSourceCached = false;
   return state;
@@ -1415,13 +1498,9 @@ export async function loadMapLayersForState(state, options = {}) {
 
 export function forceRefreshMapLayers(state, options = {}) {
   if (state._layerRefreshPromise) return state._layerRefreshPromise;
-  const promise = loadMapLayers(state.structure, state.logs, state.serviceConfig, {
-    ...options,
-    onBatchLoaded: options.onBatchLoaded,
-    onLayerLoaded: options.onLayerLoaded
-  }).then(mapLayerState => {
+  const promise = loadDatabaseMapLayers(state, options).then(mapLayerState => {
     Object.assign(state, mapLayerState);
-    state.layerSource = "service";
+    state.layerSource = "database";
     state.layerSourceCached = false;
     state._layerRefreshPromise = null;
     return state;
@@ -1544,37 +1623,27 @@ export async function queryIgsLayerForFilters(state, featureType, filters = {}, 
 }
 
 export async function getIgsLayerTotalCounts(state) {
-  const counts = { wells: 0, basins: 0, contract_blocks: 0, fields: 0 };
-  const config = state?.serviceConfig;
-  if (!config?.enabled) return counts;
-  const igs = config.igs || {};
-  const outSrs = igs.outSrs || "EPSG:4326";
-  for (const featureType of Object.keys(counts)) {
-    const sources = getIgsLayerSources(igs, featureType);
-    let total = 0;
-    for (const sourceConfig of sources) {
-      try {
-        const response = await loadJson(buildIgsQueryUrl(
-          igs.baseUrl,
-          sourceConfig.serviceName,
-          sourceConfig.layerId || "0",
-          sourceConfig.outFields?.[0] || "objectid",
-          outSrs,
-          "json",
-          { page: 0, pageSize: 1, returnCountOnly: true, returnGeometry: false, returnAttribute: false }
-        ));
-        total += Number(response?.count ?? response?.totalCount ?? 0);
-      } catch (error) {
-        // Count-only is optional; keep total at 0 so progress falls back to loaded-only display.
-      }
-    }
-    counts[featureType] = total;
-  }
-  return counts;
+  return loadJson("../api/spatial/summary");
 }
 
 export async function loadPlatformState(options = {}) {
   const includeMapLayers = options.includeMapLayers !== false;
+  try {
+    const platformState = await loadJson("../api/platform-state");
+    const mapLayerState = includeMapLayers
+      ? await loadDatabaseMapLayers(platformState)
+      : unloadedMapLayerState();
+    return {
+      ...platformState,
+      ...mapLayerState
+    };
+  } catch (error) {
+    console.warn("数据库暂不可用，使用迁移期间的只读数据副本。", error);
+    return loadTransitionPlatformState(includeMapLayers);
+  }
+}
+
+async function loadTransitionPlatformState(includeMapLayers) {
   const [csvText, structure, overview, serviceConfig, wellProfiles, wellTables, basinData, blockData, contractData, fieldData, dataInventory, regionalStories] = await Promise.all([
     loadText("../data/well_logs.csv"),
     loadJson("../data/structure_base_table.json"),
@@ -1589,7 +1658,6 @@ export async function loadPlatformState(options = {}) {
     loadJson("../data/data_inventory.json"),
     loadJson("../data/regional_story_africa.json")
   ]);
-
   const logs = parseCsv(csvText);
   const mapLayerState = includeMapLayers
     ? await loadMapLayers(structure, logs, serviceConfig)
@@ -1607,6 +1675,7 @@ export async function loadPlatformState(options = {}) {
     fieldData,
     dataInventory,
     regionalStories,
+    migrationMode: "read-only-fallback",
     ...mapLayerState
   };
 }

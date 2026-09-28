@@ -1,0 +1,9 @@
+node_modules/
+tmp/
+.tmp-ui-check/
+.tmp-visual/
+runtime-data/
+outputs/data-page-*
+outputs/edge-open-tdt-*
+outputs/mapgis-*
+outputs/tdt-*

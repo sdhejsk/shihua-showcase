@@ -1,4 +1,4 @@
-import { forceRefreshMapLayers, formatNumber, getWellOptions, getWellRecords, loadAfricaIndex, loadMapLayersForState, loadPlatformState, renderShell, safeText, unique } from "./core.js";
+import { forceRefreshMapLayers, formatNumber, getIgsLayerTotalCounts, getWellOptions, getWellRecords, loadAfricaIndex, loadMapLayersForState, loadPlatformState, loadSpatialLayerBatches, renderShell, safeText, setShellContext, unique } from "./core.js";
 
 import { DEFAULT_ONLINE_BASEMAP_KEY, createOnlineBasemapLayers, getOnlineBasemapOptions } from "./basemaps.js?v=20260802-diag";
 import { createCanvasPointLayer } from "./canvas-points.js";
@@ -226,24 +226,29 @@ function renderFilterOptions(root, state) {
   fillSelect("#basinFilter", basinOptions, "全部盆地");
   fillSelect("#contractBlockFilter", blockOptions, "全部区块");
   fillSelect("#operatorFilter", operatorOptions, "全部作业者");
+  root.__refreshDataContext?.();
 }
 
 function renderQuickLocate(root, items, onLocate) {
+  root.__quickLocateState = { items, onLocate };
   const container = root.querySelector("#quickLocateList");
-  if (!items.length) {
-    container.innerHTML = renderEmptyCard("暂无对象", "当前筛选条件下没有可定位对象。");
-    return;
-  }
-  container.innerHTML = items.slice(0, 12).map((item, index) => `
-    <article class="quick-item">
-      <strong>${safeText(item.title)}</strong>
-      <p>${safeText(item.meta)}</p>
-      <button type="button" data-idx="${index}">定位查看</button>
-    </article>
-  `).join("");
-  container.querySelectorAll("button").forEach(button => {
-    button.addEventListener("click", () => onLocate(items[Number(button.dataset.idx)]));
-  });
+  const renderItems = (target, compact = false) => {
+    if (!target) return;
+    if (!items.length) {
+      target.innerHTML = compact ? `<span class="nav-context__empty">暂无可定位对象</span>` : renderEmptyCard("暂无对象", "当前筛选条件下没有可定位对象。");
+      return;
+    }
+    target.innerHTML = items.slice(0, compact ? 8 : 12).map((item, index) => compact
+      ? `<button type="button" class="nav-context__locate" data-idx="${index}"><strong>${safeText(item.title)}</strong><small>${safeText(item.meta)}</small></button>`
+      : `<article class="quick-item"><strong>${safeText(item.title)}</strong><p>${safeText(item.meta)}</p><button type="button" data-idx="${index}">定位查看</button></article>`
+    ).join("");
+    target.querySelectorAll("button").forEach(button => {
+      button.addEventListener("click", () => onLocate(items[Number(button.dataset.idx)]));
+    });
+  };
+
+  renderItems(container);
+  renderItems(document.querySelector("#dataContextQuickLocate"), true);
 }
 
 function formatLayerRuntime(diagnostic) {
@@ -293,13 +298,11 @@ function renderServiceInsights(root, basins, wells, blocks, fields, layerSource,
   }, {});
   const topOperator = Object.entries(operatorCounts).sort((a, b) => b[1] - a[1])[0];
 
-  const sourceLabel = layerSource === "service"
-    ? "MapGIS 真实服务"
+  const sourceLabel = layerSource === "database"
+    ? "PostGIS 数据库"
     : layerSource === "not-loaded"
       ? "等待读取"
-      : layerSource === "service-error"
-        ? "MapGIS 服务异常"
-        : "本地数据";
+      : "数据服务异常";
   root.querySelector("#serviceSourceBadge").textContent = sourceLabel;
   root.querySelector("#basinFeatureCount").textContent = `本次读取 ${basins.length} 个`;
   root.querySelector("#blockFeatureCount").textContent = `本次读取 ${blocks.length} 个`;
@@ -1256,10 +1259,10 @@ function renderRegionalStory(root, regionalStories = {}, africaIndex = {}) {
   `).join("");
 
   const storySteps = [
-    "将非洲盆地、区块、油气田和钻井 Shapefile 发布为 MapGIS IGServer FeatureServer。",
-    "前端通过 /igs/rest/services/.../FeatureServer/query 读取空间对象，统一放到地图上浏览。",
-    "把油气田 CSV 和钻井 Excel 整理成 africa_integrated_index.json，用于详情、统计和目录展示。",
-    "把 Basin Monitor PDF 建立目录索引，通过 /source-data/Africa/pdf/... 在平台中打开原始资料。",
+    "将非洲盆地、区块、油气田和钻井 Shapefile 导入 PostGIS，作为统一空间对象底座。",
+    "前端通过 /api/spatial/... 读取空间对象，统一放到地图上浏览。",
+    "把油气田 CSV 和钻井 Excel 迁移为数据库查询记录，用于详情、统计和目录展示。",
+    "把 Basin Monitor PDF 建立数据库目录索引，通过对象存储接口受控访问原始资料。",
     "通过盆地、区块、油气田、井和 PDF 的字段关系形成一个可继续扩展的区域数据闭环。"
   ];
   steps.innerHTML = storySteps.map((step, index) => `
@@ -1355,10 +1358,13 @@ function renderRegionalStory(root, regionalStories = {}, africaIndex = {}) {
 function setupTabs(root, onChange) {
   const buttons = [...root.querySelectorAll("[data-tab-target]")];
   const panels = [...root.querySelectorAll("[data-tab-panel]")];
+  const titleNode = root.querySelector("#dataWorkspaceTitle");
 
   function activate(target) {
     buttons.forEach(button => button.classList.toggle("is-active", button.dataset.tabTarget === target));
     panels.forEach(panel => panel.classList.toggle("is-active", panel.dataset.tabPanel === target));
+    const activeButton = buttons.find(button => button.dataset.tabTarget === target);
+    if (titleNode && activeButton) titleNode.textContent = activeButton.textContent.trim();
     onChange?.(target);
   }
 
@@ -1370,7 +1376,7 @@ function setupTabs(root, onChange) {
   return { activate };
 }
 
-function setupDetailTabs(root) {
+function setupDetailTabs(root, onChange) {
   const controllers = new Map();
   root.querySelectorAll("[data-detail-tabs]").forEach(container => {
     const buttons = [...container.querySelectorAll("[data-detail-tab]")];
@@ -1380,6 +1386,7 @@ function setupDetailTabs(root) {
     function activate(target) {
       buttons.forEach(button => button.classList.toggle("is-active", button.dataset.detailTab === target));
       panels.forEach(panel => panel.classList.toggle("is-active", panel.dataset.detailPanel === target));
+      onChange?.(sectionKey, target);
     }
 
     buttons.forEach(button => {
@@ -1457,7 +1464,7 @@ async function init() {
       <div class="section-heading">
         <div>
           <h3>数据信息正在加载</h3>
-          <p>正在读取本地整理资料；空间图层会在地图工作区按需读取 MapGIS 真实服务。</p>
+          <p>正在通过平台数据 API 读取 PostgreSQL/PostGIS 与对象存储中的资料。</p>
         </div>
       </div>
       <div class="module-grid module-grid--wide">
@@ -1495,31 +1502,39 @@ async function init() {
   }
 
   root.innerHTML = `
-    <section class="content-section">
-      <div class="section-heading">
-        <div>
-          <h3>模块导航</h3>
-          <p>按对象类型切换查看空间、盆地、区块、合同、油气田、井和目录信息。</p>
-        </div>
-      </div>
-      <div class="subnav-tabs">
-        <button type="button" class="subnav-tabs__item" data-tab-target="spatial">空间总览</button>
-        <button type="button" class="subnav-tabs__item" data-tab-target="regional">区域专题</button>
-        <button type="button" class="subnav-tabs__item" data-tab-target="basins">盆地信息</button>
-        <button type="button" class="subnav-tabs__item" data-tab-target="blocks">区块信息</button>
-        <button type="button" class="subnav-tabs__item" data-tab-target="contracts">合同信息</button>
-        <button type="button" class="subnav-tabs__item" data-tab-target="fields">油气田信息</button>
-        <button type="button" class="subnav-tabs__item" data-tab-target="wells">井资料</button>
-        <button type="button" class="subnav-tabs__item" data-tab-target="catalog">数据目录</button>
-      </div>
-    </section>
+    <div class="module-workbench module-workbench--data">
+      <aside class="module-sidebar data-module-sidebar">
+        <div class="module-sidebar__title">基础数据</div>
+        <div class="module-sidebar__group">空间与区域</div>
+        <button type="button" class="module-sidebar__item" data-tab-target="spatial"><i></i>空间总览</button>
+        <button type="button" class="module-sidebar__item" data-tab-target="regional"><i></i>区域专题</button>
+        <div class="module-sidebar__group">对象资料</div>
+        <button type="button" class="module-sidebar__item" data-tab-target="basins"><i></i>盆地信息</button>
+        <button type="button" class="module-sidebar__item" data-tab-target="blocks"><i></i>区块信息</button>
+        <button type="button" class="module-sidebar__item" data-tab-target="contracts"><i></i>合同信息</button>
+        <button type="button" class="module-sidebar__item" data-tab-target="fields"><i></i>油气田信息</button>
+        <button type="button" class="module-sidebar__item" data-tab-target="wells"><i></i>井资料</button>
+        <div class="module-sidebar__group">资料资源</div>
+        <button type="button" class="module-sidebar__item" data-tab-target="catalog"><i></i>数据目录</button>
+      </aside>
+      <section class="module-workbench__content">
+        <div class="module-contextbar"><span>基础数据</span><i>/</i><strong id="dataWorkspaceTitle">空间总览</strong></div>
 
     <section class="data-module-panel" data-tab-panel="spatial">
-      <section class="content-section">
-        <div class="workspace-grid">
-          <aside class="sidebar">
-            <article id="serviceSourceCard" class="content-card">
-              <h3>筛选条件</h3>
+      <section class="content-section spatial-workbench-section">
+        <div class="spatial-workbench">
+          <aside class="spatial-workbench__sidebar">
+            <div class="legacy-pane-title">空间数据浏览</div>
+            <section class="spatial-tree-group">
+              <h3>图层控制</h3>
+              <label><input type="checkbox" id="toggleBaseMap" checked> 在线底图</label>
+              <label><input type="checkbox" id="toggleBasins" checked> 盆地图层</label>
+              <label><input type="checkbox" id="toggleBlocks" checked> 合同区块图层</label>
+              <label><input type="checkbox" id="toggleFields" checked> 油气田图层</label>
+              <label><input type="checkbox" id="toggleWells" checked> 井位图层</label>
+            </section>
+            <article id="serviceSourceCard" class="content-card spatial-filter-card">
+              <h3>查询条件</h3>
               <div class="filter-form">
                 <label><span>关键字</span><input id="searchKeyword" type="text" placeholder="输入井名、盆地名、区块名、油气田名"></label>
                 <label><span>国家</span><select id="countryFilter"></select></label>
@@ -1532,7 +1547,7 @@ async function init() {
                 <button id="resetFilters" type="button" class="button-ghost">重置</button>
               </div>
             </article>
-            <article class="content-card">
+            <article class="content-card spatial-result-card">
               <h3>筛选结果</h3>
               <div class="meta-grid">
                 <span>可见盆地</span><strong id="visibleBasinCount">-</strong>
@@ -1542,64 +1557,65 @@ async function init() {
                 <span>当前检索</span><strong id="activeFilterSummary">未设置</strong>
               </div>
             </article>
-            <article class="content-card">
+            <article class="content-card spatial-locate-card">
               <h3>快速定位</h3>
               <div id="quickLocateList" class="list-stack"></div>
             </article>
           </aside>
-          <div class="map-card">
-            <div class="toolbar-row">
-                <label><input type="checkbox" id="toggleBaseMap" checked> 在线底图</label>
-                <label><input type="checkbox" id="toggleBasins" checked> 盆地图层</label>
-                <label><input type="checkbox" id="toggleBlocks" checked> 合同区块图层</label>
-                <label><input type="checkbox" id="toggleFields" checked> 油气田图层</label>
-                <label><input type="checkbox" id="toggleWells" checked> 井位图层</label>
-                <label>底图
+          <section class="spatial-workbench__main">
+            <div class="spatial-toolstrip">
+              <label>底图
                   <select id="onlineBasemapSelect">
                     ${getOnlineBasemapOptions().map(option => `<option value="${option.key}" ${option.key === DEFAULT_ONLINE_BASEMAP_KEY ? "selected" : ""}>${option.name}</option>`).join("")}
                   </select>
-                </label>
-                <button type="button" id="refreshMapData" class="button-ghost" title="后台重新读取数据，完成后更新显示（不影响当前画面）">刷新数据</button>
-                <button type="button" id="reloadMapData" class="button-ghost" title="清空当前画面，按加载顺序重新展示全部数据">重新加载</button>
-                <span id="mapRuntime"></span>
+              </label>
+              <button type="button" id="loadAllWells" class="button-ghost" title="每批追加 2,000 口井位；加载期间地图仍可操作">分批加载全部井位</button>
+              <button type="button" id="refreshMapData" class="button-ghost" title="后台重新读取数据，完成后更新显示（不影响当前画面）">刷新数据</button>
+              <button type="button" id="reloadMapData" class="button-ghost" title="清空当前画面，按加载顺序重新展示全部数据">重新加载</button>
+              <span id="mapRuntime" class="spatial-runtime"></span>
+            </div>
+            <div class="map-card spatial-map-card">
+              <div id="map" class="map-view"></div>
+            </div>
+            <section class="spatial-information-panel">
+              <div class="legacy-pane-title">对象信息</div>
+              <div class="spatial-information-grid">
+                <article class="spatial-info-block spatial-info-block--selected">
+                  <h3>当前选中对象</h3>
+                  <span class="sidebar-tag" id="selectedFeatureType">未选择</span>
+                  <strong class="sidebar-title" id="selectedFeatureTitle">点击盆地、区块、油气田或井位查看详情</strong>
+                  <div class="meta-grid" id="selectedFeatureMeta"></div>
+                </article>
+                <article class="spatial-info-block">
+                  <h3>对象摘要</h3>
+                  <div class="meta-grid">
+                    <span>代表盆地</span><strong id="highlightBasin">-</strong>
+                    <span>代表区块</span><strong id="highlightBlock">-</strong>
+                    <span>代表油气田</span><strong id="highlightField">-</strong>
+                    <span>代表井位</span><strong id="highlightWell">-</strong>
+                    <span>最大盆地面积</span><strong id="maxBasinArea">-</strong>
+                    <span>活跃作业者</span><strong id="topOperator">-</strong>
+                  </div>
+                </article>
+                <article class="spatial-info-block">
+                  <h3>运行状态</h3>
+                  <div class="meta-grid">
+                    <span>数据来源</span><strong id="serviceSourceBadge">-</strong>
+                    <span>盆地图层</span><strong id="basinFeatureCount">-</strong>
+                    <span>区块图层</span><strong id="blockFeatureCount">-</strong>
+                    <span>油气田图层</span><strong id="fieldFeatureCount">-</strong>
+                    <span>井位图层</span><strong id="wellFeatureCount">-</strong>
+                    <span>覆盖国家</span><strong id="countryCount">-</strong>
+                  </div>
+                </article>
               </div>
-            <div id="map" class="map-view"></div>
-          </div>
-          <aside class="sidebar">
-            <article class="content-card">
-              <h3>当前选中对象</h3>
-              <span class="sidebar-tag" id="selectedFeatureType">未选择</span>
-              <strong class="sidebar-title" id="selectedFeatureTitle">点击盆地、区块、油气田或井位查看详情</strong>
-              <div class="meta-grid" id="selectedFeatureMeta"></div>
-            </article>
-            <article class="content-card">
-              <h3>对象摘要</h3>
-              <div class="meta-grid">
-                <span>代表盆地</span><strong id="highlightBasin">-</strong>
-                <span>代表区块</span><strong id="highlightBlock">-</strong>
-                <span>代表油气田</span><strong id="highlightField">-</strong>
-                <span>代表井位</span><strong id="highlightWell">-</strong>
-                <span>最大盆地面积</span><strong id="maxBasinArea">-</strong>
-                <span>活跃作业者</span><strong id="topOperator">-</strong>
-              </div>
-            </article>
-            <article class="content-card">
-              <h3>运行状态</h3>
-              <div class="meta-grid">
-                <span>数据来源</span><strong id="serviceSourceBadge">-</strong>
-                <span>盆地图层</span><strong id="basinFeatureCount">-</strong>
-                <span>区块图层</span><strong id="blockFeatureCount">-</strong>
-                <span>油气田图层</span><strong id="fieldFeatureCount">-</strong>
-                <span>井位图层</span><strong id="wellFeatureCount">-</strong>
-                <span>覆盖国家</span><strong id="countryCount">-</strong>
-              </div>
-            </article>
-            <article class="content-card">
-              <h3>加载诊断</h3>
-              <div id="layerDiagnostics" class="diagnostic-list"></div>
-              <p class="diagnostic-note">说明：这里显示的是本次页面向 MapGIS 服务读取到的数量，不等同于服务里的全部数据。达到单次上限时，说明后续需要做分页读取或条件筛选。</p>
-            </article>
-          </aside>
+              <article class="spatial-diagnostic-panel">
+                <h3>图层读取状态</h3>
+                <div id="layerDiagnostics" class="diagnostic-list"></div>
+                <p class="diagnostic-note">本次读取的图层数量和耗时仅对应当前页面请求；达到单次上限时，需要进一步增加筛选条件或进行分页读取。</p>
+              </article>
+            </section>
+          </section>
         </div>
       </section>
     </section>
@@ -1612,35 +1628,33 @@ async function init() {
             <p>集中查看非洲区域的空间服务、表格资料、对象样例和 PDF 报告索引。</p>
           </div>
         </div>
-        <div id="regionalStorySummary" class="stats-grid"></div>
-        <div class="data-detail-grid">
-          <article class="content-card">
-            <h3>数据对象</h3>
-            <div id="regionalStoryDatasets" class="tiles-grid"></div>
-          </article>
-          <article class="content-card">
-            <h3>业务关联关系</h3>
-            <div id="regionalStoryRelations" class="tiles-grid"></div>
-          </article>
-        </div>
-        <div class="data-detail-grid">
-          <article class="content-card">
-            <h3>接入链路</h3>
-            <div id="regionalStorySteps" class="list-stack"></div>
-          </article>
-          <article class="content-card">
-            <h3>空间服务发布清单</h3>
-            <div id="regionalPublishChecklist" class="list-stack"></div>
-          </article>
-        </div>
-        <article class="content-card">
-          <h3>对象样例与表格覆盖</h3>
-          <div id="regionalStorySamples"></div>
-        </article>
-        <article class="content-card">
-          <h3>统计摘要与 PDF 资料索引</h3>
-          <div id="regionalPdfFolders" class="tiles-grid"></div>
-        </article>
+        <section class="detail-shell" data-detail-section="regional">
+          <div class="detail-tabbar" data-detail-tabs>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="overview">区域概览</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="access">接入链路</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="samples">对象样例</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="documents">资料索引</button>
+          </div>
+          <section class="detail-tabpanel" data-detail-panel="overview">
+            <div id="regionalStorySummary" class="stats-grid"></div>
+            <div class="data-detail-grid">
+              <article class="content-card"><h3>数据对象</h3><div id="regionalStoryDatasets" class="tiles-grid"></div></article>
+              <article class="content-card"><h3>业务关联关系</h3><div id="regionalStoryRelations" class="tiles-grid"></div></article>
+            </div>
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="access">
+            <div class="data-detail-grid">
+              <article class="content-card"><h3>接入链路</h3><div id="regionalStorySteps" class="list-stack"></div></article>
+              <article class="content-card"><h3>空间服务发布清单</h3><div id="regionalPublishChecklist" class="list-stack"></div></article>
+            </div>
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="samples">
+            <article class="content-card"><h3>对象样例与表格覆盖</h3><div id="regionalStorySamples"></div></article>
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="documents">
+            <article class="content-card"><h3>统计摘要与 PDF 资料索引</h3><div id="regionalPdfFolders" class="tiles-grid"></div></article>
+          </section>
+        </section>
       </section>
     </section>
 
@@ -1654,20 +1668,23 @@ async function init() {
           <label class="inline-select">选择盆地<select id="basinSelect"></select></label>
         </div>
         <section class="detail-shell" data-detail-section="basins">
-          <article id="basinSummaryCard" class="content-card detail-summary">
-            <div>
-              <h3>盆地摘要</h3>
-              <div id="basinProfile" class="profile-grid"></div>
-            </div>
-            <div>
-              <h3>资料概况</h3>
-              <div id="basinReserveTiles" class="tiles-grid"></div>
-            </div>
-          </article>
           <div class="detail-tabbar" data-detail-tabs>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="overview">基础信息</button>
             <button type="button" class="detail-tabbar__item" data-detail-tab="systems">含油气系统</button>
             <button type="button" class="detail-tabbar__item" data-detail-tab="geology">地层与岩性</button>
           </div>
+          <section class="detail-tabpanel" data-detail-panel="overview">
+            <article id="basinSummaryCard" class="content-card detail-summary">
+              <div>
+                <h3>盆地摘要</h3>
+                <div id="basinProfile" class="profile-grid"></div>
+              </div>
+              <div>
+                <h3>资料概况</h3>
+                <div id="basinReserveTiles" class="tiles-grid"></div>
+              </div>
+            </article>
+          </section>
           <section class="detail-tabpanel" data-detail-panel="systems">
             <article id="basinSystemsCard" class="content-card">
               <h3>含油气系统</h3>
@@ -1694,22 +1711,25 @@ async function init() {
           <label class="inline-select">选择区块<select id="blockSelect"></select></label>
         </div>
         <section class="detail-shell" data-detail-section="blocks">
-          <article id="blockSummaryCard" class="content-card detail-summary">
-            <div>
-              <h3>区块摘要</h3>
-              <div id="blockProfile" class="profile-grid"></div>
-            </div>
-            <div>
-              <h3>资料覆盖摘要</h3>
-              <div id="blockCoverageSummary" class="tiles-grid"></div>
-            </div>
-          </article>
           <div class="detail-tabbar" data-detail-tabs>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="overview">基础信息</button>
             <button type="button" class="detail-tabbar__item" data-detail-tab="location">位置概览</button>
             <button type="button" class="detail-tabbar__item" data-detail-tab="history">历史阶段</button>
             <button type="button" class="detail-tabbar__item" data-detail-tab="schedule">计划事件</button>
             <button type="button" class="detail-tabbar__item" data-detail-tab="ownership">公司权益</button>
           </div>
+          <section class="detail-tabpanel" data-detail-panel="overview">
+            <article id="blockSummaryCard" class="content-card detail-summary">
+              <div>
+                <h3>区块摘要</h3>
+                <div id="blockProfile" class="profile-grid"></div>
+              </div>
+              <div>
+                <h3>资料覆盖摘要</h3>
+                <div id="blockCoverageSummary" class="tiles-grid"></div>
+              </div>
+            </article>
+          </section>
           <section class="detail-tabpanel" data-detail-panel="location">
             <article id="blockLocationCard" class="content-card">
               <h3>位置与轮廓摘要</h3>
@@ -1752,22 +1772,25 @@ async function init() {
           <label class="inline-select">选择合同<select id="contractSelect"></select></label>
         </div>
         <section class="detail-shell" data-detail-section="contracts">
-          <article id="contractSummaryCard" class="content-card detail-summary">
-            <div>
-              <h3>合同摘要</h3>
-              <div id="contractProfile" class="profile-grid"></div>
-            </div>
-            <div>
-              <h3>位置与面积</h3>
-              <div id="contractLocationTiles" class="tiles-grid"></div>
-            </div>
-          </article>
           <div class="detail-tabbar" data-detail-tabs>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="overview">基础信息</button>
             <button type="button" class="detail-tabbar__item" data-detail-tab="history">历史阶段</button>
             <button type="button" class="detail-tabbar__item" data-detail-tab="schedule">计划事件</button>
             <button type="button" class="detail-tabbar__item" data-detail-tab="ownership">权益与区块</button>
             <button type="button" class="detail-tabbar__item" data-detail-tab="commitment">承诺与覆盖</button>
           </div>
+          <section class="detail-tabpanel" data-detail-panel="overview">
+            <article id="contractSummaryCard" class="content-card detail-summary">
+              <div>
+                <h3>合同摘要</h3>
+                <div id="contractProfile" class="profile-grid"></div>
+              </div>
+              <div>
+                <h3>位置与面积</h3>
+                <div id="contractLocationTiles" class="tiles-grid"></div>
+              </div>
+            </article>
+          </section>
           <section class="detail-tabpanel" data-detail-panel="history">
             <article id="contractHistoryCard" class="content-card">
               <h3>历史阶段</h3>
@@ -1813,32 +1836,45 @@ async function init() {
           </div>
           <label class="inline-select">选择油气田<select id="fieldSelect"></select></label>
         </div>
-        <div class="content-grid content-grid--logs">
-          <div class="column-stack">
+        <section class="detail-shell" data-detail-section="fields">
+          <div class="detail-tabbar" data-detail-tabs>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="overview">基础信息</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="reserves">资源与生产</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="events">事件记录</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="ownership">公司权益</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="supplement">资料覆盖</button>
+          </div>
+          <section class="detail-tabpanel" data-detail-panel="overview">
             <article id="fieldSummaryCard" class="content-card">
               <h3>油气田基础信息</h3>
               <div id="fieldProfile" class="profile-grid"></div>
             </article>
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="reserves">
             <article id="fieldReserveCard" class="content-card">
               <h3>资源与生产摘要</h3>
               <div id="fieldReserveTiles" class="tiles-grid"></div>
             </article>
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="events">
             <article id="fieldEventsCard" class="content-card">
               <h3>事件记录</h3>
               <div id="fieldEvents" class="history-list"></div>
             </article>
-          </div>
-          <div class="column-stack">
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="ownership">
             <article id="fieldOwnershipCard" class="content-card">
               <h3>公司权益</h3>
               <div class="table-wrap" id="fieldCompanyTableWrap"></div>
             </article>
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="supplement">
             <article id="fieldSupplementCard" class="content-card">
               <h3>附加资料摘要</h3>
               <div id="fieldSupplementTiles" class="tiles-grid"></div>
             </article>
-          </div>
-        </div>
+          </section>
+        </section>
       </section>
     </section>
 
@@ -1851,26 +1887,39 @@ async function init() {
           </div>
           <label class="inline-select">选择井<select id="wellSelect"></select></label>
         </div>
-        <div class="content-grid content-grid--logs">
-          <div class="column-stack">
+        <section class="detail-shell" data-detail-section="wells">
+          <div class="detail-tabbar" data-detail-tabs>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="overview">井档案</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="history">井史事件</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="datasets">专题资料</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="curve">测井曲线</button>
+            <button type="button" class="detail-tabbar__item" data-detail-tab="interpretation">解释与采样</button>
+          </div>
+          <section class="detail-tabpanel" data-detail-panel="overview">
             <article id="wellSummaryCard" class="content-card">
               <h3>井档案摘要</h3>
               <div id="wellProfile" class="profile-grid"></div>
             </article>
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="history">
             <article id="wellHistoryCard" class="content-card">
               <h3>井史事件</h3>
               <div id="wellHistory" class="history-list"></div>
             </article>
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="datasets">
             <article id="wellDatasetsCard" class="content-card">
               <h3>井专题资料</h3>
               <div id="wellDatasets" class="tiles-grid"></div>
             </article>
-          </div>
-          <div class="column-stack">
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="curve">
             <article id="wellChartCard" class="content-card">
               <h3>测井曲线</h3>
               <canvas id="logChart" width="900" height="360"></canvas>
             </article>
+          </section>
+          <section class="detail-tabpanel" data-detail-panel="interpretation">
             <article id="wellInsightsCard" class="content-card">
               <h3>曲线解释提示</h3>
               <div id="curveInsights" class="tiles-grid"></div>
@@ -1879,13 +1928,19 @@ async function init() {
               <h3>测井采样表</h3>
               <div class="table-wrap" id="logTableWrap"></div>
             </article>
-          </div>
-        </div>
+          </section>
+        </section>
       </section>
     </section>
 
     <section class="data-module-panel" data-tab-panel="catalog">
-      <section class="content-section">
+      <section class="detail-shell" data-detail-section="catalog">
+        <div class="detail-tabbar" data-detail-tabs>
+          <button type="button" class="detail-tabbar__item" data-detail-tab="directory">对象目录</button>
+          <button type="button" class="detail-tabbar__item" data-detail-tab="coverage">数据覆盖</button>
+        </div>
+        <section class="detail-tabpanel" data-detail-panel="directory">
+          <section class="content-section">
         <div class="section-heading">
           <div>
             <h3>对象目录</h3>
@@ -1936,8 +1991,10 @@ async function init() {
             <tbody id="catalogTableBody"></tbody>
           </table>
         </div>
-      </section>
-      <section class="content-section content-grid">
+          </section>
+        </section>
+        <section class="detail-tabpanel" data-detail-panel="coverage">
+          <section class="content-section content-grid">
         <article class="content-card">
           <h3>系统数据能力</h3>
           <div id="catalogModuleGrid" class="module-grid"></div>
@@ -1946,8 +2003,12 @@ async function init() {
           <h3>资料覆盖</h3>
           <div class="tiles-grid" id="coverageTiles"></div>
         </article>
+          </section>
+        </section>
       </section>
     </section>
+      </section>
+    </div>
   `;
 
   let mapRef = null;
@@ -1973,19 +2034,399 @@ async function init() {
     }
   }
 
+  let currentDataTab = "spatial";
+  const currentDetailTabs = {};
+  let mountDataContext = () => {};
+
   const tabController = setupTabs(root, tabKey => {
+    currentDataTab = tabKey;
     if (tabKey === "spatial" && mapRef) {
       setTimeout(() => mapRef.invalidateSize(), 50);
     }
     if (tabKey === "regional") {
       ensureRegionalStoryLoaded();
     }
+    mountDataContext();
   });
-  const detailController = setupDetailTabs(root);
+  const detailController = setupDetailTabs(root, (sectionKey, detailKey) => {
+    currentDetailTabs[sectionKey] = detailKey;
+    if (sectionKey === currentDataTab) mountDataContext();
+  });
   bindActionCards(root, tabController, detailController);
 
   renderRegionalStory(root, state.regionalStories, {});
   renderFilterOptions(root, state);
+
+  const dataNavigation = [
+    { group: "空间与区域", items: [["spatial", "空间总览"], ["regional", "区域专题"]] },
+    { group: "对象资料", items: [["basins", "盆地信息"], ["blocks", "区块信息"], ["contracts", "合同信息"], ["fields", "油气田信息"], ["wells", "井资料"]] },
+    { group: "资料资源", items: [["catalog", "数据目录"]] }
+  ];
+  const detailNavigation = {
+    regional: [["overview", "区域概览"], ["access", "接入链路"], ["samples", "对象样例"], ["documents", "资料索引"]],
+    basins: [["overview", "基础信息"], ["systems", "含油气系统"], ["geology", "地层与岩性"]],
+    blocks: [["overview", "基础信息"], ["location", "位置概览"], ["history", "历史阶段"], ["schedule", "计划事件"], ["ownership", "公司权益"]],
+    contracts: [["overview", "基础信息"], ["history", "历史阶段"], ["schedule", "计划事件"], ["ownership", "权益与区块"], ["commitment", "承诺与覆盖"]],
+    fields: [["overview", "基础信息"], ["reserves", "资源与生产"], ["events", "事件记录"], ["ownership", "公司权益"], ["supplement", "资料覆盖"]],
+    wells: [["overview", "井档案"], ["history", "井史事件"], ["datasets", "专题资料"], ["curve", "测井曲线"], ["interpretation", "解释与采样"]],
+    catalog: [["directory", "对象目录"], ["coverage", "数据覆盖"]]
+  };
+  const objectNavigation = {
+    basins: { label: "当前盆地", selector: "#basinSelect" },
+    blocks: { label: "当前区块", selector: "#blockSelect" },
+    contracts: { label: "当前合同", selector: "#contractSelect" },
+    fields: { label: "当前油气田", selector: "#fieldSelect" },
+    wells: { label: "当前井", selector: "#wellSelect" }
+  };
+  const objectFilterState = {};
+  const objectSelectorCache = new Map();
+
+  const contextText = value => String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;");
+  const isDataModuleActive = () => {
+    const spaShell = document.querySelector(".app-shell[data-spa-shell]");
+    return !spaShell || document.querySelector('[data-module-nav="data"]')?.classList.contains("is-active");
+  };
+  const renderContextOptions = (source, maxOptions = 800) => {
+    const options = [...(source?.options || [])];
+    const selected = source?.value || "";
+    let visibleOptions = options;
+    if (options.length > maxOptions) {
+      visibleOptions = options.slice(0, maxOptions);
+      const selectedOption = options.find(option => option.value === selected);
+      if (selectedOption && !visibleOptions.includes(selectedOption)) visibleOptions = [...visibleOptions, selectedOption];
+    }
+    return visibleOptions.map(option => `<option value="${contextText(option.value)}" ${option.value === selected ? "selected" : ""}>${contextText(option.textContent)}</option>`).join("");
+  };
+
+  const getObjectFilterState = tabKey => {
+    if (!objectFilterState[tabKey]) {
+      objectFilterState[tabKey] = { country: "", basin: "" };
+    }
+    return objectFilterState[tabKey];
+  };
+  const readFacetValues = value => unique(
+    String(value ?? "")
+      .split(/[~,;/、|]+/)
+      .map(item => item.trim())
+      .filter(Boolean)
+  );
+  const getFeaturePropertyIndex = (features, nameKey) => {
+    const index = new Map();
+    (features || []).forEach(feature => {
+      const properties = feature.properties || {};
+      const name = String(properties[nameKey] || "").trim();
+      if (name && !index.has(name)) index.set(name, properties);
+    });
+    return index;
+  };
+  const getObjectSelectionRecords = tabKey => {
+    const definition = objectNavigation[tabKey];
+    const source = definition ? root.querySelector(definition.selector) : null;
+    if (!definition || !source || !source.options.length) return [];
+
+    const firstValue = source.options[0]?.value || "";
+    const lastValue = source.options[source.options.length - 1]?.value || "";
+    const signature = `${source.options.length}|${firstValue}|${lastValue}`;
+    const cached = objectSelectorCache.get(tabKey);
+    if (cached?.signature === signature) return cached.records;
+
+    const basinFeatures = getFeaturePropertyIndex(state.structuresGeoJson?.features, "basin_name");
+    const blockFeatures = getFeaturePropertyIndex(state.blocksGeoJson?.features, "block_name");
+    const fieldFeatures = getFeaturePropertyIndex(state.fieldsGeoJson?.features, "field_name");
+    const wellFeatures = getFeaturePropertyIndex(state.wellsGeoJson?.features, "well_name");
+
+    const records = [...source.options]
+      .map(option => {
+        const value = String(option.value || "").trim();
+        if (!value) return null;
+        const label = String(option.textContent || value).trim();
+        let profile = {};
+        let properties = {};
+        let country = "";
+        let basin = "";
+
+        if (tabKey === "basins") {
+          profile = basinProfiles[value] || {};
+          properties = basinFeatures.get(value) || {};
+          country = profile.country_names || properties.countries || properties.country;
+          basin = profile.basin_name || properties.basin_name || value;
+        } else if (tabKey === "blocks") {
+          profile = blockProfiles[value] || {};
+          properties = blockFeatures.get(value) || {};
+          country = profile.country_name || properties.country || properties.countries;
+          basin = profile.basin_names || properties.bas_names || properties.basin_name;
+        } else if (tabKey === "contracts") {
+          profile = contractProfiles[value] || {};
+          country = profile.country_name || profile.country_names;
+          basin = profile.basin_names || profile.basin_name;
+        } else if (tabKey === "fields") {
+          profile = fieldProfiles[value] || {};
+          properties = fieldFeatures.get(value) || {};
+          country = profile.country_names || properties.countries || properties.country;
+          basin = profile.basin_name || properties.basin_name;
+        } else if (tabKey === "wells") {
+          const record = wellRecordByName[value] || {};
+          profile = record.profile || state.wellProfiles?.[value] || {};
+          properties = record.feature?.properties || wellFeatures.get(value) || {};
+          country = profile.country || profile.country_name || properties.country || properties.countries;
+          basin = profile.basin_name || properties.basin_name;
+        }
+
+        const countries = readFacetValues(country);
+        const basins = readFacetValues(basin);
+        return {
+          value,
+          label,
+          countries,
+          basins,
+          meta: [countries[0], basins[0]].filter(Boolean).join(" / ")
+        };
+      })
+      .filter(Boolean)
+      .sort((left, right) => left.label.localeCompare(right.label, "zh-Hans-CN"));
+
+    objectSelectorCache.set(tabKey, { signature, records });
+    return records;
+  };
+  const renderFacetOptions = (values, selected, allLabel) => `
+    <option value="">${allLabel}</option>
+    ${values.map(value => `<option value="${contextText(value)}" ${value === selected ? "selected" : ""}>${contextText(value)}</option>`).join("")}
+  `;
+  const renderObjectSelector = tabKey => {
+    const definition = objectNavigation[tabKey];
+    const source = definition ? root.querySelector(definition.selector) : null;
+    if (!definition || !source) return "";
+
+    const records = getObjectSelectionRecords(tabKey);
+    if (!records.length) {
+      return `
+        <details class="nav-tree nav-context__subsection nav-context__subsection--object-filter" open>
+          <summary>对象筛选</summary>
+          <p class="nav-context__empty">${definition.label}列表正在加载。</p>
+        </details>
+      `;
+    }
+
+    const filters = getObjectFilterState(tabKey);
+    const countries = unique(records.flatMap(record => record.countries)).sort((left, right) => left.localeCompare(right, "zh-Hans-CN"));
+    if (filters.country && !countries.includes(filters.country)) filters.country = "";
+    const countryRecords = filters.country
+      ? records.filter(record => record.countries.includes(filters.country))
+      : records;
+    const basins = unique(countryRecords.flatMap(record => record.basins)).sort((left, right) => left.localeCompare(right, "zh-Hans-CN"));
+    if (filters.basin && !basins.includes(filters.basin)) filters.basin = "";
+    const matchedRecords = countryRecords.filter(record => !filters.basin || record.basins.includes(filters.basin));
+    const selectedValue = String(source.value || "");
+    const selectedRecord = records.find(record => record.value === selectedValue);
+    const resultLimit = 250;
+    const visibleRecords = matchedRecords.slice(0, resultLimit);
+    if (selectedRecord && !visibleRecords.some(record => record.value === selectedRecord.value)) {
+      visibleRecords.unshift(selectedRecord);
+    }
+    const currentOutsideFilter = Boolean(selectedRecord && !matchedRecords.some(record => record.value === selectedRecord.value));
+    const resultOptions = visibleRecords.map(record => {
+      const isCurrent = record.value === selectedValue;
+      const prefix = isCurrent && currentOutsideFilter ? "当前：" : "";
+      const suffix = record.meta ? ` · ${record.meta}` : "";
+      return `<option value="${contextText(record.value)}" ${isCurrent ? "selected" : ""}>${contextText(`${prefix}${record.label}${suffix}`)}</option>`;
+    }).join("");
+    const countText = matchedRecords.length > resultLimit
+      ? `匹配 ${matchedRecords.length} 个，已列出前 ${resultLimit} 个`
+      : `匹配 ${matchedRecords.length} 个`;
+    const currentHint = currentOutsideFilter ? "；当前对象保留在结果中" : "";
+
+    return `
+      <details class="nav-tree nav-context__subsection nav-context__subsection--object-filter" open>
+        <summary>对象筛选</summary>
+        <label class="nav-context__field nav-context__field--compact"><span>国家/地区</span><select data-object-filter="${tabKey}" data-object-filter-key="country">${renderFacetOptions(countries, filters.country, "全部国家/地区")}</select></label>
+        <label class="nav-context__field nav-context__field--compact"><span>盆地</span><select data-object-filter="${tabKey}" data-object-filter-key="basin">${renderFacetOptions(basins, filters.basin, "全部盆地")}</select></label>
+        <button type="button" class="nav-context__filter-reset" data-object-filter-reset="${tabKey}">清除筛选</button>
+        <div class="nav-tree__subhead">筛选结果</div>
+        <label class="nav-context__field"><span>${definition.label}</span><select class="nav-context__result-select" data-data-object="${tabKey}">${resultOptions || `<option value="" selected>没有符合条件的对象</option>`}</select></label>
+        <p class="nav-context__selection-meta">${countText}${currentHint}</p>
+      </details>
+    `;
+  };
+  const renderSpatialContext = () => {
+    const layers = [
+      ["#toggleBaseMap", "在线底图"], ["#toggleBasins", "盆地图层"], ["#toggleBlocks", "合同区块图层"], ["#toggleFields", "油气田图层"], ["#toggleWells", "井位图层"]
+    ];
+    const filterFields = [
+      ["#searchKeyword", "关键字", "input"], ["#countryFilter", "国家", "select"], ["#basinFilter", "盆地", "select"], ["#contractBlockFilter", "区块", "select"], ["#operatorFilter", "作业者", "select"]
+    ];
+    return `
+      <details class="nav-tree nav-context__subsection" open>
+        <summary>图层控制</summary>
+        ${layers.map(([selector, label]) => {
+          const source = root.querySelector(selector);
+          return `<label class="nav-context__check"><input type="checkbox" data-spatial-source="${selector}" ${source?.checked ? "checked" : ""} />${label}</label>`;
+        }).join("")}
+      </details>
+      <details class="nav-tree nav-context__subsection" open>
+        <summary>筛选条件</summary>
+        ${filterFields.map(([selector, label, type]) => {
+          const source = root.querySelector(selector);
+          if (type === "select") {
+            return `<label class="nav-context__field"><span>${label}</span><select data-spatial-source="${selector}">${renderContextOptions(source, 400)}</select></label>`;
+          }
+          return `<label class="nav-context__field"><span>${label}</span><input type="search" data-spatial-source="${selector}" value="${contextText(source?.value || "")}" placeholder="名称、盆地或作业者" /></label>`;
+        }).join("")}
+        <div class="nav-context__actions"><button type="button" class="nav-context__action is-primary" data-spatial-action="apply">应用</button><button type="button" class="nav-context__action" data-spatial-action="reset">重置</button></div>
+      </details>
+      <details class="nav-tree nav-context__subsection">
+        <summary>快速定位</summary>
+        <div id="dataContextQuickLocate" class="nav-context__locate-list"></div>
+      </details>
+    `;
+  };
+  const renderCatalogContext = () => {
+    const fields = [
+      ["#catalogKeyword", "关键字", "input"], ["#catalogTypeFilter", "数据类型", "select"], ["#catalogCountryFilter", "国家/地区", "select"], ["#catalogPageSize", "每页条数", "select"]
+    ];
+    return `
+      <details class="nav-tree nav-context__subsection" open>
+        <summary>目录筛选</summary>
+        ${fields.map(([selector, label, type]) => {
+          const source = root.querySelector(selector);
+          if (type === "select") {
+            return `<label class="nav-context__field"><span>${label}</span><select data-catalog-source="${selector}">${renderContextOptions(source, 400)}</select></label>`;
+          }
+          return `<label class="nav-context__field"><span>${label}</span><input type="search" data-catalog-source="${selector}" value="${contextText(source?.value || "")}" placeholder="名称、国家或作业者" /></label>`;
+        }).join("")}
+      </details>
+    `;
+  };
+  const renderDetailContext = tabKey => {
+    const items = detailNavigation[tabKey] || [];
+    if (!items.length) return "";
+    const activeDetail = currentDetailTabs[tabKey] || items[0][0];
+    return `
+      <details class="nav-tree" open>
+        <summary>当前视图</summary>
+        <div class="nav-tree__items">${items.map(([key, label]) => `<button type="button" class="nav-context__item nav-context__item--nested ${key === activeDetail ? "is-active" : ""}" data-data-detail="${key}"><i></i>${label}</button>`).join("")}</div>
+      </details>
+    `;
+  };
+
+  const renderInlineTabContext = tabKey => {
+    if (currentDataTab !== tabKey) return "";
+    const details = [
+      tabKey === "spatial" ? renderSpatialContext() : "",
+      renderObjectSelector(tabKey),
+      renderDetailContext(tabKey),
+      tabKey === "catalog" ? renderCatalogContext() : ""
+    ].filter(Boolean).join("");
+    return details ? `<div class="nav-tree__children">${details}</div>` : "";
+  };
+
+  mountDataContext = () => {
+    if (!isDataModuleActive()) return;
+    const context = setShellContext(`
+      <div class="nav-context__title">基础数据</div>
+      ${dataNavigation.map(section => `
+        <details class="nav-tree" open>
+          <summary>${section.group}</summary>
+          <div class="nav-tree__items">
+            ${section.items.map(([key, label]) => `
+              <button type="button" class="nav-context__item ${currentDataTab === key ? "is-active" : ""}" data-data-tab="${key}"><i></i>${label}</button>
+              ${renderInlineTabContext(key)}
+            `).join("")}
+          </div>
+        </details>
+      `).join("")}
+    `);
+    if (!context) return;
+
+    context.querySelectorAll("[data-data-tab]").forEach(button => {
+      button.addEventListener("click", () => tabController.activate(button.dataset.dataTab));
+    });
+    context.querySelectorAll("[data-data-detail]").forEach(button => {
+      button.addEventListener("click", () => detailController.activate(currentDataTab, button.dataset.dataDetail));
+    });
+
+    const setObjectValue = (tabKey, value) => {
+      const definition = objectNavigation[tabKey];
+      const source = definition ? root.querySelector(definition.selector) : null;
+      if (!source) return;
+      const normalized = String(value || "").trim();
+      const option = [...source.options].find(item => item.value === normalized || item.textContent.trim() === normalized);
+      if (!option) return;
+      source.value = option.value;
+      source.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    context.querySelectorAll("[data-data-object]").forEach(control => {
+      control.addEventListener("change", () => setObjectValue(control.dataset.dataObject, control.value));
+    });
+    context.querySelectorAll("[data-object-filter]").forEach(control => {
+      control.addEventListener("change", () => {
+        const tabKey = control.dataset.objectFilter;
+        const filterKey = control.dataset.objectFilterKey;
+        if (!tabKey || !filterKey) return;
+        const filters = getObjectFilterState(tabKey);
+        filters[filterKey] = control.value;
+        if (filterKey === "country") filters.basin = "";
+        mountDataContext();
+      });
+    });
+    context.querySelectorAll("[data-object-filter-reset]").forEach(button => {
+      button.addEventListener("click", () => {
+        const filters = getObjectFilterState(button.dataset.objectFilterReset);
+        filters.country = "";
+        filters.basin = "";
+        mountDataContext();
+      });
+    });
+
+    const copySpatialValue = control => {
+      const source = root.querySelector(control.dataset.spatialSource);
+      if (!source) return null;
+      if (control.type === "checkbox") source.checked = control.checked;
+      else source.value = control.value;
+      return source;
+    };
+    context.querySelectorAll("[data-spatial-source]").forEach(control => {
+      if (control.type !== "checkbox") return;
+      control.addEventListener("change", () => {
+        const source = copySpatialValue(control);
+        source?.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
+    context.querySelector("[data-spatial-action='apply']")?.addEventListener("click", () => {
+      context.querySelectorAll("[data-spatial-source]").forEach(copySpatialValue);
+      root.querySelector("#applyFilters")?.click();
+    });
+    context.querySelector("[data-spatial-action='reset']")?.addEventListener("click", () => {
+      root.querySelector("#resetFilters")?.click();
+      setTimeout(mountDataContext, 0);
+    });
+
+    context.querySelectorAll("[data-catalog-source]").forEach(control => {
+      const source = root.querySelector(control.dataset.catalogSource);
+      if (!source) return;
+      const sync = () => {
+        source.value = control.value;
+        source.dispatchEvent(new Event(control.tagName === "INPUT" ? "input" : "change", { bubbles: true }));
+      };
+      control.addEventListener(control.tagName === "INPUT" ? "input" : "change", sync);
+    });
+
+    if (currentDataTab === "spatial" && root.__quickLocateState) {
+      renderQuickLocate(root, root.__quickLocateState.items, root.__quickLocateState.onLocate);
+    }
+  };
+  root.__refreshDataContext = mountDataContext;
+  root.addEventListener("change", event => {
+    const matchedTab = Object.entries(objectNavigation).find(([, definition]) => definition.selector.slice(1) === event.target.id)?.[0];
+    if (matchedTab === currentDataTab) mountDataContext();
+  });
+  window.addEventListener("module-shown", event => {
+    if (event.detail?.key === "data") mountDataContext();
+  });
+  mountDataContext();
 
   if (window.L) {
     const blockProfilesLocal = state.blockData?.profiles || {};
@@ -2301,7 +2742,11 @@ async function init() {
     let lastIncrementalRefreshAt = 0;
     let lastFilterOptionsRefreshAt = 0;
     let dataMapFitted = false;
-    let prevWellsFeatures = [];
+    let previousWellCount = 0;
+    let allWellsLoaded = false;
+    let wellsLoading = false;
+    let wellLoadVersion = 0;
+    let layerTotals = { basins: 0, contract_blocks: 0, fields: 0, wells: 0 };
 
     async function ensureMapLayersLoaded() {
       if (mapLayersLoaded || mapLayersLoading) return;
@@ -2320,11 +2765,81 @@ async function init() {
         });
         finalizeLayerLoad();
       } catch (error) {
-        state.layerSource = "service-error";
+        state.layerSource = "database-error";
         state.layerError = error.message;
-        updateMapRuntime(`MapGIS 图层读取失败：${error.message}`);
+        updateMapRuntime(`空间数据 API 读取失败：${error.message}`);
       } finally {
         mapLayersLoading = false;
+      }
+    }
+
+    function updateAllWellsButton() {
+      const button = root.querySelector("#loadAllWells");
+      if (!button) return;
+      button.disabled = wellsLoading || allWellsLoaded;
+      button.textContent = allWellsLoaded
+        ? "全部井位已加载"
+        : (wellsLoading ? `正在分批加载 ${(state.wellsGeoJson.features || []).length.toLocaleString("zh-CN")} 口…` : "分批加载全部井位");
+    }
+
+    async function loadAllWellsProgressively() {
+      if (wellsLoading || allWellsLoaded) return;
+      if (filters.keyword || filters.country || filters.basin || filters.block || filters.operator) {
+        updateMapRuntime("请先清除筛选条件；“全部井位”会加载全库 61,927 口井位。");
+        return;
+      }
+      if (!root.querySelector("#toggleWells").checked) {
+        updateMapRuntime("请先勾选井位图层，再加载全部井位。");
+        return;
+      }
+      if (!layerTotals.wells) {
+        const counts = await getIgsLayerTotalCounts(state);
+        layerTotals = { ...layerTotals, ...counts };
+      }
+      if (!layerTotals.wells) {
+        updateMapRuntime("未读取到井位总数，暂不能启动全量加载。");
+        return;
+      }
+
+      const requestVersion = ++wellLoadVersion;
+      wellsLoading = true;
+      previousWellCount = 0;
+      state.wellsGeoJson = { type: "FeatureCollection", features: [] };
+      if (persistentWellCanvas) persistentWellCanvas.setItems([]);
+      updateAllWellsButton();
+      refreshCountsLight();
+      updateMapRuntime(`正在从 PostGIS 分批读取 ${Number(layerTotals.wells).toLocaleString("zh-CN")} 口井位…`);
+      try {
+        const result = await loadSpatialLayerBatches("wells", {
+          mode: "map",
+          batchSize: 2000,
+          total: Number(layerTotals.wells),
+          shouldContinue: () => requestVersion === wellLoadVersion && root.querySelector("#toggleWells")?.checked,
+          onBatch: (collection, progress) => {
+            if (requestVersion !== wellLoadVersion) return;
+            const features = state.wellsGeoJson.features || [];
+            features.push(...(collection.features || []));
+            handleLayerBatch("wells", { type: "FeatureCollection", features }, {
+              loadedCount: features.length,
+              totalCount: layerTotals.wells,
+              done: progress.done,
+              sourceLabel: "井位（PostGIS）"
+            });
+            updateAllWellsButton();
+          }
+        });
+        if (result.cancelled || requestVersion !== wellLoadVersion) {
+          updateMapRuntime("全部井位加载已停止；当前已加载的井位仍可继续查看。");
+        } else {
+          allWellsLoaded = true;
+          refreshStatsLight();
+          updateMapRuntime(`全部 ${(state.wellsGeoJson.features || []).length.toLocaleString("zh-CN")} 口井位已加载完成。`);
+        }
+      } catch (error) {
+        updateMapRuntime(`全部井位加载失败：${error.message}`);
+      } finally {
+        wellsLoading = false;
+        updateAllWellsButton();
       }
     }
 
@@ -2332,7 +2847,6 @@ async function init() {
       const features = collection?.features || [];
       if (featureType === "wells") {
         const noFilter = !(filters.keyword || filters.country || filters.basin || filters.block || filters.operator);
-        const prefixOk = !prevWellsFeatures.length || features[prevWellsFeatures.length - 1] === prevWellsFeatures[prevWellsFeatures.length - 1];
         state.wellsGeoJson = { type: "FeatureCollection", features };
         if (state._forceRefreshing) {
           // 强制刷新期间保持当前显示不变，拉取完成后一次性切换
@@ -2349,9 +2863,9 @@ async function init() {
           if (root.querySelector("#toggleWells").checked) persistentWellCanvas.addTo(map);
         }
         if (persistentWellCanvas && !state._forceRefreshing) {
-          if (noFilter && prefixOk && features.length > prevWellsFeatures.length) {
+          if (noFilter && previousWellCount > 0 && features.length > previousWellCount) {
             persistentWellCanvas.appendItems(features
-              .slice(prevWellsFeatures.length)
+              .slice(previousWellCount)
               .map(feature => {
                 const latlng = getWellLatLng(feature);
                 return latlng ? { feature, latlng } : null;
@@ -2369,7 +2883,7 @@ async function init() {
         } else if (!persistentWellCanvas && detail?.done && !state._forceRefreshing) {
           refreshMap(false);
         }
-        prevWellsFeatures = features;
+        previousWellCount = features.length;
       } else if (featureType === "basins") {
         state.structuresGeoJson = { type: "FeatureCollection", features };
         if (detail?.done) updateLayerOnly("basins");
@@ -2395,17 +2909,18 @@ async function init() {
 
     function finalizeLayerLoad() {
       mapLayersLoaded = true;
+      refreshDisplayFromState();
       renderFilterOptions(root, state);
       refreshCountsLight();
       if (!dataMapFitted) {
         dataMapFitted = true;
         fitMapToVisible();
       }
-      if (state.layerSource === "service-error") {
-        updateMapRuntime(`MapGIS 图层读取失败：${state.layerError || "服务未返回数据"}`);
+      if (state.layerSource === "database-error") {
+        updateMapRuntime(`空间数据 API 读取失败：${state.layerError || "服务未返回数据"}`);
       } else {
         const slowest = [...(state.layerDiagnostics || [])].sort((a, b) => b.durationMs - a.durationMs)[0];
-        updateMapRuntime(slowest ? `MapGIS 空间图层已加载；最慢图层：${slowest.label} ${formatLayerRuntime(slowest)}` : "MapGIS 空间图层已加载");
+        updateMapRuntime(slowest ? `PostGIS 空间图层已加载；最慢图层：${slowest.label} ${formatLayerRuntime(slowest)}` : "PostGIS 空间图层已加载");
       }
       const finishLoad = async () => {
         await new Promise(resolve => setTimeout(resolve, 1500));
@@ -2431,7 +2946,12 @@ async function init() {
       }
       state._forceRefreshing = true;
       mapLayersLoading = true;
-      updateMapRuntime("正在从 MapGIS IGServer 重新读取全部图层数据…（完成后自动更新显示）");
+      wellLoadVersion += 1;
+      allWellsLoaded = false;
+      wellsLoading = false;
+      previousWellCount = 0;
+      updateAllWellsButton();
+      updateMapRuntime("正在从 PostGIS 重新读取全部图层数据…（完成后自动更新显示）");
       try {
         await forceRefreshMapLayers(state, { onBatchLoaded: handleLayerBatch });
         state._forceRefreshing = false;
@@ -2452,9 +2972,12 @@ async function init() {
         return;
       }
       mapLayersLoading = true;
-      updateMapRuntime("正在重新加载全部图层数据（逐步显示）…");
+      updateMapRuntime("正在从数据库重新加载全部图层数据（逐步显示）…");
       // 清空当前显示，进入逐批加载
-      prevWellsFeatures = [];
+      wellLoadVersion += 1;
+      allWellsLoaded = false;
+      wellsLoading = false;
+      previousWellCount = 0;
       if (persistentWellCanvas) persistentWellCanvas.setItems([]);
       if (wellLayer && wellLayer !== persistentWellCanvas) wellLayer.remove();
       if (basinLayer) { basinLayer.remove(); basinLayer = null; }
@@ -2468,7 +2991,7 @@ async function init() {
       try {
         await forceRefreshMapLayers(state, { onBatchLoaded: handleLayerBatch });
         finalizeLayerLoad();
-        updateMapRuntime(`图层数据已重新加载完成（${new Date().toLocaleTimeString("zh-CN")}）`);
+        updateMapRuntime(`数据库图层已重新加载完成（${new Date().toLocaleTimeString("zh-CN")}）`);
       } catch (error) {
         updateMapRuntime(`图层重新加载失败：${error.message}`);
       } finally {
@@ -2513,10 +3036,11 @@ async function init() {
       root.querySelector("#visibleBasinCount").textContent = `${basinsLen} 个`;
       root.querySelector("#visibleBlockCount").textContent = `${blocksLen} 个`;
       root.querySelector("#visibleFieldCount").textContent = `${fieldsLen} 个`;
-      root.querySelector("#wellFeatureCount").textContent = `本次读取 ${state.wellsGeoJson.features?.length || 0} 个`;
-      root.querySelector("#basinFeatureCount").textContent = `本次读取 ${state.structuresGeoJson.features?.length || 0} 个`;
-      root.querySelector("#blockFeatureCount").textContent = `本次读取 ${state.blocksGeoJson.features?.length || 0} 个`;
-      root.querySelector("#fieldFeatureCount").textContent = `本次读取 ${state.fieldsGeoJson.features?.length || 0} 个`;
+      const layerStatus = (total, loaded) => total ? `全库 ${total} 个；当前显示 ${loaded} 个` : `当前显示 ${loaded} 个`;
+      root.querySelector("#wellFeatureCount").textContent = layerStatus(layerTotals.wells, state.wellsGeoJson.features?.length || 0);
+      root.querySelector("#basinFeatureCount").textContent = layerStatus(layerTotals.basins, state.structuresGeoJson.features?.length || 0);
+      root.querySelector("#blockFeatureCount").textContent = layerStatus(layerTotals.contract_blocks, state.blocksGeoJson.features?.length || 0);
+      root.querySelector("#fieldFeatureCount").textContent = layerStatus(layerTotals.fields, state.fieldsGeoJson.features?.length || 0);
       root.querySelector("#activeFilterSummary").textContent = buildFilterSummary(filters);
     }
 
@@ -2572,7 +3096,7 @@ async function init() {
       updateLayerOnly("basins");
       updateLayerOnly("contract_blocks");
       updateLayerOnly("fields");
-      prevWellsFeatures = wells;
+      previousWellCount = wells.length;
       refreshCountsLight();
     }
 
@@ -2667,7 +3191,7 @@ async function init() {
 
       renderServiceInsights(root, visibleBasins, visibleWells, visibleBlocks, visibleFields, state.layerSource, state.layerDiagnostics);
       if (state.layerSource === "not-loaded") {
-        updateMapRuntime("地图组件已加载；正在等待 MapGIS 空间图层读取");
+        updateMapRuntime("地图组件已加载；正在等待 PostGIS 空间图层读取");
       }
       root.querySelector("#activeFilterSummary").textContent = buildFilterSummary(filters);
 
@@ -2709,6 +3233,11 @@ async function init() {
 
     refreshMap(true);
     ensureMapLayersLoaded();
+    getIgsLayerTotalCounts(state).then(counts => {
+      layerTotals = { ...layerTotals, ...counts };
+      refreshCountsLight();
+      updateAllWellsButton();
+    }).catch(() => {});
 
     root.querySelector("#applyFilters").addEventListener("click", () => {
       filters.keyword = root.querySelector("#searchKeyword").value.trim();
@@ -2756,7 +3285,13 @@ async function init() {
     root.querySelector("#toggleBasins").addEventListener("change", () => refreshMap(false));
     root.querySelector("#toggleBlocks").addEventListener("change", () => refreshMap(false));
     root.querySelector("#toggleFields").addEventListener("change", () => refreshMap(false));
-    root.querySelector("#toggleWells").addEventListener("change", () => refreshMap(false));
+    root.querySelector("#toggleWells").addEventListener("change", () => {
+      if (!root.querySelector("#toggleWells").checked && wellsLoading) wellLoadVersion += 1;
+      refreshMap(false);
+    });
+    root.querySelector("#loadAllWells")?.addEventListener("click", () => {
+      void loadAllWellsProgressively();
+    });
     const refreshMapDataButton = root.querySelector("#refreshMapData");
     if (refreshMapDataButton) {
       refreshMapDataButton.addEventListener("click", () => handleManualRefresh());
@@ -2969,6 +3504,7 @@ async function init() {
   }
 
   async function rebuildDetailSelectors() {
+    objectSelectorCache.clear();
     basinNames = sortCatalogNames([
       ...Object.keys(basinProfiles),
       ...state.structuresGeoJson.features.map(feature => feature.properties?.basin_name)
@@ -3014,6 +3550,7 @@ async function init() {
       wellSelect.value = selectedWell;
       updateWell(selectedWell);
     }
+    root.__refreshDataContext?.();
   }
 
   const catalogControls = {
@@ -3185,6 +3722,7 @@ async function init() {
     catalogState.country = selected;
     catalogControls.country.innerHTML = `<option value="">全部国家/地区</option>${countries.map(country => `<option value="${safeText(country)}">${safeText(country)}</option>`).join("")}`;
     catalogControls.country.value = selected;
+    if (currentDataTab === "catalog") root.__refreshDataContext?.();
   }
 
   function renderCatalogTable() {
@@ -3265,7 +3803,7 @@ async function init() {
     { title: "区块权益记录", value: `${Object.values(blockTables).reduce((sum, item) => sum + (item.company_interests?.length || 0), 0)} 条`, tab: "blocks", detail: "ownership", scroll: "#blockOwnershipCard" },
     { title: "合同权益记录", value: `${Object.values(contractTables).reduce((sum, item) => sum + (item.company_interests?.length || 0), 0)} 条`, tab: "contracts", detail: "ownership", scroll: "#contractOwnershipCard" },
     { title: "油气田权益记录", value: `${Object.values(fieldTables).reduce((sum, item) => sum + (item.company_interests?.length || 0), 0)} 条`, tab: "fields", scroll: "#fieldOwnershipCard" },
-    { title: "服务来源", value: state.layerSource === "service" ? "MapGIS 真实服务" : state.layerSource === "not-loaded" ? "等待读取" : "MapGIS 服务异常", tab: "spatial", scroll: "#serviceSourceCard" }
+    { title: "服务来源", value: state.layerSource === "database" ? "PostGIS 数据库" : state.layerSource === "not-loaded" ? "等待读取" : "数据服务异常", tab: "spatial", scroll: "#serviceSourceCard" }
   ];
   root.querySelector("#coverageTiles").innerHTML = coverageTiles.map(tile => `
     <article class="info-tile is-action" data-action-tab="${tile.tab}" ${tile.detail ? `data-action-detail="${tile.detail}"` : ""} data-action-scroll="${tile.scroll}" tabindex="0" role="button">

@@ -1,4 +1,4 @@
-import { MODULES, deriveMetrics, loadPlatformState, renderShell } from "./core.js";
+import { MODULES, deriveMetrics, loadPlatformState, renderShell, setShellContext } from "./core.js";
 
 function renderKpis(root, metrics) {
   root.insertAdjacentHTML("beforeend", `
@@ -69,7 +69,7 @@ function renderArchitecture(root, state) {
           <li>井位点：MapGIS 发布的 <code>wells</code> 要素服务</li>
           <li>井基础资料：Excel 整理后的井档案摘要</li>
           <li>曲线区：当前保留样例曲线</li>
-          <li>空间图层：进入数据信息模块的空间总览后按需读取 MapGIS 真实服务</li>
+          <li>空间图层：进入数据信息模块的空间总览后按需读取 PostGIS 数据库</li>
         </ul>
       </article>
       <article class="content-card">
@@ -114,6 +114,60 @@ function renderLoadingHome(root) {
   `;
 }
 
+function renderOverviewWorkspace(root) {
+  root.innerHTML = `
+    <div class="module-workbench module-workbench--overview">
+      <section class="module-workbench__content">
+        <div class="module-contextbar"><span>平台总览</span><i>/</i><strong id="overviewWorkspaceTitle">接入概览</strong></div>
+        <section class="overview-module-panel" data-overview-panel="platform"><div id="overviewPlatform"></div></section>
+        <section class="overview-module-panel" data-overview-panel="modules"><div id="overviewModules"></div></section>
+        <section class="overview-module-panel" data-overview-panel="architecture"><div id="overviewArchitecture"></div></section>
+      </section>
+    </div>
+  `;
+  const panels = [...root.querySelectorAll("[data-overview-panel]")];
+  const title = root.querySelector("#overviewWorkspaceTitle");
+  let activeView = "platform";
+
+  const mountContext = () => {
+    const context = setShellContext(`
+      <div class="nav-context__title">平台总览</div>
+      <div class="nav-context__group">工作区</div>
+      <button type="button" class="nav-context__item" data-overview-view="platform"><i></i>接入概览</button>
+      <button type="button" class="nav-context__item" data-overview-view="modules"><i></i>业务模块</button>
+      <button type="button" class="nav-context__item" data-overview-view="architecture"><i></i>数据构成</button>
+    `);
+    context?.querySelectorAll("[data-overview-view]").forEach(button => {
+      button.addEventListener("click", () => activate(button.dataset.overviewView));
+    });
+    sync();
+  };
+
+  const sync = () => {
+    document.querySelectorAll("[data-overview-view]").forEach(button => {
+      button.classList.toggle("is-active", button.dataset.overviewView === activeView);
+    });
+    panels.forEach(panel => panel.classList.toggle("is-active", panel.dataset.overviewPanel === activeView));
+    const activeButton = document.querySelector(`[data-overview-view="${activeView}"]`);
+    if (title && activeButton) title.textContent = activeButton.textContent.trim();
+  };
+
+  const activate = view => {
+    activeView = view;
+    sync();
+  };
+
+  mountContext();
+  window.addEventListener("module-shown", event => {
+    if (event.detail?.key === "overview") mountContext();
+  });
+  return {
+    platform: root.querySelector("#overviewPlatform"),
+    modules: root.querySelector("#overviewModules"),
+    architecture: root.querySelector("#overviewArchitecture")
+  };
+}
+
 async function init() {
   const root = renderShell({
     currentKey: "overview",
@@ -121,14 +175,15 @@ async function init() {
     heroDesc: "查看当前接入的数据对象、专题资料和模块入口。",
     heroMeta: ["MapGIS IGServer", "盆地 / 区块 / 井位"]
   });
-  renderLoadingHome(root);
+  const views = renderOverviewWorkspace(root);
+  renderLoadingHome(views.platform);
   const state = await loadPlatformState({ includeMapLayers: false });
   const metrics = deriveMetrics(state);
-  root.innerHTML = "";
-  renderKpis(root, metrics);
-  renderModuleCards(root);
-  renderArchitecture(root, state);
-  renderRecommendations(root);
+  views.platform.innerHTML = "";
+  renderKpis(views.platform, metrics);
+  renderModuleCards(views.modules);
+  renderArchitecture(views.architecture, state);
+  renderRecommendations(views.architecture);
 }
 
 init().catch(error => {

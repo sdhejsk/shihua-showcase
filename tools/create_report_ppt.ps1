@@ -1,5 +1,5 @@
 param(
-  [string]$OutputPath = "D:\pythonProject\shihua_showcase\docs\石化地学数据展示平台_系统汇报.pptx"
+  [string]$OutputPath = "D:\shihua_pj\shihua_showcase\docs\石化地学数据展示平台_系统汇报.pptx"
 )
 
 $ErrorActionPreference = "Stop"
@@ -101,7 +101,7 @@ function Add-Background($slide) {
   $accent.Line.Visible = 0
 }
 
-$root = "D:\pythonProject\shihua_showcase"
+$root = "D:\shihua_pj\shihua_showcase"
 $overview = Get-Content "$root\data\system_overview.json" -Raw | ConvertFrom-Json
 $inventory = Get-Content "$root\data\data_inventory.json" -Raw | ConvertFrom-Json
 $profiles = Get-Content "$root\data\well_excel_profiles.json" -Raw | ConvertFrom-Json

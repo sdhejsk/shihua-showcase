@@ -58,11 +58,11 @@
     },
     {
       "name": "评价算法模块",
-      "status": "已接入",
+      "status": "已重构",
       "owner": "业务组",
-      "description": "围绕盆地、区块、油气田和井对象开展可解释综合评价、排序和分项说明。",
-      "inputs": ["四类对象服务", "专题资料整合表", "evaluation_models.json"],
-      "outputs": ["评价结果", "等级建议", "分项得分明细"]
+      "description": "围绕非洲油气田建立经济评价流程，由后端按筛选条件和经济参数实时计算阶段结果。",
+      "inputs": ["非洲油气田 CSV", "非洲合同区块服务", "非洲盆地服务", "油气田井证据字段"],
+      "outputs": ["资源基础结果", "生产状态结果", "工程成本结果", "商业条件结果", "经济评价分级"]
     },
     {
       "name": "前后端联通层",
@@ -80,12 +80,12 @@
     {"name": "井专题表利用率", "level": "中风险", "progress": 65, "action": "继续把 periods、tests、tops、survey、costs 等表做成更强的联动视图。"},
     {"name": "真实测井曲线文件", "level": "高风险", "progress": 25, "action": "当前仍缺少 LAS、DLIS、LIS 或带深度采样的真实曲线文件，曲线区仍为样例占位。"},
     {"name": "服务字段治理", "level": "中风险", "progress": 70, "action": "持续核对 wells、main_basins、contract_blocks 与 fields 的字段口径，避免前端展示字段遗漏。"},
-    {"name": "评价算法配置治理", "level": "中风险", "progress": 72, "action": "已形成四类对象评价模型，后续需要结合新增对象与专家意见继续校正指标权重。"}
+    {"name": "评价算法配置治理", "level": "中风险", "progress": 82, "action": "已将评价模块调整为后端实时经济评价流程，后续需要结合专家意见校正价格、成本、税费、风险和合同条款口径。"}
   ],
   "roadmap": [
     {"phase": "第 1 阶段", "title": "真实对象接入", "window": "当前", "items": ["替换井与盆地 shp", "重新发布 IGServer 服务", "前端切换真实字段"]},
     {"phase": "第 2 阶段", "title": "专题资料增强", "window": "1-2 周", "items": ["扩展井测试/分层/井斜视图", "扩展盆地油气系统与 play 视图", "完善区块资料联动"]},
-    {"phase": "第 3 阶段", "title": "评价算法深化", "window": "2-4 周", "items": ["校正四类对象评分模型", "引入更多对象数据类型", "形成评价结果专题地图"]},
+    {"phase": "第 3 阶段", "title": "评价算法深化", "window": "2-4 周", "items": ["校正经济评价模型", "接入烃源/储层/经济参数", "形成评价结果专题地图和报告草稿"]},
     {"phase": "第 4 阶段", "title": "真实曲线与工程化", "window": "1-2 月", "items": ["接入 LAS/DLIS/LIS", "曲线道配置", "数据库落库", "权限与审计", "部署运维"]}
   ],
   "apiEndpoints": [
@@ -97,7 +97,9 @@
     {"method": "GET", "path": "/igs/rest/services/contract_blocks/FeatureServer/query", "description": "代理访问 MapGIS IGServer 的合同区块要素查询接口。"},
     {"method": "GET", "path": "/igs/rest/services/fields/FeatureServer/query", "description": "代理访问 MapGIS IGServer 的油气田要素查询接口。"},
     {"method": "GET", "path": "/data/field_integrated_tables.json", "description": "返回油气田专题资料整合结果。"},
-    {"method": "GET", "path": "/data/evaluation_models.json", "description": "返回评价算法模块的模型、权重、等级和输入配置。"}
+    {"method": "GET", "path": "/data/evaluation_models.json", "description": "返回经济评价流程定义。"},
+    {"method": "GET", "path": "/api/evaluation/economic/config", "description": "返回经济评价阶段、默认参数和筛选选项。"},
+    {"method": "POST", "path": "/api/evaluation/economic/run", "description": "按当前参数和筛选条件执行经济评价阶段计算。"}
   ],
   "layerCatalog": [
     {"name": "main_basins", "type": "Polygon", "source": "/igs/rest/services/main_basins/FeatureServer/query", "service": "MapGIS IGServer FeatureServer"},

@@ -25,8 +25,10 @@ function applyHero(key) {
   if (!shell) return;
   const modeTitle = shell.querySelector(".mode-card strong");
   const modeSubtitle = shell.querySelector(".mode-card small");
+  const workspaceCurrent = shell.querySelector("[data-workspace-current]");
   if (modeTitle) modeTitle.textContent = hero.moduleTitle;
   if (modeSubtitle) modeSubtitle.textContent = hero.moduleSubtitle;
+  if (workspaceCurrent) workspaceCurrent.textContent = hero.moduleTitle;
   const heroEyebrow = shell.querySelector(".page-hero__eyebrow");
   const heroTitleNode = shell.querySelector(".page-hero h2");
   const heroDescNode = shell.querySelector(".page-hero p");
@@ -43,6 +45,8 @@ function activate(key) {
     return;
   }
   activeKey = key;
+  const context = document.querySelector("[data-shell-context]");
+  if (context) context.innerHTML = "";
   document.querySelectorAll("[data-module-container]").forEach(el => {
     el.style.display = el.dataset.moduleContainer === key ? "" : "none";
   });

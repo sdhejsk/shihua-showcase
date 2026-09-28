@@ -1,4 +1,0 @@
-well_id,well_name,basin,block,longitude,latitude,depth_m,gr_api,rt_ohmm,rhob_gcc,nphi_vv,ac_usft,cal_in,sp_mv,lithology,formation,interpretation
-WELL-SH-001,石化-示例井1,塔里木盆地,塔中北坡,83.6721,40.2154,1200,78,18.6,2.42,0.22,78.4,8.6,-42,粉砂岩,目的层A,含油气显示
-WELL-SH-001,石化-示例井1,塔里木盆地,塔中北坡,83.6721,40.2154,1210,82,21.3,2.39,0.24,80.1,8.5,-45,粉砂岩,目的层A,含油气显示
-WELL-SH-001,石化-示例井1,塔里木盆地,塔中北坡,83.6721,40.2154,1220,95,8.9,2.55,0.18,74.2,8.4,-38,泥质粉砂岩,目的层A,致密层

@@ -9,6 +9,7 @@ export function createCanvasPointLayer(LMap, options = {}) {
   } = options;
 
   let items = [];
+  let spatialIndex = new Map();
   let latLngBounds = null;
   let onPick = null;
   let frame = 0;
@@ -41,6 +42,44 @@ export function createCanvasPointLayer(LMap, options = {}) {
     latLngBounds = LMap.latLngBounds(items.map(item => item.latlng));
   }
 
+  // A lightweight geographic grid prevents every pan and click from scanning
+  // every well when the full 60k-point layer is resident in the browser.
+  const gridSizeDegrees = 2;
+  function gridKey(latlng) {
+    return `${Math.floor((latlng.lat + 90) / gridSizeDegrees)}:${Math.floor((latlng.lng + 180) / gridSizeDegrees)}`;
+  }
+  function indexItem(item) {
+    if (!item?.latlng) return;
+    const key = gridKey(item.latlng);
+    if (!spatialIndex.has(key)) spatialIndex.set(key, []);
+    spatialIndex.get(key).push(item);
+  }
+  function rebuildSpatialIndex() {
+    spatialIndex = new Map();
+    items.forEach(indexItem);
+  }
+  function itemsInBounds(bounds) {
+    if (!bounds || !bounds.isValid()) return items;
+    const south = Math.max(-90, bounds.getSouth());
+    const north = Math.min(90, bounds.getNorth());
+    const west = Math.max(-180, bounds.getWest());
+    const east = Math.min(180, bounds.getEast());
+    const span = (north - south) * (east - west);
+    if (span > 30000 || east < west) return items;
+    const minLatCell = Math.floor((south + 90) / gridSizeDegrees);
+    const maxLatCell = Math.floor((north + 90) / gridSizeDegrees);
+    const minLngCell = Math.floor((west + 180) / gridSizeDegrees);
+    const maxLngCell = Math.floor((east + 180) / gridSizeDegrees);
+    const visible = [];
+    for (let latCell = minLatCell; latCell <= maxLatCell; latCell++) {
+      for (let lngCell = minLngCell; lngCell <= maxLngCell; lngCell++) {
+        const bucket = spatialIndex.get(`${latCell}:${lngCell}`);
+        if (bucket) visible.push(...bucket);
+      }
+    }
+    return visible;
+  }
+
   const canvasLayer = new (LMap.Layer.extend({
     onAdd(layerMap) {
       this._map = layerMap;
@@ -67,6 +106,7 @@ export function createCanvasPointLayer(LMap, options = {}) {
     setItems(nextItems) {
       items = Array.isArray(nextItems) ? nextItems : [];
       computeBounds();
+      rebuildSpatialIndex();
       if (this._map) this._scheduleDraw();
       return this;
     },
@@ -78,6 +118,7 @@ export function createCanvasPointLayer(LMap, options = {}) {
         }
       }
       items = items.concat(nextItems);
+      nextItems.forEach(indexItem);
       if (!latLngBounds) computeBounds();
       if (this._map) this._scheduleDraw();
       return this;
@@ -123,8 +164,9 @@ export function createCanvasPointLayer(LMap, options = {}) {
       const zoom = this._map.getZoom();
       const cellSize = zoom <= 3 ? 3 : zoom <= 6 ? 2 : 1;
       const drawnCells = cellSize > 1 ? new Set() : null;
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
+      const visibleItems = itemsInBounds(visibleBounds);
+      for (let i = 0; i < visibleItems.length; i++) {
+        const item = visibleItems[i];
         if (!item?.latlng) continue;
         if (!visibleBounds.contains(item.latlng)) continue;
         const point = this._map.latLngToContainerPoint(item.latlng);
@@ -142,8 +184,18 @@ export function createCanvasPointLayer(LMap, options = {}) {
       if (!this._map) return;
       let best = null;
       let bestDistance = hitRadiusSq;
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i];
+      const pixelRadius = Math.sqrt(hitRadiusSq);
+      const northWest = this._map.containerPointToLatLng([
+        event.containerPoint.x - pixelRadius,
+        event.containerPoint.y - pixelRadius
+      ]);
+      const southEast = this._map.containerPointToLatLng([
+        event.containerPoint.x + pixelRadius,
+        event.containerPoint.y + pixelRadius
+      ]);
+      const nearbyItems = itemsInBounds(LMap.latLngBounds(northWest, southEast));
+      for (let i = 0; i < nearbyItems.length; i++) {
+        const item = nearbyItems[i];
         if (!item?.latlng) continue;
         const point = this._map.latLngToContainerPoint(item.latlng);
         const dx = point.x - event.containerPoint.x;

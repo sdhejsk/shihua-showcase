@@ -1,102 +1,57 @@
-# 专题进展推进会展示项目
+# 石化海外油气数据评价协同平台
 
-本项目根据聊天记录整理，用于四月份专题进展推进会前的可展示交付。当前已经从“最小展示原型”扩展为“综合展示系统雏形”，覆盖数据接入、空间图层、测井分析、构造基础库、会议汇报和后端接口边界。
+本工程已从静态展示原型切换为数据库优先的全栈实现。运行期数据仅通过后端 API 获取：结构化业务资料、经济评价和空间对象来自 PostgreSQL/PostGIS；PDF、Excel、Shapefile 等原始文件由 MinIO 对象存储管理。
 
-## 已完成内容
+`data/` 与 `D:\shihua_data` 是迁移输入，不是前端或评价服务的运行期数据源。
 
-- `data/well_logs.csv`：测井样例数据。
-- `data/structure_base_table.json`：盆地/一级构造/二级构造基础数据表，含 50 个字段设计和样例记录。
-- `frontend/index.html`：本地可视化展示看板，已用 MapGIS Client for JavaScript（Leaflet）前端组件做 WebGIS 展示原型。
-- `data/wells.geojson`、`data/structures.geojson`：可导入 QGIS、也可发布到 GeoServer 的演示矢量数据。
-- `backend-springboot/`：Spring Boot 后端接口骨架。
-- `docs/progress_ppt_outline.md`：进展汇报 PPT 提纲。
-- `data/system_overview.json`：系统模块、数据治理风险、路线图、接口和图层目录配置。
+## 数据底座
 
-## 系统模块
+- PostgreSQL + PostGIS：盆地、区块、合同、油气田、井、空间几何、测井曲线、专题表和评价运行记录。
+- MinIO：PDF、Excel、Shapefile 及其他原始资料本体。
+- Node.js 数据 API：统一提供基础状态、区域统计、PostGIS GeoJSON、文档下载与经济评价接口。
 
-当前页面已按后续工程化方向拆成 6 个模块：
+完整表结构、导入策略和接口说明见 [数据库架构说明](docs/database_architecture.md)。
 
-- 数据接入中心：统一接入测井 CSV、构造基础表、GeoJSON/Shapefile 和后续数据库表。
-- 空间图层服务：本地 GeoJSON 保底展示，后续通过 GeoServer 或 MapGIS IGServer 发布 WMS/WFS。
-- 测井分析看板：展示井位、测井曲线、岩性解释和关键曲线指标。
-- 构造基础库：维护盆地、一级构造、二级构造、区块、层系和资源潜力等字段。
-- 会议汇报工作台：汇总阶段成果、问题清单、需协调事项和下一步计划。
-- 后端接口服务：当前提供静态资源接口，后续演进为 Spring Boot + 数据库 + 权限 + MapGIS 服务代理。
+## 首次启动
 
-## 快速运行
+前置条件：Docker Desktop 已启动，Node.js 已安装。
 
-直接双击或用浏览器打开：
-
-```bat
-D:\shihua_pj\shihua_showcase\frontend\index.html
-```
-
-如需本地服务：
-
-```bat
-cd /d D:\shihua_pj\shihua_showcase
+```powershell
+Copy-Item .env.example .env
 npm install
+npm run db:up
+npm run db:migrate
 npm start
 ```
 
-然后访问：
+访问 `http://localhost:5173/frontend/index.html`。
 
-```text
-http://localhost:5173/frontend/index.html
+迁移会扫描当前 `data/` 和 `D:\shihua_data`，登记全部来源资产、导入 CSV/Excel、将四份 Shapefile 转换并写入 PostGIS。默认只登记原始文件元数据与校验和；需要把原始文件本体上传到 MinIO 时执行：
+
+```powershell
+npm run db:migrate -- --upload-objects
 ```
 
-## 展示口径
+这一步会处理约 3,200 份 PDF，请预留足够磁盘空间和执行时间。
 
-当前环境没有 MapGIS 商业软件和授权，因此采用用户指定的开源/免费技术路线完成 Demo：
+## 校验命令
 
-```text
-QGIS 数据整理 → GeoServer 发布 WMS/WFS → MapGIS Client for JavaScript（Leaflet）前端组件展示
+```powershell
+npm run db:validate
+npm run db:health
 ```
 
-当前前端已经安装并引入：
+`db:validate` 不连接数据库，用于检查迁移器是否能扫描当前全部来源目录；`db:health` 检查 Node API 与 PostgreSQL/PostGIS 的连通性。
 
-```text
-leaflet
-@mapgis/webclient-leaflet-plugin
-```
+## 主要 API
 
-页面当前先加载本地 `data/wells.geojson` 和 `data/structures.geojson`，确保没有 GeoServer 时也能看到井位和构造范围展示。后续如果启动 GeoServer 并发布图层，可在 [frontend/js/map-page.js](D:/shihua_pj/shihua_showcase/frontend/js/map-page.js) 中修改：
+- `GET /api/health`
+- `GET /api/platform-state`
+- `GET /api/africa/index`
+- `GET /api/spatial/{basins|contract_blocks|fields|wells}`
+- `GET /api/spatial/summary`
+- `GET /api/documents/{id}/download`
+- `GET /api/evaluation/economic/config`
+- `POST /api/evaluation/economic/run`
 
-当前已支持“服务优先，文件兜底”的方式：
-
-1. 将 `Main_Basins.shp` 和 `Wells.shp` 发布到 GeoServer。
-2. 修改 [map_service_config.json](D:/pythonProject/shihua_showcase/data/map_service_config.json) 中的地址、工作空间和图层名。
-3. 将 `enabled` 改为 `true`。
-4. 页面会优先通过 MapGIS IGServer FeatureServer 分页读取要素；如果服务不可用，会自动回退到本地 GeoJSON 演示数据。
-
-详细步骤见：
-
-- [geoserver_publish_guide.md](D:/shihua_pj/shihua_showcase/docs/geoserver_publish_guide.md)
-
-如果后期具备真实 MapGIS 环境和授权，可将同样的思路替换为 MapGIS IGServer 图层服务。
-
-## 后端接口边界
-
-Spring Boot 骨架已预留以下接口：
-
-- `GET /api/well-logs`：返回测井 CSV 样例数据。
-- `GET /api/structures`：返回基础构造表 JSON。
-- `GET /api/progress`：返回会议准备进展、问题和下一步计划。
-- `GET /api/system-overview`：返回系统模块、质量风险、路线图和接口目录。
-- `GET /api/map-layers`：返回地图图层目录和后续服务接入建议。
-
-## 后续扩展建议
-
-- 前端：从当前 HTML + 原生 JS 迁移为 Vue 工程，拆分地图、曲线、表格、治理、路线图等组件。
-- 后端：接入 PostgreSQL/PostGIS 或已有业务数据库，把 CSV/JSON 替换为数据库查询。
-- GIS：由 QGIS 整理真实数据，通过 GeoServer 或 MapGIS 服务发布 WMS/WFS。
-- 数据治理：增加字段字典、数据质量校验、数据来源追踪、审核状态和版本记录。
-- 会议材料：将系统截图、风险看板和路线图同步进 PPT。
-
-## 建议会议展示顺序
-
-1. 说明已梳理专题推进会准备任务和当前缺口。
-2. 展示基础数据表字段设计，说明可支撑盆地、一级构造、二级构造、区块和数据质量管理。
-3. 展示测井样例数据，说明井号、深度、GR、RT、RHOB、NPHI 等关键曲线。
-4. 展示看板中的 MapGIS Leaflet 前端组件地图、井位点击属性、图层开关、测井曲线和表格。
-5. 说明下一步接入 MapGIS、替换真实数据、完善 Spring Boot + Vue 工程化架构。
+为防止回退到本地文件读取，`/data/*` 和 `/source-data/*` 均会被服务端拒绝。

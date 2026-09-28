@@ -4,10 +4,22 @@
   "private": true,
   "description": "专题进展推进会测井数据与基础构造表展示原型",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:migrate": "node tools/migrate-to-database.cjs",
+    "db:refresh-economic": "node tools/refresh-economic-fields.cjs",
+    "db:objects": "node tools/migrate-to-database.cjs --upload-only --skip-hash",
+    "db:validate": "node tools/migrate-to-database.cjs --dry-run --skip-hash",
+    "db:health": "node -e \"fetch('http://localhost:5173/api/health').then(async response => { console.log(await response.text()); process.exit(response.ok ? 0 : 1); }).catch(error => { console.error(error.message); process.exit(1); })\""
   },
   "dependencies": {
     "@mapgis/webclient-leaflet-plugin": "^17.8.1",
-    "leaflet": "^1.9.4"
+    "csv-parse": "^5.6.0",
+    "leaflet": "^1.9.4",
+    "minio": "^8.0.1",
+    "pg": "^8.13.1",
+    "shapefile": "^0.6.6",
+    "xlsx": "^0.18.5"
   }
 }
