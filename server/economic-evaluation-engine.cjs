@@ -24,6 +24,10 @@ const STAGES = [
   { id: "result", name: "评价结果", unit: "油气田", scoreKey: "economicIndex" }
 ];
 
+const EVALUATION_SNAPSHOT_TTL_MS = 15 * 60 * 1000;
+const MAX_EVALUATION_SNAPSHOTS = 4;
+const evaluationSnapshots = new Map();
+
 function toNumber(value) {
   if (value === null || value === undefined || value === "") return 0;
   const text = String(value).trim().replace(/,/g, "");
@@ -734,6 +738,57 @@ function toStageRow(row, stageId) {
   return base;
 }
 
+function pruneEvaluationSnapshots() {
+  const expiresAt = Date.now() - EVALUATION_SNAPSHOT_TTL_MS;
+  for (const [id, snapshot] of evaluationSnapshots) {
+    if (snapshot.lastAccessedAt < expiresAt) evaluationSnapshots.delete(id);
+  }
+  while (evaluationSnapshots.size > MAX_EVALUATION_SNAPSHOTS) {
+    const oldestId = evaluationSnapshots.keys().next().value;
+    evaluationSnapshots.delete(oldestId);
+  }
+}
+
+function storeEvaluationSnapshot(snapshot) {
+  pruneEvaluationSnapshots();
+  const id = crypto.randomUUID();
+  evaluationSnapshots.set(id, { ...snapshot, lastAccessedAt: Date.now() });
+  pruneEvaluationSnapshots();
+  return id;
+}
+
+function getEvaluationSnapshot(id) {
+  pruneEvaluationSnapshots();
+  const snapshot = evaluationSnapshots.get(id);
+  if (!snapshot) return null;
+  snapshot.lastAccessedAt = Date.now();
+  evaluationSnapshots.delete(id);
+  evaluationSnapshots.set(id, snapshot);
+  return snapshot;
+}
+
+function buildEvaluationResponse(snapshot, page, pageSize, resultId) {
+  const totalPages = Math.max(1, Math.ceil(snapshot.staged.length / pageSize));
+  const safePage = Math.min(page, totalPages);
+  return {
+    resultId,
+    stage: STAGES.find(item => item.id === snapshot.stageId),
+    assumptions: snapshot.assumptions,
+    summary: snapshot.summary,
+    stageSummary: snapshot.stageSummary,
+    pagination: {
+      page: safePage,
+      pageSize,
+      total: snapshot.staged.length,
+      totalPages
+    },
+    rows: snapshot.staged
+      .slice((safePage - 1) * pageSize, safePage * pageSize)
+      .map(row => toStageRow(row, snapshot.stageId)),
+    warnings: snapshot.warnings
+  };
+}
+
 async function getConfig() {
   const dataset = await getDataset();
   return {
@@ -746,34 +801,37 @@ async function getConfig() {
 }
 
 async function runEconomicEvaluation(payload = {}) {
+  const pageSize = clamp(Number(payload.pageSize || payload.filters?.pageSize || 20), 5, 100);
+  const page = Math.max(1, Number(payload.page || payload.filters?.page || 1) || 1);
+  if (payload.resultId) {
+    const snapshot = getEvaluationSnapshot(String(payload.resultId));
+    if (!snapshot) {
+      const error = new Error("本次评价结果缓存已过期，请重新运行本步骤。");
+      error.code = "EVALUATION_SNAPSHOT_EXPIRED";
+      error.statusCode = 404;
+      throw error;
+    }
+    return buildEvaluationResponse(snapshot, page, pageSize, String(payload.resultId));
+  }
+
   const dataset = await getDataset();
   const assumptions = mergeAssumptions(payload.assumptions);
   const stageId = STAGES.some(stage => stage.id === payload.stage) ? payload.stage : "result";
-  const pageSize = clamp(Number(payload.pageSize || payload.filters?.pageSize || 20), 5, 100);
-  const page = Math.max(1, Number(payload.page || payload.filters?.page || 1) || 1);
   const evaluated = dataset.fields.map(row => evaluateField(row, dataset, assumptions));
   const filtered = evaluated.filter(row => passesFilters(row, payload.filters));
   const staged = pickStageRows(filtered, stageId);
-  const totalPages = Math.max(1, Math.ceil(staged.length / pageSize));
-  const safePage = Math.min(page, totalPages);
-  const rows = staged.slice((safePage - 1) * pageSize, safePage * pageSize).map(row => toStageRow(row, stageId));
-  const response = {
-    stage: STAGES.find(item => item.id === stageId),
+  const resultId = storeEvaluationSnapshot({
+    stageId,
     assumptions,
+    staged,
     summary: summarize(staged),
     stageSummary: summarizeStage(staged, stageId),
-    pagination: {
-      page: safePage,
-      pageSize,
-      total: staged.length,
-      totalPages
-    },
-    rows,
     warnings: dataset.warnings
-  };
+  });
+  const response = buildEvaluationResponse(getEvaluationSnapshot(resultId), page, pageSize, resultId);
   await recordEvaluationRun({
     id: crypto.randomUUID(),
-    modelKey: "africa-field-economic-evaluation",
+    modelKey: "global-field-economic-evaluation",
     assumptions,
     filters: payload.filters || {},
     resultSummary: {

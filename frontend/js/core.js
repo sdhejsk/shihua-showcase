@@ -1,4 +1,4 @@
-﻿export const MODULES = [
+export const MODULES = [
   {
     key: "overview",
     href: "./index.html",
@@ -552,6 +552,7 @@ function normalizeLocalFeatureCollection(featureCollection, fallbackName = "loca
   return {
     type: "FeatureCollection",
     name: featureCollection?.name || fallbackName,
+    nextCursor: featureCollection?.nextCursor ?? null,
     features: (featureCollection?.features || []).map(normalizeLocalFeatureGeometry)
   };
 }
@@ -1223,19 +1224,21 @@ export async function loadSpatialLayerBatches(layerKey, options = {}) {
   const size = Math.max(100, Math.min(Number(batchSize) || 2000, 5000));
   const features = [];
   let offset = 0;
+  let afterId = 0;
 
   while (!total || offset < total) {
     if (shouldContinue && !shouldContinue()) {
       return { type: "FeatureCollection", features, cancelled: true };
     }
-    const collection = await loadSpatialLayer(layerKey, { ...filters, limit: size, offset });
+    const collection = await loadSpatialLayer(layerKey, { ...filters, limit: size, offset, afterId });
     const page = collection.features || [];
     if (!page.length) break;
     features.push(...page);
     offset += page.length;
+    afterId = Number(collection.nextCursor) || 0;
     const done = page.length < size || (total > 0 && offset >= total);
     onBatch?.(collection, { loadedCount: features.length, totalCount: total || null, done, offset });
-    if (done) break;
+    if (done || !afterId) break;
     await yieldToBrowser();
   }
 
@@ -1246,6 +1249,7 @@ async function loadDatabaseMapLayers(state, options = {}) {
   const layerDiagnostics = [];
   const notifyLayerLoaded = typeof options.onLayerLoaded === "function" ? options.onLayerLoaded : null;
   const notifyBatchLoaded = typeof options.onBatchLoaded === "function" ? options.onBatchLoaded : null;
+  const queryFilters = options.filters || {};
   const skipLayer = featureType => Array.isArray(options.skipLayers) && options.skipLayers.includes(featureType);
   const layers = [
     { featureType: "basins", apiLayer: "basins", stateKey: "structuresGeoJson", label: "盆地" },
@@ -1264,7 +1268,10 @@ async function loadDatabaseMapLayers(state, options = {}) {
     const startedAt = performance.now();
     const collection = await loadSpatialLayer(layer.apiLayer, {
       mode: "map",
-      limit: layer.featureType === "wells" ? (options.wellLimit || 5000) : 100000
+      ...queryFilters,
+      // The first paint is intentionally bounded. Full well coverage is streamed
+      // by the explicit progressive loader instead of blocking the map startup.
+      limit: layer.featureType === "basins" ? 5000 : (layer.featureType === "wells" ? (options.wellLimit || 2000) : 3000)
     });
     mapLayerState[layer.stateKey] = collection;
     const detail = {
@@ -1273,10 +1280,10 @@ async function loadDatabaseMapLayers(state, options = {}) {
       label: `${layer.label}（PostGIS）`,
       serviceName: "PostgreSQL/PostGIS",
       loadedCount: collection.features?.length || 0,
-      requestLimit: 100000,
+      requestLimit: layer.featureType === "basins" ? 5000 : (layer.featureType === "wells" ? (options.wellLimit || 2000) : 3000),
       pageCount: 1,
       durationMs: Math.round(performance.now() - startedAt),
-      hasMore: false,
+      hasMore: (collection.features?.length || 0) >= (layer.featureType === "basins" ? 5000 : (layer.featureType === "wells" ? (options.wellLimit || 2000) : 3000)),
       status: "ok",
       message: "由平台数据 API 从 PostGIS 读取。"
     };
@@ -1569,8 +1576,22 @@ export async function queryIgsLayerForFilters(state, featureType, filters = {}, 
   return merged;
 }
 
-export async function getIgsLayerTotalCounts(state) {
-  return loadJson("../api/spatial/summary");
+export async function getIgsLayerTotalCounts(state, filters = {}) {
+  const params = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") params.set(key, String(value));
+  });
+  const suffix = params.size ? `?${params.toString()}` : "";
+  return loadJson(`../api/spatial/summary${suffix}`);
+}
+
+export async function loadSpatialFacets(filters = {}) {
+  const params = new URLSearchParams();
+  ["region", "country", "basin"].forEach(key => {
+    if (filters[key]) params.set(key, String(filters[key]));
+  });
+  const suffix = params.size ? `?${params.toString()}` : "";
+  return loadJson(`../api/spatial/facets${suffix}`);
 }
 
 export async function loadPlatformState(options = {}) {

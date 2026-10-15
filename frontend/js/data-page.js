@@ -1,4 +1,4 @@
-import { forceRefreshMapLayers, formatNumber, getIgsLayerTotalCounts, getWellOptions, getWellRecords, loadAfricaIndex, loadClientConfig, loadMapLayersForState, loadPlatformState, loadSpatialLayerBatches, renderShell, safeText, setShellContext, unique } from "./core.js";
+import { formatNumber, getIgsLayerTotalCounts, getWellOptions, getWellRecords, loadAfricaIndex, loadClientConfig, loadPlatformState, loadSpatialFacets, loadSpatialLayerBatches, renderShell, safeText, setShellContext, unique } from "./core.js";
 
 import { DEFAULT_ONLINE_BASEMAP_KEY, createOnlineBasemapLayers, getOnlineBasemapOptions } from "./basemaps.js?v=20260802-diag";
 import { createCanvasPointLayer } from "./canvas-points.js";
@@ -12,6 +12,7 @@ function matchesKeyword(values, keyword) {
 function buildFilterSummary(filters) {
   const parts = [];
   if (filters.keyword) parts.push(`关键字:${filters.keyword}`);
+  if (filters.region) parts.push(`数据区域:${filters.region}`);
   if (filters.country) parts.push(`国家:${filters.country}`);
   if (filters.basin) parts.push(`盆地:${filters.basin}`);
   if (filters.block) parts.push(`区块:${filters.block}`);
@@ -175,36 +176,10 @@ function renderSelectedFeature(root, typeLabel, title, pairs) {
 }
 
 function renderFilterOptions(root, state) {
-  const basinFeatures = state.structuresGeoJson?.features || [];
-  const blockFeatures = state.blocksGeoJson?.features || [];
-  const wellFeatures = state.wellsGeoJson?.features || [];
-  const fieldFeatures = state.fieldsGeoJson?.features || [];
-  const countryOptions = unique([
-    ...basinFeatures.map(item => firstFieldValue(item.properties, ["countries", "COUNTRIES", "country", "COUNTRY"])),
-    ...blockFeatures.map(item => firstFieldValue(item.properties, ["country", "COUNTRY", "countries", "COUNTRIES", "gn_cnt_ty", "GN_CNT_TY"])),
-    ...wellFeatures.map(item => firstFieldValue(item.properties, ["country", "COUNTRY"])),
-    ...fieldFeatures.map(item => firstFieldValue(item.properties, ["countries", "COUNTRIES", "country", "COUNTRY"])),
-    ...Object.values(state.wellProfiles || {}).map(item => item.country || item.country_name),
-    ...Object.values(state.fieldData?.profiles || {}).map(item => item.country_names)
-  ].filter(Boolean)).sort();
-  const basinOptions = unique([
-    ...basinFeatures.map(item => firstFieldValue(item.properties, ["basin_name", "BASIN_NAME"])),
-    ...blockFeatures.flatMap(item => String(firstFieldValue(item.properties, ["bas_names", "BAS_NAMES", "main_ba10", "MAIN_BA10", "basin_name", "BASIN_NAME"]) || "").split("~")),
-    ...wellFeatures.map(item => firstFieldValue(item.properties, ["basin_name", "BASIN_NAME"])),
-    ...fieldFeatures.map(item => firstFieldValue(item.properties, ["basin_name", "BASIN_NAME"])),
-    ...Object.values(state.fieldData?.profiles || {}).map(item => item.basin_name)
-  ].map(value => String(value).trim()).filter(Boolean)).sort();
-  const blockOptions = unique([
-    ...blockFeatures.map(item => firstFieldValue(item.properties, ["block_name", "BLOCK_NAME", "con_blk_nm", "CON_BLK_NM"])),
-    ...wellFeatures.map(item => firstFieldValue(item.properties, ["block_name", "BLOCK_NAME"]))
-  ].map(value => String(value).trim()).filter(Boolean)).sort();
-  const operatorOptions = unique([
-    ...blockFeatures.map(item => firstFieldValue(item.properties, ["operator", "OPERATOR", "grp_name", "GRP_NAME", "group", "GROUP"])),
-    ...Object.values(state.wellProfiles || {}).map(item => item.operator_name),
-    ...wellFeatures.map(item => firstFieldValue(item.properties, ["operator", "OPERATOR"])),
-    ...fieldFeatures.map(item => firstFieldValue(item.properties, ["opr_curr", "OPR_CURR", "operator", "OPERATOR"])),
-    ...Object.values(state.fieldData?.profiles || {}).map(item => item.current_operators)
-  ].map(value => String(value).trim()).filter(Boolean)).sort();
+  const regionOptions = unique(state.spatialFacets?.regions || []).sort();
+  const countryOptions = unique(state.spatialFacets?.countries || []).sort();
+  const basinOptions = unique(state.spatialFacets?.basins || []).sort();
+  const operatorOptions = unique(state.spatialFacets?.operators || []).sort();
 
   const fillSelect = (selector, options, defaultLabel) => {
     const select = root.querySelector(selector);
@@ -222,9 +197,9 @@ function renderFilterOptions(root, state) {
     }
   };
 
+  fillSelect("#regionFilter", regionOptions, "全部数据区域");
   fillSelect("#countryFilter", countryOptions, "全部国家");
   fillSelect("#basinFilter", basinOptions, "全部盆地");
-  fillSelect("#contractBlockFilter", blockOptions, "全部区块");
   fillSelect("#operatorFilter", operatorOptions, "全部作业者");
   root.__refreshDataContext?.();
 }
@@ -283,11 +258,6 @@ function renderLayerDiagnostics(root, diagnostics = []) {
 }
 
 function renderServiceInsights(root, basins, wells, blocks, fields, layerSource, diagnostics = []) {
-  const countries = [...new Set([
-    ...basins.map(item => firstFieldValue(item.properties, ["countries", "COUNTRIES", "country", "COUNTRY"])),
-    ...blocks.map(item => firstFieldValue(item.properties, ["country", "COUNTRY", "countries", "COUNTRIES", "gn_cnt_ty", "GN_CNT_TY"])),
-    ...fields.map(item => firstFieldValue(item.properties, ["countries", "COUNTRIES", "country", "COUNTRY"]))
-  ].filter(Boolean))];
   const maxBasin = basins.reduce((best, current) => Number(firstFieldValue(current.properties, ["bs_skm", "BS_SKM"]) || 0) > Number(firstFieldValue(best?.properties, ["bs_skm", "BS_SKM"]) || 0) ? current : best, null);
   const maxBlock = blocks.reduce((best, current) => Number(firstFieldValue(current.properties, ["blk_sqkm", "BLK_SQKM", "cont_sqkm", "CONT_SQKM"]) || 0) > Number(firstFieldValue(best?.properties, ["blk_sqkm", "BLK_SQKM", "cont_sqkm", "CONT_SQKM"]) || 0) ? current : best, null);
   const maxField = fields.reduce((best, current) => Number(firstFieldValue(current.properties, ["field_sqkm", "FIELD_SQKM", "fld_sqkm", "FLD_SQKM"]) || 0) > Number(firstFieldValue(best?.properties, ["field_sqkm", "FIELD_SQKM", "fld_sqkm", "FLD_SQKM"]) || 0) ? current : best, null);
@@ -308,7 +278,6 @@ function renderServiceInsights(root, basins, wells, blocks, fields, layerSource,
   root.querySelector("#blockFeatureCount").textContent = `本次读取 ${blocks.length} 个`;
   root.querySelector("#wellFeatureCount").textContent = `本次读取 ${wells.length} 个`;
   root.querySelector("#fieldFeatureCount").textContent = `本次读取 ${fields.length} 个`;
-  root.querySelector("#countryCount").textContent = `${countries.length} 个`;
   root.querySelector("#highlightBasin").textContent = firstFieldValue(maxBasin?.properties, ["basin_name", "BASIN_NAME"]) || "-";
   root.querySelector("#highlightBlock").textContent = firstFieldValue(maxBlock?.properties, ["block_name", "BLOCK_NAME", "con_blk_nm", "CON_BLK_NM"]) || "-";
   root.querySelector("#highlightWell").textContent = firstFieldValue(wells[0]?.properties, ["well_name", "WELL_NAME"]) || "-";
@@ -333,7 +302,7 @@ function filterBasins(features, filters, context = {}) {
     if (filters.block) {
       const linked = blocks.some(block => {
         const blockProps = block.properties || {};
-        return String(blockProps.block_name || "").trim() === filters.block
+        return String(blockProps.block_name || "").trim().toLowerCase().includes(filters.block.toLowerCase())
           && String(blockProps.bas_names || "").split("~").map(value => value.trim()).includes(basinName);
       });
       if (!linked) return false;
@@ -364,7 +333,7 @@ function filterBlocks(features, filters) {
     const operator = String(props.operator || "").trim();
     if (filters.country && country !== filters.country) return false;
     if (filters.basin && !basinNames.includes(filters.basin)) return false;
-    if (filters.block && blockName !== filters.block) return false;
+    if (filters.block && !blockName.toLowerCase().includes(filters.block.toLowerCase())) return false;
     if (filters.operator && operator !== filters.operator) return false;
     return matchesKeyword([props.block_name, props.contract, props.country, props.bas_names, props.operator, props.con_status, props.blk_status], filters.keyword);
   });
@@ -380,7 +349,7 @@ function filterWells(features, filters, wellProfiles) {
     const blockName = String(props.block_name || "").trim();
     if (filters.country && country !== filters.country) return false;
     if (filters.basin && basinName !== filters.basin) return false;
-    if (filters.block && blockName !== filters.block) return false;
+    if (filters.block && !blockName.toLowerCase().includes(filters.block.toLowerCase())) return false;
     if (filters.operator && operator !== filters.operator) return false;
     return matchesKeyword([props.well_name, basinName, blockName, operator], filters.keyword);
   });
@@ -401,7 +370,7 @@ function filterFields(features, filters, fieldProfiles, context = {}) {
       const linkedBasins = new Set();
       blocks.forEach(block => {
         const blockProps = block.properties || {};
-        if (blockProps.block_name === filters.block) {
+        if (String(blockProps.block_name || "").toLowerCase().includes(filters.block.toLowerCase())) {
           String(blockProps.bas_names || "").split("~").forEach(name => linkedBasins.add(name.trim()));
         }
       });
@@ -1538,9 +1507,10 @@ async function init() {
               <h3>查询条件</h3>
               <div class="filter-form">
                 <label><span>关键字</span><input id="searchKeyword" type="text" placeholder="输入井名、盆地名、区块名、油气田名"></label>
+                <label><span>数据区域</span><select id="regionFilter"></select></label>
                 <label><span>国家</span><select id="countryFilter"></select></label>
                 <label><span>盆地</span><select id="basinFilter"></select></label>
-                <label><span>区块</span><select id="contractBlockFilter"></select></label>
+                <label><span>区块</span><input id="contractBlockFilter" type="text" placeholder="输入区块名称"></label>
                 <label><span>作业者</span><select id="operatorFilter"></select></label>
               </div>
               <div class="button-row">
@@ -1570,9 +1540,11 @@ async function init() {
                     ${getOnlineBasemapOptions().map(option => `<option value="${option.key}" ${option.key === DEFAULT_ONLINE_BASEMAP_KEY ? "selected" : ""}>${option.name}</option>`).join("")}
                   </select>
               </label>
+              <button type="button" id="loadAllBasins" class="button-ghost" title="通过 PostGIS 游标分批读取全部盆地">分批加载全部盆地</button>
+              <button type="button" id="loadAllBlocks" class="button-ghost" title="通过 PostGIS 游标分批读取全部合同区块">分批加载全部区块</button>
+              <button type="button" id="loadAllFields" class="button-ghost" title="通过 PostGIS 游标分批读取全部油气田">分批加载全部油气田</button>
               <button type="button" id="loadAllWells" class="button-ghost" title="每批追加 2,000 口井位；加载期间地图仍可操作">分批加载全部井位</button>
-              <button type="button" id="refreshMapData" class="button-ghost" title="后台重新读取数据，完成后更新显示（不影响当前画面）">刷新数据</button>
-              <button type="button" id="reloadMapData" class="button-ghost" title="清空当前画面，按加载顺序重新展示全部数据">重新加载</button>
+              <button type="button" id="clearSpatialResults" class="button-ghost" title="清空当前业务图层，保留底图和筛选条件">清空结果</button>
               <span id="mapRuntime" class="spatial-runtime"></span>
             </div>
             <div class="map-card spatial-map-card">
@@ -1606,7 +1578,6 @@ async function init() {
                     <span>区块图层</span><strong id="blockFeatureCount">-</strong>
                     <span>油气田图层</span><strong id="fieldFeatureCount">-</strong>
                     <span>井位图层</span><strong id="wellFeatureCount">-</strong>
-                    <span>覆盖国家</span><strong id="countryCount">-</strong>
                   </div>
                 </article>
               </div>
@@ -2057,6 +2028,10 @@ async function init() {
 
   renderRegionalStory(root, state.regionalStories, {});
   renderFilterOptions(root, state);
+  loadSpatialFacets().then(facets => {
+    state.spatialFacets = facets;
+    renderFilterOptions(root, state);
+  }).catch(() => {});
 
   const dataNavigation = [
     { group: "空间与区域", items: [["spatial", "空间总览"], ["regional", "区域专题"]] },
@@ -2257,7 +2232,7 @@ async function init() {
       ["#toggleBaseMap", "在线底图"], ["#toggleBasins", "盆地图层"], ["#toggleBlocks", "合同区块图层"], ["#toggleFields", "油气田图层"], ["#toggleWells", "井位图层"]
     ];
     const filterFields = [
-      ["#searchKeyword", "关键字", "input"], ["#countryFilter", "国家", "select"], ["#basinFilter", "盆地", "select"], ["#contractBlockFilter", "区块", "select"], ["#operatorFilter", "作业者", "select"]
+      ["#searchKeyword", "关键字", "input"], ["#regionFilter", "数据区域", "select"], ["#countryFilter", "国家", "select"], ["#basinFilter", "盆地", "select"], ["#contractBlockFilter", "区块", "input"], ["#operatorFilter", "作业者", "select"]
     ];
     return `
       <details class="nav-tree nav-context__subsection" open>
@@ -2431,15 +2406,20 @@ async function init() {
 
   if (window.L) {
     const blockProfilesLocal = state.blockData?.profiles || {};
-    const filters = { keyword: "", country: "", basin: "", block: "", operator: "" };
+    const filters = { keyword: "", region: "", country: "", basin: "", block: "", operator: "" };
     const LMap = window.L;
     const OVERVIEW_MAX_ZOOM = 4;
     const LOCATE_MAX_ZOOM = 7;
+    const WEB_MERCATOR_WORLD_BOUNDS = LMap.latLngBounds([-85.05112878, -180], [85.05112878, 180]);
     const vectorRenderer = LMap.canvas({ padding: 0.5 });
     const map = LMap.map("map", {
       zoomControl: true,
       attributionControl: true,
-      renderer: vectorRenderer
+      renderer: vectorRenderer,
+      minZoom: 3,
+      maxBounds: WEB_MERCATOR_WORLD_BOUNDS,
+      maxBoundsViscosity: 1,
+      worldCopyJump: false
     }).setView([5, 20], 3);
     mapRef = map;
     window.addEventListener("module-shown", event => {
@@ -2739,40 +2719,18 @@ async function init() {
     let wellLayer = null;
     let persistentWellCanvas = null;
     let mapLayersLoading = false;
-    let mapLayersLoaded = state.layerSource !== "not-loaded";
-    let lastIncrementalRefreshAt = 0;
     let lastFilterOptionsRefreshAt = 0;
     let dataMapFitted = false;
     let previousWellCount = 0;
     let allWellsLoaded = false;
     let wellsLoading = false;
     let wellLoadVersion = 0;
+    const fullLayerState = {
+      basins: { loading: false, loaded: false, version: 0 },
+      blocks: { loading: false, loaded: false, version: 0 },
+      fields: { loading: false, loaded: false, version: 0 }
+    };
     let layerTotals = { basins: 0, contract_blocks: 0, fields: 0, wells: 0 };
-
-    async function ensureMapLayersLoaded() {
-      if (mapLayersLoaded || mapLayersLoading) return;
-      mapLayersLoading = true;
-      updateMapRuntime("正在从 PostgreSQL/PostGIS 读取空间图层...");
-      try {
-        await loadMapLayersForState(state, {
-          onRefreshed: () => {
-            if (window.requestIdleCallback) {
-              window.requestIdleCallback(refreshDisplayFromState, { timeout: 3000 });
-            } else {
-              setTimeout(refreshDisplayFromState, 500);
-            }
-          },
-          onBatchLoaded: handleLayerBatch
-        });
-        finalizeLayerLoad();
-      } catch (error) {
-        state.layerSource = "database-error";
-        state.layerError = error.message;
-        updateMapRuntime(`空间数据 API 读取失败：${error.message}`);
-      } finally {
-        mapLayersLoading = false;
-      }
-    }
 
     function updateAllWellsButton() {
       const button = root.querySelector("#loadAllWells");
@@ -2783,10 +2741,115 @@ async function init() {
         : (wellsLoading ? `正在分批加载 ${(state.wellsGeoJson.features || []).length.toLocaleString("zh-CN")} 口…` : "分批加载全部井位");
     }
 
+    function updateFullLayerButtons() {
+      const definitions = [
+        { featureType: "basins", selector: "#loadAllBasins", label: "盆地", stateKey: "structuresGeoJson" },
+        { featureType: "blocks", selector: "#loadAllBlocks", label: "合同区块", stateKey: "blocksGeoJson" },
+        { featureType: "fields", selector: "#loadAllFields", label: "油气田", stateKey: "fieldsGeoJson" }
+      ];
+      definitions.forEach(({ featureType, selector, label, stateKey }) => {
+        const button = root.querySelector(selector);
+        const progress = fullLayerState[featureType];
+        if (!button || !progress) return;
+        button.disabled = progress.loading || progress.loaded;
+        button.textContent = progress.loaded
+          ? `全部${label}已加载`
+          : (progress.loading
+            ? `正在分批加载 ${(state[stateKey].features || []).length.toLocaleString("zh-CN")} 个…`
+            : `分批加载全部${label}`);
+      });
+    }
+
+    async function loadAllFeaturesProgressively(featureType) {
+      const definition = {
+        basins: { apiLayer: "basins", stateKey: "structuresGeoJson", totalKey: "basins", batchSize: 500, label: "盆地", toggleSelector: "#toggleBasins" },
+        blocks: { apiLayer: "contract_blocks", stateKey: "blocksGeoJson", totalKey: "contract_blocks", batchSize: 750, label: "合同区块", toggleSelector: "#toggleBlocks" },
+        fields: { apiLayer: "fields", stateKey: "fieldsGeoJson", totalKey: "fields", batchSize: 1000, label: "油气田", toggleSelector: "#toggleFields" }
+      }[featureType];
+      const progressState = fullLayerState[featureType];
+      if (!progressState || progressState.loading || progressState.loaded) return;
+      if (hasSpatialQuery()) {
+        updateMapRuntime(`请先清除筛选条件；“全部${definition.label}”会读取当前数据集的完整图层。`);
+        return;
+      }
+      if (!root.querySelector(definition.toggleSelector).checked) {
+        updateMapRuntime(`请先勾选${definition.label}图层，再加载完整图层。`);
+        return;
+      }
+      if (!layerTotals[definition.totalKey]) {
+        const counts = await getIgsLayerTotalCounts(state);
+        layerTotals = { ...layerTotals, ...counts };
+      }
+      const total = Number(layerTotals[definition.totalKey] || 0);
+      if (!total) {
+        updateMapRuntime(`未读取到${definition.label}总数，暂不能启动全量加载。`);
+        return;
+      }
+
+      const version = ++progressState.version;
+      progressState.loading = true;
+      state.layerSource = "database";
+      state[definition.stateKey] = { type: "FeatureCollection", features: [] };
+      let progressiveLayer = null;
+      if (featureType === "basins") {
+        if (basinLayer) basinLayer.remove();
+        progressiveLayer = LMap.layerGroup();
+        basinLayer = progressiveLayer;
+      } else if (featureType === "blocks") {
+        if (blockLayer) blockLayer.remove();
+        progressiveLayer = LMap.layerGroup();
+        blockLayer = progressiveLayer;
+      } else {
+        if (fieldLayer) fieldLayer.remove();
+        progressiveLayer = LMap.layerGroup();
+        fieldLayer = progressiveLayer;
+      }
+      progressiveLayer.addTo(map);
+      updateFullLayerButtons();
+      refreshCountsLight();
+      updateMapRuntime(`正在从 PostGIS 分批读取 ${total.toLocaleString("zh-CN")} 个${definition.label}…`);
+      try {
+        const result = await loadSpatialLayerBatches(definition.apiLayer, {
+          mode: "map",
+          batchSize: definition.batchSize,
+          total,
+          shouldContinue: () => version === progressState.version && root.querySelector(definition.toggleSelector)?.checked,
+          onBatch: (collection, progress) => {
+            if (version !== progressState.version) return;
+            const features = state[definition.stateKey].features || [];
+            features.push(...(collection.features || []));
+            state[definition.stateKey] = { type: "FeatureCollection", features };
+            if (featureType === "basins") {
+              createBasinLayer(collection).addTo(progressiveLayer);
+            } else if (featureType === "blocks") {
+              createBlockLayer(collection).addTo(progressiveLayer);
+            } else {
+              createFieldLayer(collection).addTo(progressiveLayer);
+            }
+            updateFullLayerButtons();
+            refreshCountsLight();
+            updateMapRuntime(`正在分批读取${definition.label}：${features.length.toLocaleString("zh-CN")} / ${total.toLocaleString("zh-CN")}…`);
+          }
+        });
+        if (result.cancelled || version !== progressState.version) {
+          updateMapRuntime(`全部${definition.label}加载已停止；当前已加载数据仍可查看。`);
+        } else {
+          progressState.loaded = true;
+          refreshStatsLight();
+          updateMapRuntime(`全部 ${state[definition.stateKey].features.length.toLocaleString("zh-CN")} 个${definition.label}已加载完成。`);
+        }
+      } catch (error) {
+        updateMapRuntime(`全部${definition.label}加载失败：${error.message}`);
+      } finally {
+        progressState.loading = false;
+        updateFullLayerButtons();
+      }
+    }
+
     async function loadAllWellsProgressively() {
       if (wellsLoading || allWellsLoaded) return;
-      if (filters.keyword || filters.country || filters.basin || filters.block || filters.operator) {
-        updateMapRuntime("请先清除筛选条件；“全部井位”会加载全库 61,927 口井位。");
+      if (hasSpatialQuery()) {
+        updateMapRuntime("请先清除筛选条件；“全部井位”会按批读取当前数据集中的全部井位。");
         return;
       }
       if (!root.querySelector("#toggleWells").checked) {
@@ -2804,6 +2867,7 @@ async function init() {
 
       const requestVersion = ++wellLoadVersion;
       wellsLoading = true;
+      state.layerSource = "database";
       previousWellCount = 0;
       state.wellsGeoJson = { type: "FeatureCollection", features: [] };
       if (persistentWellCanvas) persistentWellCanvas.setItems([]);
@@ -2847,7 +2911,7 @@ async function init() {
     function handleLayerBatch(featureType, collection, detail) {
       const features = collection?.features || [];
       if (featureType === "wells") {
-        const noFilter = !(filters.keyword || filters.country || filters.basin || filters.block || filters.operator);
+        const noFilter = !(filters.keyword || filters.region || filters.country || filters.basin || filters.block || filters.operator);
         state.wellsGeoJson = { type: "FeatureCollection", features };
         if (state._forceRefreshing) {
           // 强制刷新期间保持当前显示不变，拉取完成后一次性切换
@@ -2908,76 +2972,19 @@ async function init() {
       }
     }
 
-    function finalizeLayerLoad() {
-      mapLayersLoaded = true;
-      refreshDisplayFromState();
-      renderFilterOptions(root, state);
-      refreshCountsLight();
-      if (!dataMapFitted) {
-        dataMapFitted = true;
-        fitMapToVisible();
-      }
-      if (state.layerSource === "database-error") {
-        updateMapRuntime(`空间数据 API 读取失败：${state.layerError || "服务未返回数据"}`);
-      } else {
-        const slowest = [...(state.layerDiagnostics || [])].sort((a, b) => b.durationMs - a.durationMs)[0];
-        updateMapRuntime(slowest ? `PostGIS 空间图层已加载；最慢图层：${slowest.label} ${formatLayerRuntime(slowest)}` : "PostGIS 空间图层已加载");
-      }
-      const finishLoad = async () => {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        addSpatialFeatureProfiles(state);
-        await new Promise(resolve => setTimeout(resolve, 0));
-        rebuildWellIndexes();
-        await new Promise(resolve => setTimeout(resolve, 0));
-        refreshStatsLight();
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        refreshAfterMapLayersLoaded();
-      };
-      if (window.requestIdleCallback) {
-        window.requestIdleCallback(finishLoad, { timeout: 5000 });
-      } else {
-        setTimeout(finishLoad, 500);
-      }
+    let spatialQueryVersion = 0;
+
+    function hasSpatialQuery() {
+      return Boolean(filters.keyword || filters.region || filters.country || filters.basin || filters.block || filters.operator);
     }
 
-    async function handleManualRefresh() {
-      if (mapLayersLoading || state._forceRefreshing || state._layerRefreshPromise) {
-        updateMapRuntime("数据正在刷新中，请稍候…");
-        return;
-      }
-      state._forceRefreshing = true;
-      mapLayersLoading = true;
+    function clearSpatialResults(message = "已清空业务图层；请设置查询条件后从 PostGIS 读取数据。") {
+      spatialQueryVersion += 1;
+      mapLayersLoading = false;
       wellLoadVersion += 1;
       allWellsLoaded = false;
       wellsLoading = false;
-      previousWellCount = 0;
-      updateAllWellsButton();
-      updateMapRuntime("正在从 PostGIS 重新读取全部图层数据…（完成后自动更新显示）");
-      try {
-        await forceRefreshMapLayers(state, { onBatchLoaded: handleLayerBatch });
-        state._forceRefreshing = false;
-        refreshDisplayFromState();
-        finalizeLayerLoad();
-        updateMapRuntime(`图层数据已更新为最新（${new Date().toLocaleTimeString("zh-CN")}）`);
-      } catch (error) {
-        state._forceRefreshing = false;
-        updateMapRuntime(`图层刷新失败：${error.message}`);
-      } finally {
-        mapLayersLoading = false;
-      }
-    }
-
-    async function handleVisibleReload() {
-      if (mapLayersLoading || state._forceRefreshing || state._layerRefreshPromise) {
-        updateMapRuntime("加载正在进行中，请稍候…");
-        return;
-      }
-      mapLayersLoading = true;
-      updateMapRuntime("正在从数据库重新加载全部图层数据（逐步显示）…");
-      // 清空当前显示，进入逐批加载
-      wellLoadVersion += 1;
-      allWellsLoaded = false;
-      wellsLoading = false;
+      Object.values(fullLayerState).forEach(item => { item.loaded = false; item.loading = false; item.version += 1; });
       previousWellCount = 0;
       if (persistentWellCanvas) persistentWellCanvas.setItems([]);
       if (wellLayer && wellLayer !== persistentWellCanvas) wellLayer.remove();
@@ -2988,23 +2995,76 @@ async function init() {
       state.structuresGeoJson = { type: "FeatureCollection", features: [] };
       state.blocksGeoJson = { type: "FeatureCollection", features: [] };
       state.fieldsGeoJson = { type: "FeatureCollection", features: [] };
-      refreshCountsLight();
-      try {
-        await forceRefreshMapLayers(state, { onBatchLoaded: handleLayerBatch });
-        finalizeLayerLoad();
-        updateMapRuntime(`数据库图层已重新加载完成（${new Date().toLocaleTimeString("zh-CN")}）`);
-      } catch (error) {
-        updateMapRuntime(`图层重新加载失败：${error.message}`);
-      } finally {
-        mapLayersLoading = false;
-      }
+      state.layerSource = "not-loaded";
+      state.layerDiagnostics = [];
+      refreshMap(false);
+      updateAllWellsButton();
+      updateFullLayerButtons();
+      updateMapRuntime(message);
     }
 
-    function throttleIncrementalRefresh() {
-      const now = Date.now();
-      if (now - lastIncrementalRefreshAt < 800) return;
-      lastIncrementalRefreshAt = now;
-      refreshMap(false);
+    async function reloadMapForFilters() {
+      if (mapLayersLoading) {
+        updateMapRuntime("空间数据正在读取中，请稍候…");
+        return;
+      }
+      if (!hasSpatialQuery()) {
+        clearSpatialResults("请至少设置一项查询条件；完整图层请使用上方“分批加载全部”按钮。");
+        return;
+      }
+
+      const requestVersion = ++spatialQueryVersion;
+      clearSpatialResults("正在按查询条件从 PostGIS 读取空间数据…");
+      spatialQueryVersion = requestVersion;
+      mapLayersLoading = true;
+      const queryFilters = { ...filters };
+      try {
+        const totals = await getIgsLayerTotalCounts(state, queryFilters);
+        if (requestVersion !== spatialQueryVersion) return;
+        layerTotals = { ...layerTotals, ...totals };
+        state.layerSource = "database";
+        const definitions = [
+          { featureType: "basins", apiLayer: "basins", stateKey: "structuresGeoJson", totalKey: "basins", batchSize: 500, label: "盆地" },
+          { featureType: "contract_blocks", apiLayer: "contract_blocks", stateKey: "blocksGeoJson", totalKey: "contract_blocks", batchSize: 750, label: "合同区块" },
+          { featureType: "fields", apiLayer: "fields", stateKey: "fieldsGeoJson", totalKey: "fields", batchSize: 1000, label: "油气田" },
+          { featureType: "wells", apiLayer: "wells", stateKey: "wellsGeoJson", totalKey: "wells", batchSize: 2000, label: "井位" }
+        ];
+        for (const definition of definitions) {
+          const total = Number(totals[definition.totalKey] || 0);
+          if (!total) continue;
+          updateMapRuntime(`正在从 PostGIS 查询${definition.label}：0 / ${total.toLocaleString("zh-CN")}…`);
+          await loadSpatialLayerBatches(definition.apiLayer, {
+            mode: "map",
+            ...queryFilters,
+            batchSize: definition.batchSize,
+            total,
+            shouldContinue: () => requestVersion === spatialQueryVersion,
+            onBatch: (collection, progress) => {
+              if (requestVersion !== spatialQueryVersion) return;
+              const features = state[definition.stateKey].features || [];
+              features.push(...(collection.features || []));
+              handleLayerBatch(definition.featureType, { type: "FeatureCollection", features }, {
+                totalCount: total,
+                done: progress.done,
+                sourceLabel: `${definition.label}（PostGIS）`
+              });
+            }
+          });
+        }
+        if (requestVersion !== spatialQueryVersion) return;
+        addSpatialFeatureProfiles(state);
+        rebuildWellIndexes();
+        refreshAfterMapLayersLoaded();
+        refreshDisplayFromState();
+        refreshCountsLight();
+        dataMapFitted = true;
+        fitMapToVisible();
+        updateMapRuntime("筛选结果已由 PostGIS 查询完成。");
+      } catch (error) {
+        if (requestVersion === spatialQueryVersion) updateMapRuntime(`筛选读取失败：${error.message}`);
+      } finally {
+        if (requestVersion === spatialQueryVersion) mapLayersLoading = false;
+      }
     }
 
     let lastStatsRefreshAt = 0;
@@ -3016,7 +3076,7 @@ async function init() {
     }
 
     function refreshCountsLight() {
-      const noFilter = !(filters.keyword || filters.country || filters.basin || filters.block || filters.operator);
+      const noFilter = !(filters.keyword || filters.region || filters.country || filters.basin || filters.block || filters.operator);
       const filterContext = {
         blocks: state.blocksGeoJson.features || [],
         wells: state.wellsGeoJson.features || []
@@ -3081,7 +3141,7 @@ async function init() {
         blocks: state.blocksGeoJson.features || [],
         wells: state.wellsGeoJson.features || []
       };
-      const noFilter = !(filters.keyword || filters.country || filters.basin || filters.block || filters.operator);
+      const noFilter = !(filters.keyword || filters.region || filters.country || filters.basin || filters.block || filters.operator);
       const wells = state.wellsGeoJson.features || [];
       if (persistentWellCanvas) {
         const visibleWells = noFilter ? wells : filterWells(wells, filters, state.wellProfiles);
@@ -3118,7 +3178,7 @@ async function init() {
 
     function fitMapToVisible() {
       if (!map) return;
-      const noFilter = !(filters.keyword || filters.country || filters.basin || filters.block || filters.operator);
+      const noFilter = !(filters.keyword || filters.region || filters.country || filters.basin || filters.block || filters.operator);
       if (noFilter) {
         const fitTargets = [];
         if ((state.wellsGeoJson.features?.length || 0) > 0) fitTargets.push(wellLayer);
@@ -3232,31 +3292,34 @@ async function init() {
       }
     }
 
-    refreshMap(true);
-    ensureMapLayersLoaded();
+    refreshMap(false);
+    updateMapRuntime("请选择查询条件后读取空间数据；完整图层可使用上方分批加载按钮。");
     getIgsLayerTotalCounts(state).then(counts => {
       layerTotals = { ...layerTotals, ...counts };
       refreshCountsLight();
       updateAllWellsButton();
+      updateFullLayerButtons();
     }).catch(() => {});
 
     root.querySelector("#applyFilters").addEventListener("click", () => {
       filters.keyword = root.querySelector("#searchKeyword").value.trim();
+      filters.region = root.querySelector("#regionFilter").value;
       filters.country = root.querySelector("#countryFilter").value;
       filters.basin = root.querySelector("#basinFilter").value;
-      filters.block = root.querySelector("#contractBlockFilter").value;
+      filters.block = root.querySelector("#contractBlockFilter").value.trim();
       filters.operator = root.querySelector("#operatorFilter").value;
-      refreshMap(true);
+      void reloadMapForFilters();
     });
 
     root.querySelector("#resetFilters").addEventListener("click", () => {
-      Object.assign(filters, { keyword: "", country: "", basin: "", block: "", operator: "" });
+      Object.assign(filters, { keyword: "", region: "", country: "", basin: "", block: "", operator: "" });
       root.querySelector("#searchKeyword").value = "";
+      root.querySelector("#regionFilter").value = "";
       root.querySelector("#countryFilter").value = "";
       root.querySelector("#basinFilter").value = "";
       root.querySelector("#contractBlockFilter").value = "";
       root.querySelector("#operatorFilter").value = "";
-      refreshMap(true);
+      clearSpatialResults();
     });
 
     root.querySelector("#toggleBaseMap").addEventListener("change", event => {
@@ -3293,14 +3356,16 @@ async function init() {
     root.querySelector("#loadAllWells")?.addEventListener("click", () => {
       void loadAllWellsProgressively();
     });
-    const refreshMapDataButton = root.querySelector("#refreshMapData");
-    if (refreshMapDataButton) {
-      refreshMapDataButton.addEventListener("click", () => handleManualRefresh());
-    }
-    const reloadMapDataButton = root.querySelector("#reloadMapData");
-    if (reloadMapDataButton) {
-      reloadMapDataButton.addEventListener("click", () => handleVisibleReload());
-    }
+    root.querySelector("#loadAllBasins")?.addEventListener("click", () => {
+      void loadAllFeaturesProgressively("basins");
+    });
+    root.querySelector("#loadAllBlocks")?.addEventListener("click", () => {
+      void loadAllFeaturesProgressively("blocks");
+    });
+    root.querySelector("#loadAllFields")?.addEventListener("click", () => {
+      void loadAllFeaturesProgressively("fields");
+    });
+    root.querySelector("#clearSpatialResults")?.addEventListener("click", () => clearSpatialResults());
   } else {
     root.querySelector("#mapRuntime").textContent = "未加载地图组件";
   }

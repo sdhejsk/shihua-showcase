@@ -9,6 +9,7 @@ const state = {
   root: null,
   config: null,
   result: null,
+  resultId: null,
   loading: false,
   error: "",
   stage: validStageIds.has(requestedStage) ? requestedStage : "resource",
@@ -276,7 +277,7 @@ async function loadConfig() {
   state.assumptions = { ...config.defaultAssumptions, ...state.assumptions };
 }
 
-async function runStage(stage = state.stage, page = 1) {
+async function runStage(stage = state.stage, page = 1, reuseSnapshot = false) {
   state.stage = stage;
   state.view = "results";
   state.filters.page = page;
@@ -288,17 +289,24 @@ async function runStage(stage = state.stage, page = 1) {
     const response = await fetch("../api/evaluation/economic/run", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        stage: state.stage,
-        page: state.filters.page,
-        pageSize: state.filters.pageSize,
-        filters: state.filters,
-        assumptions: state.assumptions
-      })
+      body: JSON.stringify(reuseSnapshot && state.resultId
+        ? {
+          resultId: state.resultId,
+          page: state.filters.page,
+          pageSize: state.filters.pageSize
+        }
+        : {
+          stage: state.stage,
+          page: state.filters.page,
+          pageSize: state.filters.pageSize,
+          filters: state.filters,
+          assumptions: state.assumptions
+        })
     });
     const payload = await response.json();
     if (!response.ok) throw new Error(payload.detail || payload.message || "经济评价计算失败");
     state.result = payload;
+    state.resultId = payload.resultId || null;
     state.activeId = payload.rows?.[0]?.id || null;
   } catch (error) {
     state.error = error.message;
@@ -329,6 +337,7 @@ function goStage(stageId) {
   state.stage = stageId;
   state.view = "inputs";
   state.result = null;
+  state.resultId = null;
   state.activeId = null;
   state.error = "";
   renderPage();
@@ -715,6 +724,7 @@ function resetInputs() {
     pageSize: 20
   };
   state.assumptions = { ...state.config.defaultAssumptions };
+  state.resultId = null;
   state.activeId = null;
 }
 
@@ -745,6 +755,7 @@ function bindEvents() {
       state.filters[key] = key === "pageSize" ? Number(event.target.value) : event.target.value;
       state.filters.page = 1;
       state.result = null;
+      state.resultId = null;
       state.activeId = null;
       renderPage();
     });
@@ -752,6 +763,7 @@ function bindEvents() {
       if (input.dataset.filter === "keyword") {
         state.filters.keyword = event.target.value;
         state.result = null;
+        state.resultId = null;
         state.activeId = null;
       }
     });
@@ -763,6 +775,7 @@ function bindEvents() {
       const value = Number(event.target.value);
       if (Number.isFinite(value)) state.assumptions[key] = value;
       state.result = null;
+      state.resultId = null;
       state.activeId = null;
       renderPage();
     });
@@ -777,12 +790,12 @@ function bindEvents() {
 
   state.root.querySelector("[data-action='prev-page']")?.addEventListener("click", () => {
     const page = Math.max(1, (state.result?.pagination?.page || 1) - 1);
-    runStage(state.stage, page);
+    runStage(state.stage, page, true);
   });
 
   state.root.querySelector("[data-action='next-page']")?.addEventListener("click", () => {
     const page = (state.result?.pagination?.page || 1) + 1;
-    runStage(state.stage, page);
+    runStage(state.stage, page, true);
   });
 }
 

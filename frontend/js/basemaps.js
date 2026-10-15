@@ -3,7 +3,7 @@ const TDT_SUBDOMAINS = ["0", "1", "2", "3", "4", "5", "6", "7"];
 function tiandituWmtsUrl(layerCode, token = "") {
   const layerName = layerCode.split("_")[0];
   const key = token ? `&tk=${encodeURIComponent(token)}` : "";
-  return `http://t{s}.tianditu.gov.cn/${layerCode}/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=${layerName}&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}${key}`;
+  return `https://t{s}.tianditu.gov.cn/${layerCode}/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=${layerName}&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}${key}`;
 }
 
 export const DEFAULT_ONLINE_BASEMAP_KEY = "tiandituVector";
@@ -46,8 +46,15 @@ export function createOnlineBasemapLayers(LMap, key = DEFAULT_ONLINE_BASEMAP_KEY
   const config = basemaps[key] || basemaps[DEFAULT_ONLINE_BASEMAP_KEY];
   const commonOptions = {
     maxZoom: 18,
-    minZoom: 1,
-    subdomains: config.subdomains
+    // At zoom 1 and below, a desktop viewport can be wider than the single
+    // Web Mercator world. Tianditu then repeats or leaves an empty edge.
+    minZoom: 3,
+    subdomains: config.subdomains,
+    // Delay refreshes until a map movement ends and avoid requests beyond the world extent.
+    updateWhenIdle: true,
+    keepBuffer: 1,
+    noWrap: true,
+    bounds: LMap.latLngBounds([-85.05112878, -180], [85.05112878, 180])
   };
 
   return {

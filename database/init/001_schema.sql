@@ -143,6 +143,28 @@ CREATE INDEX IF NOT EXISTS spatial_feature_country_idx ON spatial_feature(countr
 CREATE INDEX IF NOT EXISTS spatial_feature_basin_idx ON spatial_feature(basin_name);
 CREATE INDEX IF NOT EXISTS spatial_feature_properties_idx ON spatial_feature USING GIN(properties);
 CREATE INDEX IF NOT EXISTS spatial_feature_geometry_idx ON spatial_feature USING GIST(geometry);
+ALTER TABLE spatial_feature ADD COLUMN IF NOT EXISTS region_key TEXT;
+CREATE INDEX IF NOT EXISTS spatial_feature_region_idx ON spatial_feature(region_key);
+
+CREATE TABLE IF NOT EXISTS data_region (
+  region_key TEXT PRIMARY KEY,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS data_country (
+  country_name TEXT PRIMARY KEY,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS data_basin (
+  basin_name TEXT PRIMARY KEY,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS data_operator (
+  operator_name TEXT PRIMARY KEY,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
 
 CREATE TABLE IF NOT EXISTS source_tabular_record (
   id BIGSERIAL PRIMARY KEY,
@@ -176,3 +198,54 @@ CREATE TABLE IF NOT EXISTS evaluation_run (
 );
 
 CREATE INDEX IF NOT EXISTS evaluation_run_model_created_idx ON evaluation_run(model_key, created_at DESC);
+
+-- Global data collections are imported independently of the legacy Africa-only
+-- prototype. The active collection can be switched only after an import passes
+-- its checks, so an interrupted global import does not take the platform down.
+CREATE TABLE IF NOT EXISTS data_collection (
+  collection_key TEXT PRIMARY KEY,
+  display_name TEXT NOT NULL,
+  coverage TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('staging', 'active', 'failed', 'archived')),
+  import_batch_id UUID REFERENCES import_batch(id),
+  manifest JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  activated_at TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS entity_record (
+  id BIGSERIAL PRIMARY KEY,
+  collection_key TEXT NOT NULL REFERENCES data_collection(collection_key) ON DELETE CASCADE,
+  entity_type TEXT NOT NULL CHECK (entity_type IN ('basin', 'block', 'contract', 'field', 'well')),
+  record_role TEXT NOT NULL DEFAULT 'spatial' CHECK (record_role IN ('spatial', 'tabular_primary', 'tabular_related')),
+  source_asset_id BIGINT REFERENCES source_asset(id),
+  source_record_key TEXT NOT NULL,
+  canonical_key TEXT,
+  record_name TEXT,
+  country_name TEXT,
+  basin_name TEXT,
+  block_name TEXT,
+  field_name TEXT,
+  contract_name TEXT,
+  operator_name TEXT,
+  status_name TEXT,
+  latitude DOUBLE PRECISION,
+  longitude DOUBLE PRECISION,
+  payload JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(collection_key, entity_type, record_role, source_asset_id, source_record_key)
+);
+
+CREATE INDEX IF NOT EXISTS entity_record_collection_type_idx ON entity_record(collection_key, entity_type, record_role);
+CREATE INDEX IF NOT EXISTS entity_record_name_idx ON entity_record(collection_key, record_name);
+CREATE INDEX IF NOT EXISTS entity_record_country_idx ON entity_record(collection_key, country_name);
+CREATE INDEX IF NOT EXISTS entity_record_basin_idx ON entity_record(collection_key, basin_name);
+CREATE INDEX IF NOT EXISTS entity_record_canonical_idx ON entity_record(collection_key, entity_type, canonical_key);
+CREATE INDEX IF NOT EXISTS entity_record_payload_idx ON entity_record USING GIN(payload);
+
+ALTER TABLE spatial_feature ADD COLUMN IF NOT EXISTS collection_key TEXT;
+CREATE INDEX IF NOT EXISTS spatial_feature_collection_layer_idx ON spatial_feature(collection_key, layer_key);
+CREATE UNIQUE INDEX IF NOT EXISTS spatial_feature_collection_layer_feature_key_unique
+  ON spatial_feature(collection_key, layer_key, source_feature_key)
+  WHERE collection_key IS NOT NULL;

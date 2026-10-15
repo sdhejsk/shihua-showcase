@@ -22,9 +22,12 @@ PostgreSQL 与 PostGIS 是一个统一的主数据服务，不拆分为两套孤
 - `source_asset`：所有来源文件的路径、对象键、大小、SHA-256 和入对象存储状态。
 - `app_setting`：平台配置、资料清单、评价模型等配置化 JSON。
 - `entity_profile`、`entity_detail`：盆地、区块、合同、油气田、井的资料摘要与专题表。
-- `africa_field`、`africa_well`：非洲全量油气田和井的查询字段与完整原始记录。
+- `data_collection`：全球或区域数据集的导入状态、范围、清单和活动版本。
+- `entity_record`：按数据集统一保存盆地、区块、合同、油气田、井的可查询实体记录；保留原始来源、标准字段和完整 JSONB 负载。
+- `africa_field`、`africa_well`：早期非洲数据集的兼容表；全球集合启用后不再作为运行期主数据源。
 - `well_log_measurement`：测井深度点与曲线数据。
-- `spatial_feature`：四类空间要素及 PostGIS 几何。
+- `spatial_feature`：四类空间要素及 PostGIS 几何；`region_key` 从原始资料的区域、国家字段归一得到，用于数据区域筛选索引，不以距离或地图边界推断区域归属。
+- `data_region`、`data_country`、`data_basin`、`data_operator`：由原始属性字段刷新得到的独立筛选索引表，供空间总览快速加载筛选项；筛选条件可任意组合。
 - `source_tabular_record`：CSV/Excel 每个工作表的原始行。
 - `document_catalog`：PDF 资料与盆地归属。
 - `evaluation_run`：每次经济评价的参数、筛选条件和结果摘要。
@@ -35,10 +38,11 @@ PostgreSQL 与 PostGIS 是一个统一的主数据服务，不拆分为两套孤
 Copy-Item .env.example .env
 npm run db:up
 npm run db:migrate
+npm run db:regions
 npm start
 ```
 
-导入过程默认登记所有原始资产并计算 SHA-256。增加 `--upload-objects` 可将文件本体上传到 MinIO；这会传输全部 PDF、Excel 和 Shapefile，执行时间取决于本机磁盘和网络性能。
+全球导入会先创建 `staging` 数据集，四类空间图层校验通过后才原子切换为 `active`。导入过程登记所有原始资产；增加 `--upload-objects` 可将文件本体上传到 MinIO。完整命令和重建策略见 [全球基础数据导入说明](global_data_import.md)。
 
 ```powershell
 npm run db:validate
@@ -49,9 +53,10 @@ npm run db:health
 ## API 边界
 
 - `GET /api/platform-state`：基础资料与模块状态。
-- `GET /api/africa/index`：非洲区域的统计、样例和资料目录。
-- `GET /api/spatial/{basins|contract_blocks|fields|wells}`：PostGIS 输出 GeoJSON。
+- `GET /api/africa/index`：兼容路径，返回当前活动数据集的统计、样例和资料目录。
+- `GET /api/spatial/{basins|contract_blocks|fields|wells}`：按活动数据集从 PostGIS 输出 GeoJSON，支持筛选与 `afterId` 游标分页。
 - `GET /api/spatial/summary`：图层记录数。
+- `GET /api/spatial/facets`：全球国家、盆地等轻量筛选项。
 - `GET /api/documents/{id}/download`：从 MinIO 受控下载原始文档。
 - `GET /api/evaluation/economic/config`、`POST /api/evaluation/economic/run`：数据库驱动的经济评价。
 

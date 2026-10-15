@@ -4,6 +4,7 @@ tmp/
 .tmp-ui-check/
 .tmp-visual/
 runtime-data/
+deliverables/
 outputs/data-page-*
 outputs/edge-open-tdt-*
 outputs/mapgis-*

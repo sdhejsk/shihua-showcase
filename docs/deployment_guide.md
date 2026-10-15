@@ -162,6 +162,7 @@ MinIO Console: http://localhost:9001
 
 ```powershell
 npm run db:migrate -- --upload-objects
+npm run db:regions
 ```
 
 该命令会执行以下操作：
@@ -172,6 +173,7 @@ npm run db:migrate -- --upload-objects
 4. 解析 Shapefile 的属性和几何，将其写入 PostGIS 的 `spatial_feature` 表，并建立空间索引。
 5. 将 PDF、Excel、Shapefile 及附属文件写入 MinIO。
 6. 建立资料目录、对象资料索引和评价所需的字段数据。
+7. 根据原始资料的区域、国家等属性字段补齐统一的数据区域索引，供空间总览筛选使用。
 
 首次执行时间取决于资料数量、磁盘和网络性能。执行期间请不要关闭 PowerShell、Docker Desktop 或移动源数据目录。
 
@@ -181,6 +183,7 @@ npm run db:migrate -- --upload-objects
 
 ```powershell
 npm run db:migrate
+npm run db:regions
 ```
 
 此模式会登记原始附件元数据，但不上传文件本体到 MinIO。之后需要补传附件时执行：

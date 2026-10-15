@@ -11,7 +11,7 @@
 | 关系与空间数据 | PostgreSQL + PostGIS | 业务对象、专题行、空间几何、评价记录。 |
 | 原始文件 | MinIO | PDF、Excel、Shapefile 及其 `.shp/.shx/.dbf/.prj/.cpg` 附属文件。 |
 | 数据库初始化 | `database/init/` | PostGIS 扩展、Schema、索引和表定义。 |
-| 数据接入 | `tools/migrate-to-database.cjs` | 扫描源数据，登记资产，解析表格和 Shapefile 并导入数据库。 |
+| 数据接入 | `tools/migrate-global-data.cjs` | 扫描全球源数据，登记资产，解析表格和 Shapefile 并导入数据库。 |
 | 迁移输入 | `data/`、`SHIHUA_SOURCE_ROOT` | 仅在执行迁移时使用，不是运行期数据源。 |
 
 ## 文档索引
@@ -20,6 +20,7 @@
 | --- | --- | --- |
 | [部署与数据接入指南](docs/deployment_guide.md) | `docs/deployment_guide.md` | 提供给克隆仓库后的部署人员，包含环境配置、数据交接、入库、启动、验收、令牌更换和故障排查。 |
 | [数据库架构说明](docs/database_architecture.md) | `docs/database_architecture.md` | 说明 PostgreSQL/PostGIS、MinIO、核心表、原始资料和 API 边界。 |
+| [全球基础数据导入说明](docs/global_data_import.md) | `docs/global_data_import.md` | 说明全球数据的导入范围、存储分工、重建与验收。 |
 
 ## 本机启动
 
@@ -36,6 +37,7 @@ npm run db:up
 
 ```powershell
 npm run db:migrate
+npm run db:regions
 npm start
 ```
 
@@ -62,6 +64,7 @@ npm run db:down
 - `GET /api/africa/index`
 - `GET /api/spatial/{basins|contract_blocks|fields|wells}`
 - `GET /api/spatial/summary`
+- `GET /api/spatial/facets`
 - `GET /api/documents/{id}/download`
 - `GET /api/evaluation/economic/config`
 - `POST /api/evaluation/economic/run`

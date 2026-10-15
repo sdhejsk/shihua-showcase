@@ -13,6 +13,7 @@ const {
   getDocumentAsset,
   getPlatformState,
   getSpatialLayer,
+  getSpatialFacets,
   getSpatialLayerSummary
 } = require("./server/data-access/repository.cjs");
 const { getObjectStream } = require("./server/data-access/object-store.cjs");
@@ -94,18 +95,38 @@ async function handleApi(req, res) {
     }
 
     if (req.method === "GET" && urlPath === "/api/spatial/summary") {
-      sendJson(res, 200, await getSpatialLayerSummary());
+      sendJson(res, 200, await getSpatialLayerSummary({
+        region: requestUrl.searchParams.get("region") || "",
+        country: requestUrl.searchParams.get("country") || "",
+        basin: requestUrl.searchParams.get("basin") || "",
+        block: requestUrl.searchParams.get("block") || "",
+        operator: requestUrl.searchParams.get("operator") || "",
+        keyword: requestUrl.searchParams.get("keyword") || ""
+      }));
+      return true;
+    }
+
+    if (req.method === "GET" && urlPath === "/api/spatial/facets") {
+      sendJson(res, 200, await getSpatialFacets({
+        region: requestUrl.searchParams.get("region") || "",
+        country: requestUrl.searchParams.get("country") || "",
+        basin: requestUrl.searchParams.get("basin") || ""
+      }));
       return true;
     }
 
     const spatialMatch = urlPath.match(/^\/api\/spatial\/(basins|contract_blocks|fields|wells)$/);
     if (req.method === "GET" && spatialMatch) {
       sendJson(res, 200, await getSpatialLayer(spatialMatch[1], {
+        region: requestUrl.searchParams.get("region") || "",
         country: requestUrl.searchParams.get("country") || "",
         basin: requestUrl.searchParams.get("basin") || "",
+        block: requestUrl.searchParams.get("block") || "",
+        operator: requestUrl.searchParams.get("operator") || "",
         keyword: requestUrl.searchParams.get("keyword") || "",
         limit: requestUrl.searchParams.get("limit") || "",
         offset: requestUrl.searchParams.get("offset") || "",
+        afterId: requestUrl.searchParams.get("afterId") || "",
         mode: requestUrl.searchParams.get("mode") || "",
         bbox: requestUrl.searchParams.get("bbox") || ""
       }));
@@ -146,9 +167,10 @@ async function handleApi(req, res) {
   } catch (error) {
     const unavailable = ["ECONNREFUSED", "ECONNRESET", "ETIMEDOUT", "3D000", "28000", "28P01"].includes(error.code)
       || String(error.code || "").startsWith("08");
-    sendJson(res, unavailable ? 503 : 500, {
+    sendJson(res, Number(error.statusCode) || (unavailable ? 503 : 500), {
       message: unavailable ? "Database service is unavailable" : "Data API error",
-      detail: error.message
+      detail: error.message,
+      code: error.code || undefined
     });
     return true;
   }
